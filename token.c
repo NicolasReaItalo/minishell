@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:23:26 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/02/27 18:28:38 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:39:43 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,32 @@ int	is_operator(char c)
 {
 	return (c == '|' || c == '<' || c == '>' || c == '&' || c == '(' || c == ')');
 }
+/*
+int	error_msg(int i)
+{
+	return (i);		
+}*/
+
+t_token	*new_token(char *str, int len)
+{
+	t_token	*new;
+
+	new = malloc(sizeof(t_token));	
+	if (!new)
+//		error_msg(1);
+		return (NULL);
+	new->content = ft_substr(str, 0, len);
+	if (!(new->content))
+		return (free(new), NULL);
+	new->next = NULL;
+	return (new);
+}
+
 // Pass whitespace
 // Identifie type du token
 // Pass whitespace
 // Return new pointer in string
-char *next_token(char *str, t_token *new)
+char *next_token(char *str, t_token **new, int *error_code)
 {
 	int	i;
 	
@@ -34,24 +55,45 @@ char *next_token(char *str, t_token *new)
 	while (*str && is_whitespace(*str))
 		str++;
 	if (!*str)
-		return (NULL);
+		return (*error_code = 2, NULL);
+	else if (*str == 34 || *str == 39)
+	{
+		while (*(str + ++i) && *(str + i) != *str)
+			{};
+		if (!*(str + i)) // Cas ou les guillemets ne sont pas fermes
+			return (*error_code = 2, NULL);
+		i++;
+		*new = new_token(str, i);
+		if (!*new)
+			return (*error_code = 1, NULL);
+		str += i;
+//		TODO: Gerer le cas ou les guillemetsne sont pas refermes
+	}
 	else if (is_operator(*str))
 	{
 		if (ft_strchr("|<>&", *str) && (*str == *(str + 1)))
 		{
-			new->content = ft_substr(str, 0, 2); 
+			*new = new_token(str, 2);
+		//	new->content = ft_substr(str, 0, 2); 
 			str++;
 		}
 		else
-		new->content = ft_substr(str, 0, 1);
+		{
+			*new = new_token(str, 1);
+		}
+		if (!*new)
+			return (*error_code = 1, NULL);
+	//	new->content = ft_substr(str, 0, 1);
 		str++; 
 	}	
 	else
 	{
-	// A implementer : Cas ou on a une chaine de caractere qui n'est pas un operateur
 		while (*(str + i) && !is_whitespace(*(str + i)) && !is_operator(*(str + i)))
 			i++;
-		new->content = ft_substr(str, 0, i);
+		*new = new_token(str, i);
+		if (!*new)
+			return (*error_code = 1, NULL);
+//		new->content = ft_substr(str, 0, i);
 		str += i;	
 	}
 	while (*str && is_whitespace(*str))
@@ -61,27 +103,35 @@ char *next_token(char *str, t_token *new)
 
 t_token	*add_token(t_token *stack, t_token *new)
 {
-	new->next = NULL;
+//	new = NULL;
 	if (!stack)
-		stack->next = new;
+		stack = new;
 	else 
 	{
 		new->next = stack;
-		stack->next = new;
+		stack = new;
 	}
 	return (stack);
 }
 // 1)Create node
 // 2)Find
-void	*tokenise(char *str, t_token **stack)
+int	tokenise(char *str, t_token **stack)
 {
 	t_token	*new;
+	int		error_code;
 	
+	new = NULL;
+	error_code = 0;
 	while (*str)
 	{
-		str = next_token(str, new);
-		add_token(*stack, new); 
-	}	
+		new = NULL;
+		str = next_token(str, &new, &error_code);
+		if (!str)
+			return (error_code);
+		if (new)
+			*stack = add_token(*stack, new); 
+	}
+	return (error_code);	
 }
 /*
 t_token	*tokenise(char *str)
@@ -116,13 +166,21 @@ int	main(int argc,char **argv)
 {
 	int	i;
 	t_token *stack;
+	int error;
+//	char arg[] = "ec\"h'o\"'";
+	
+	if (argc != 2)
+		return (1);
 	
 	stack = NULL;
-	tokenise(argv[1], &stack);
+	if (error = tokenise(argv[1], &stack))
+		return (error);
+	i = 0;
 	while (stack)
 	{
 		printf("TOKEN %d : %s%%\n", i, stack->content);
 		i++;
+		stack = stack->next;
 	}
-	return (0);
+	return (error);
 }
