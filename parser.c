@@ -6,129 +6,23 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 13:06:14 by nrea              #+#    #+#             */
-/*   Updated: 2024/02/29 16:38:57 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/01 16:10:35 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "libft.h"
 
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-///A inclure dans token.h
-
-/*Returns a pointer to the token at rank
-if rank = -1 returns the last token*/
-t_token	*ft_get_token(t_token *stack, int rank)
-{
-	if (rank < -1)
-		return (NULL);
-	if (rank == -1)
-	{
-		while (stack->next)
-			stack = stack->next;
-		return (stack);
-	}
-	while (rank)
-	{
-		if (!stack)
-			return (NULL);
-		stack = stack->next;
-		rank--;
-	}
-	return (stack);
-}
-
-
-int test_ft_add_token(t_token **stack, char *content, int type) //////A supprimer
-{
-	t_token *node;
-
-	node = NULL;
-
-	node = malloc (sizeof(t_token));
-	if (!node)
-	{
-		printf ("Erreur de malloc !");
-		return (-1);
-	}
-	node->content = ft_strdup(content);
-	node->type = type;
-	node->next = *stack;
-	*stack = node;
-	return (0);
-}
-
-
-void *ft_free_stack(t_token **stack)
-{
-	t_token *node;
-	t_token *prev;
-
-	if (!*stack || !stack)
-		return (NULL);
-	node = *stack;
-	while (node)
-	{
-		prev = node;
-		node = node->next;
-		free(prev->content);
-		free(prev);
-	}
-
-	*stack = NULL;
-	return (NULL);
-}
-
-
-void	ft_display_stack(t_token *stack)
-{
-	t_token *node;
-	int rank;
-
-	rank = 0;
-	node = stack;
-	if (!node)
-		printf("[NULL]\n");
-	while (node)
-	{
-		printf("[%d][%s]\n",rank, node->content);
-		node = node->next;
-		rank++;
-	}
-
-}
-
-/*Returns the size (node numbers) of a stack*/
-int	ft_stack_size(t_token *stack)
-{
-	int count;
-
-	count = 0;
-	while (stack)
-	{
-		count++;
-		stack = stack->next;
-	}
-	return (count);
-}
-
-int	ft_free_token(t_token **token)
-{
-	if (!(*token))
-		return (0);
-	if ((*token)->content)
-		free((*token)->content);
-	free(*token);
-	*token = NULL;
-	return (0);
-}
-
-
+//TODO
+//
+//
+//
+//  ft_exec_node(t_token *stack) |dispatchtokens | display tree | free_tree
+//
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -221,6 +115,8 @@ void	ft_delete_last(t_token **stack)
 	ft_free_token(&node);
 }
 
+/*delete the first token of a stack*/
+
 void	ft_delete_first(t_token **stack)
 {
 	t_token *node;
@@ -261,8 +157,8 @@ void	*ft_set_error(int *error, int type, t_token **right, t_token **left)
 {
 		if (!*error)
 			*error = type;
-		ft_free_stack(&left);
-		ft_free_stack(&right);
+		ft_free_stack(left);
+		ft_free_stack(right);
 		return (NULL);
 }
 
@@ -279,82 +175,81 @@ int	ft_get_cond_type(t_token *stack, int rank)
 }
 
 
-ft_conditional_op(t_token **stack, int op_rank, int *error)
-{
-	t_node	*node;
-	t_token	*left;
-	t_token	*right;
-
-	node = NULL;
-	left = NULL;
-	right = NULL;
-	node = malloc(sizeof(t_node));
-	if (!node)
-	{
-		ft_free_stack(stack);
-		return (ft_set_error(error, 5, NULL, NULL));  // 5 MALLOC ERROR
-	}
-	node->type = ft_get_cond_type(*stack, op_rank);
-	ft_split_token_list(op_rank, stack, left, right);
-	node->left = ft_parser(left, error, 2);
-	node->right = ft_parser(right, error, 2);
-	if (!node->left || !node->right)
-	{
-		free(node);
-		return (ft_set_error(error, node->type, &right, &left));
-	}
-	return (node);
-}
-
-
-ft_pipe_op(t_token **stack,int op_rank,int *error)
-{
-	t_node	*node;
-	t_token	*left;
-	t_token	*right;
-
-	node = NULL;
-	left = NULL;
-	right = NULL;
-	node = malloc(sizeof(t_node));
-	if (!node)
-	{
-		ft_free_stack(stack);
-		return (ft_set_error(error, 5, NULL, NULL));  // 5 MALLOC ERROR
-	}
-	node->type = N_PIPE;
-	ft_split_token_list(op_rank, stack, left, right);
-	node->left = ft_parser(left, error, 1);
-	node->right = ft_parser(right, error, 1);
-	if (!node->left || !node->right)
-	{
-		free(node);
-		return (ft_set_error(error, node->type, &right, &left));
-	}
-	return (node);
-}
+// t_node *ft_conditional_op(t_token **stack, int op_rank, int *error)
+// {
+// 	t_node	*node;
+// 	t_token	*left;
+// 	t_token	*right;
+// 	node = NULL;
+// 	left = NULL;
+// 	right = NULL;
+// 	node = malloc(sizeof(t_node));
+// 	if (!node)
+// 	{
+// 		ft_free_stack(stack);
+// 		return (ft_set_error(error, 5, NULL, NULL));  // 5 MALLOC ERROR
+// 	}
+// 	node->type = ft_get_cond_type(*stack, op_rank);
+// 	ft_split_token_list(op_rank, stack, &left, &right);
+// 	node->left = ft_parser(left, error, 2);
+// 	node->right = ft_parser(right, error, 2);
+// 	if (!node->left || !node->right)
+// 	{
+// 		free(node);
+// 		return (ft_set_error(error, node->type, &right, &left));
+// 	}
+// 	return (node);
+// }
 
 
-ft_exec_node(t_token *stack)
-{
+// t_node * ft_pipe_op(t_token **stack,int op_rank,int *error)
+// {
+// 	t_node	*node;
+// 	t_token	*left;
+// 	t_token	*right;
 
-	t_node	*node;
-	node = NULL;
-	node = malloc(sizeof(t_node));
-	if (!node)
-	{
-		ft_free_stack(stack);
-		return (NULL);
-	}
-	node->type = N_EXEC;
-	ft_dispatch_stacks  /// a ecrire, ajouter la fonction de verification
-	/*
-	node.type = N_EXEC
-	parser la stack pour repartir les token entre redir et cmd
-	verifier la question de l'alternance op cmd ?
-	return (node);
-	*/
-}
+// 	node = NULL;
+// 	left = NULL;
+// 	right = NULL;
+// 	node = malloc(sizeof(t_node));
+// 	if (!node)
+// 	{
+// 		ft_free_stack(stack);
+// 		return (ft_set_error(error, 5, NULL, NULL));  // 5 MALLOC ERROR
+// 	}
+// 	node->type = N_PIPE;
+// 	ft_split_token_list(op_rank, stack, left, right);
+// 	node->left = ft_parser(left, error, 1);
+// 	node->right = ft_parser(right, error, 1);
+// 	if (!node->left || !node->right)
+// 	{
+// 		free(node);
+// 		return (ft_set_error(error, node->type, &right, &left));
+// 	}
+// 	return (node);
+// }
+
+
+//t_node * ft_exec_node(t_token *stack)
+// {
+
+// 	t_node	*node;
+// 	node = NULL;
+// 	node = malloc(sizeof(t_node));
+// 	if (!node)
+// 	{
+// 		ft_free_stack(stack);
+// 		return (NULL);
+// 	}
+// 	node->type = N_EXEC;
+// 	ft_dispatch_stacks  /// a ecrire, ajouter la fonction de verification
+// 	/*
+// 	node.type = N_EXEC
+// 	parser la stack pour repartir les token entre redir et cmd
+// 	verifier la question de l'alternance op cmd ?
+// 	return (node);
+// 	*/
+// }
 
 
 
@@ -384,29 +279,29 @@ Parse a stack and returns a parsetree t_node* object
 or NULL if the stack is empty or in case of error;
 In case of error the error* argument is set to the corresponding error code
 */
-t_node	*ft_parser(t_token **stack, int *error, int priority)
-{
-	int		op_rank;
+// t_node	*ft_parser(t_token **stack, int *error, int priority)
+// {
+// 	int		op_rank;
 
-	if (!stack)
-		return (NULL);
-	if (!priority) /// Si la priority = 0
-	{
-		if (ft_check_outer_brackets(*stack)) // est-ce -que la stack estentouree de parenthese
-			return (ft_parser(ft_strip_bracket(stack), error, 2)); // on relance le parser avec une stack sans ses parentheses
-		else
-			return (ft_exec_node(stack)); // BASE CASE on cree un node exec
-	}
-	op_rank = -2;
-	op_rank = ft_find_operator(priority, *stack);
-	if (op_rank == -1) // Il n'a pas trouve de token avec la priorite recherchee
-		return (ft_parser(stack, error, priority - 1)); // on reessaye avec une priorite + basse
-	if (priority == 2)
-		return (ft_conditional_op(stack, op_rank, error)); /// cree un node condition split la stack right= ft
-	if (priority == 1)
-		return (ft_pipe_op(stack, op_rank, error)); /// cree un node pipe split la stack right= ft
-	return (NULL);
-}
+// 	if (!stack)
+// 		return (NULL);
+// 	if (!priority) /// Si la priority = 0
+// 	{
+// 		if (ft_check_outer_brackets(*stack)) // est-ce -que la stack estentouree de parenthese
+// 			return (ft_parser(ft_strip_bracket(stack), error, 2)); // on relance le parser avec une stack sans ses parentheses
+// 		else
+// 			return (ft_exec_node(stack)); // BASE CASE on cree un node exec
+// 	}
+// 	op_rank = -2;
+// 	op_rank = ft_find_operator(priority, *stack);
+// 	if (op_rank == -1) // Il n'a pas trouve de token avec la priorite recherchee
+// 		return (ft_parser(stack, error, priority - 1)); // on reessaye avec une priorite + basse
+// 	if (priority == 2)
+// 		return (ft_conditional_op(stack, op_rank, error)); /// cree un node condition split la stack right= ft
+// 	if (priority == 1)
+// 		return (ft_pipe_op(stack, op_rank, error)); /// cree un node pipe split la stack right= ft
+// 	return (NULL);
+// }
 
 	// codes d'erreurs :
 // 	// 1 : erreur de pipe
@@ -593,38 +488,38 @@ t_node	*ft_parser(t_token **stack, int *error, int priority)
 
 
 
-// // TEST DE ft_strip_bracket
-// int main()
-// {
+// TEST DE ft_strip_bracket
+int main()
+{
 
-// 	t_token	*stack;
-// 	t_token	*right;
-// 	t_token	*left;
+	t_token	*stack;
+	t_token	*right;
+	t_token	*left;
 
-// 	stack = NULL;
-// 	right = NULL;
-// 	left = NULL;
+	stack = NULL;
+	right = NULL;
+	left = NULL;
 
-// 	test_ft_add_token(&stack, ")",C_BRACKET);
-// 	test_ft_add_token(&stack, "&&", AND);
-// 	test_ft_add_token(&stack, "|", PIPE);
-// 	test_ft_add_token(&stack, "CMD1", WORD);
-// 	test_ft_add_token(&stack, "||", OR);
-// 	test_ft_add_token(&stack, "CMD2", WORD);
-// 	test_ft_add_token(&stack, "CMD3", WORD);
-// 	test_ft_add_token(&stack, "CMD4", WORD);
-// 	test_ft_add_token(&stack, "CMD5", WORD);
-// 	test_ft_add_token(&stack, "(",O_BRACKET);
+	test_ft_add_token(&stack, ")",C_BRACKET);
+	test_ft_add_token(&stack, "&&", AND);
+	test_ft_add_token(&stack, "|", PIPE);
+	test_ft_add_token(&stack, "CMD1", WORD);
+	test_ft_add_token(&stack, "||", OR);
+	test_ft_add_token(&stack, "CMD2", WORD);
+	test_ft_add_token(&stack, "CMD3", WORD);
+	test_ft_add_token(&stack, "CMD4", WORD);
+	test_ft_add_token(&stack, "CMD5", WORD);
+	test_ft_add_token(&stack, "(",O_BRACKET);
 
 
-// printf("##########STACK INITIALE####################\n");
-// 	ft_display_stack(stack);
+printf("##########STACK INITIALE####################\n");
+	ft_display_stack(stack);
 
-// printf("##########APRES LE STRIP####################\n");
-// stack = ft_strip_bracket(&stack);
-// 	ft_display_stack(stack);
+printf("##########APRES LE STRIP####################\n");
+stack = ft_strip_bracket(&stack);
+	ft_display_stack(stack);
 
-// 		ft_free_stack(&stack);
+		ft_free_stack(&stack);
 
-// 	return (0);
-// }
+	return (0);
+}
