@@ -6,14 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:44:58 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/01 16:10:16 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/01 16:48:23 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
-#include "libft.h"
-#include "stdio.h"
-
 
 /*Returns a pointer to the token at rank
 if rank = -1 returns the last token*/
@@ -37,13 +34,11 @@ t_token	*ft_get_token(t_token *stack, int rank)
 	return (stack);
 }
 
-
-int test_ft_add_token(t_token **stack, char *content, int type) //////A supprimer
+int	test_ft_add_token(t_token **stack, char *content, int type)
 {
-	t_token *node;
+	t_token	*node;
 
 	node = NULL;
-
 	node = malloc (sizeof(t_token));
 	if (!node)
 		return (-1);
@@ -54,11 +49,10 @@ int test_ft_add_token(t_token **stack, char *content, int type) //////A supprime
 	return (0);
 }
 
-
-void *ft_free_stack(t_token **stack)
+void	*ft_free_stack(t_token **stack)
 {
-	t_token *node;
-	t_token *prev;
+	t_token	*node;
+	t_token	*prev;
 
 	if (!*stack || !stack)
 		return (NULL);
@@ -70,16 +64,14 @@ void *ft_free_stack(t_token **stack)
 		free(prev->content);
 		free(prev);
 	}
-
 	*stack = NULL;
 	return (NULL);
 }
 
-
 void	ft_display_stack(t_token *stack)
 {
-	t_token *node;
-	int rank;
+	t_token	*node;
+	int		rank;
 
 	rank = 0;
 	node = stack;
@@ -87,17 +79,16 @@ void	ft_display_stack(t_token *stack)
 		printf("[NULL]\n");
 	while (node)
 	{
-		printf("[%d][%s]\n",rank, node->content);
+		printf("[%d][%s]\n", rank, node->content);
 		node = node->next;
 		rank++;
 	}
-
 }
 
 /*Returns the size (node numbers) of a stack*/
 int	ft_stack_size(t_token *stack)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (stack)
@@ -119,3 +110,24 @@ int	ft_free_token(t_token **token)
 	return (0);
 }
 
+void	ft_reverse_stack(t_token **stack)
+{
+	t_token	*current;
+	t_token	*prev;
+	t_token	*next;
+
+	if (!*stack || ft_stack_size(*stack) == 1)
+		return ;
+	current = NULL;
+	prev = NULL;
+	next = NULL;
+	current = *stack;
+	while (current)
+	{
+		next = current->next;
+		current->next = prev;
+		prev = current;
+		current = next;
+	}
+	*stack = prev;
+}
