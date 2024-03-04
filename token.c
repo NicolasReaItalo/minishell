@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:23:26 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/02/29 14:39:08 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/04 15:14:42 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	kill_stack(t_token **stack)
 	}
 }
 
+// Create a new node
 t_token	*new_token(char *str, int len)
 {
 	t_token	*new;
@@ -119,6 +120,7 @@ t_token	*add_token(t_token *stack, t_token *new)
 }
 */
 
+// Add front 
 t_token	*add_token(t_token *stack, t_token *new)
 {
 	if (!stack)
@@ -129,6 +131,7 @@ t_token	*add_token(t_token *stack, t_token *new)
 	{
 		new->next = stack;
 		stack = new;
+		new->next->prev = new;
 	}
 	return (stack);
 }
@@ -266,12 +269,11 @@ int	main(int argc,char **argv)
 	i = 0;
 	while (stack)
 	{
-		printf("TOKEN %d : \e[31m%s\e[0m%%\ttype : %d\n", i, i
-			stack->content, stack->type);
+		printf("TOKEN %d : \e[31m%s\e[0m%%\ttype : %d\tptr : %p\t prev ptr : %p\t next ptr : %p\n", i,
+			stack->content, stack->type, stack, stack->prev, stack->next);
 		i++;
 		stack = stack->next;
 	}
 	kill_stack(&stack_copy);
 	return (error);
-}
-*/
+}*/
