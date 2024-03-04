@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   essai_here_doc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:52:09 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/01 18:54:03 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/04 17:48:05 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,55 @@ size_t	ft_str_size(char *s)
 	return (i);
 }
 
+
+char	*ft_buffer_append(char *buf, char *line)
+{
+	char	*new_buf;
+	int i;
+	int j;
+
+	new_buf = NULL;
+	if (!buf)
+	{
+		buf = malloc(sizeof(char));
+		if(!buf)
+			return (NULL);
+		buf[0] = '\0';
+	}
+	new_buf = malloc((ft_str_size(buf) + ft_get_ret_size(line) + 1) * sizeof(char));
+	if (!new_buf)
+	{
+		free(buf);
+		return (NULL);
+	}
+	i = 0;
+	while (buf[i])
+	{
+		new_buf[i] = buf[i];
+		i++;
+	}
+	j = 0;
+	while (line[j] != '\n')
+	{
+		new_buf[i + j] = line[j];
+		j++;
+	}
+	new_buf[i + j] = '\n';
+	new_buf[i + j + 1] = '\0';
+	free(buf);
+	return (new_buf);
+}
+
+
 void	here_doc_proc(int p[2], char *eof)
 {
 	char	*line;
 
 
 	line = NULL;
-	close(p[0]);
 	while (1)
 	{
-		line = get_next_line(0, 0);
+		line = readline(">");
 		if (!line)
 			break ;
 		if (!ft_strncmp(line, eof, ft_str_size(eof)))
@@ -67,13 +106,12 @@ void	here_doc_proc(int p[2], char *eof)
 			close(p[1]);
 			exit(0);
 		}
-		write(p[1], line, ft_get_ret_size(line) + 1);
+		line[ft_str_size(line)] = '\n';
+		write(p[1], line, ft_str_size(line) + 1);
 		free(line);
 		line = NULL;
 	}
-	close(p[1]);
 	exit(0);
-
 }
 
 
@@ -102,6 +140,25 @@ int	ft_add_last_line(t_line **line_list, char *line)
 	return (0);
 }
 
+//read from a pipe and returns a buffer
+char	*ft_read_from_pipe(int pipe[2])
+{
+	char	*buffer;
+	char	*line;
+	buffer = NULL;
+	close(pipe[1]);
+	while (1)
+	{
+		line = get_next_line(pipe[0], 0);  /// get_nextline a changer
+		if (!line)
+			break ;
+		buffer = ft_buffer_append(buffer, line);
+		free(line);
+		line = NULL;
+	}
+		close(pipe[0]);
+	return (buffer);
+}
 
 //cc -Wall -Wextra -Werror -I.. essai_here_doc.c   token_utils.c -Ilibft  -Llibft -lft -lreadline
 // fonctionnne avecun leak de 1 byte, du au get_next_line ?
@@ -111,10 +168,8 @@ int	ft_fork_and_read(void)
 
 	int p[2];
 	int	pid;
-	char	*line;
-	t_line	*lines;
+	char	*buffer;
 
-	lines = NULL;
 	if (pipe(p) == -1)
 		return (-1);
 	pid = fork();
@@ -126,41 +181,140 @@ int	ft_fork_and_read(void)
 	}
 	if (pid == 0)
 		here_doc_proc(p, "EOF");
-	line = NULL;
-	close(p[1]);
-	while (1)
-	{
-		line = get_next_line(p[0], 0);  /// purge ? A voir avec Thomas
-		if (!line)
-			break ;
-		ft_add_last_line(&lines, line);
-		free(line);
-		line = NULL;
-	}
-	close(p[0]);
-	waitpid(pid, NULL, 0);
 
-	t_line *lines_to_read;
+	buffer = ft_read_from_pipe(p);
+	wait(NULL);
 
-	lines_to_read = lines;
-	while (lines_to_read)
-	{
-		printf("%s", lines_to_read->content);
-		lines_to_read = lines_to_read->next;
-	}
 
-	t_line *cur;
-	while (lines)
-	{
-		free(lines->content);
-		cur = lines;
-		lines = lines->next;
-		free(cur);
-	}
-
+		printf("%s", buffer);
+		if (buffer)
+			free (buffer);
 
 	return (0);
 }
+
+typedef	struct s_pipe
+{
+	int	p[2];
+	struct s_pipe *next;
+} t_pipe;
+
+/*Allocate and initiate a pipe then adds it at the end of the list*/
+int	ft_add_pipe(t_pipe **pipes)
+{
+	t_pipe *pi;
+	t_pipe *head;
+
+	pi = NULL;
+	pi = malloc(sizeof(t_pipe));
+	if (!pi)
+		return (-1);
+	pi->next = NULL;
+	if(pipe(pi->p) == -1)
+	{
+		free(pi);
+		return (-1);
+	}
+	if (!*pipes)
+	{
+		*pipes = pi;
+		return ;
+	}
+	head = *pipes;
+	while (head->next)
+		head = head->next;
+	head->next = pi;
+}
+
+void ft_free_pipes(t_pipe **pipes)
+{
+	t_pipe	*prev;
+	t_pipe	*p;
+
+	prev = NULL;
+	p = NULL;
+	p = *pipes;
+	while (p)
+	{
+		prev = p;
+		p = p->next;
+		free(prev);
+	}
+	*pipes = NULL;
+}
+
+void	ft_close_pipes_in(t_pipe *pipes)
+{
+	while(pipes)
+	{
+		close(pipes->p[1]);
+		pipes = pipes->next;
+	}
+
+}
+void	ft_close_pipes_out(t_pipe *pipes)
+{
+	while(pipes)
+	{
+		close(pipes->p[0]);
+		pipes = pipes->next;
+	}
+
+}
+
+t_pipe	*ft_get_pipe_by_rank(int rank,t_pipe *pipes)
+{
+	if (rank < 0 || !pipes)
+		return (NULL);
+	while (rank && pipes)
+	{
+		pipes = pipes->next;
+		rank--;
+	}
+	if (rank > 0)
+		return (NULL);
+	return (pipes);
+}
+
+int	ft_create_heredoc_proc(int rank, t_pipe **pipes)
+{
+	int	pid;
+	char	*buffer;
+	t_pipe	*p;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		ft_close_pipes_out(*pipes);
+		ft_close_pipes_in(*pipes);
+		ft_free_pipes(pipes);
+		return (-1);
+	}
+	if (pid == 0)
+	{
+		p = ft_get_pipe_by_rank(rank, pipes);
+		if (!p)
+			return (-1);
+		ft_close_pipes_out(*pipes);
+		here_doc_proc(p->p, "EOF");
+		ft_close_pipes_in(*pipes);
+		ft_free_pipes(pipes);
+		exit(0);
+	}
+	return (0);
+}
+
+
+void	ft_syntax_and_heredoc(t_token *stack)
+{
+
+
+
+}
+
+
+
+
 
 
 int main()
