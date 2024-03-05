@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:23:26 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/04 15:14:42 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/05 16:26:16 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,37 @@ t_token	*new_token(char *str, int len)
 	return (new);
 }
 
+char	*next_token_operators(char **str, t_token **new, int *error_code)
+{
+	int	i;
+
+	i = 0;
+	if (**str == 34 || **str == 39)
+	{
+		while (*(*str + ++i) && *(*str + i) != **str)
+		{
+		}
+		if (!*(*str + i))
+			return (*error_code = 2, NULL);
+		i++;
+		*new = new_token(*str, i);
+		if (!*new)
+			return (*error_code = 1, NULL);
+		*str += i;
+	}
+	else if (is_operator(**str))
+	{
+		if (ft_strchr("|<>&", **str) && (**str == *(*str + 1)))
+			*new = new_token((*str)++, 2);
+		else
+			*new = new_token(*str, 1);
+		if (!*new)
+			return (*error_code = 1, NULL);
+		(*str)++;
+	}
+	return (*str);	
+}
+
 // Pass whitespace
 // Identifie type du token
 // Pass whitespace
@@ -70,7 +101,12 @@ char	*next_token(char *str, t_token **new, int *error_code)
 		str++;
 	if (!*str)
 		return (*error_code = 2, NULL);
-	else if (*str == 34 || *str == 39)
+	else if (*str == 34 || *str == 39 || is_operator(*str))
+	{
+		if (!next_token_operators(&str, new, error_code))
+			return (NULL);
+	}
+/*	else if (*str == 34 || *str == 39)
 	{
 		while (*(str + ++i) && *(str + i) != *str)
 		{
@@ -92,7 +128,7 @@ char	*next_token(char *str, t_token **new, int *error_code)
 		if (!*new)
 			return (*error_code = 1, NULL);
 		str++;
-	}	
+	}*/	
 	else
 	{
 		while (*(str + i) && !is_wspace(*(str + i)) && !is_operator(*(str + i)))
@@ -138,9 +174,6 @@ t_token	*add_token(t_token *stack, t_token *new)
 
 void	put_type_in_stack(t_token *stack, int *error_code)
 {
-	int	check_brackets;
-
-	check_brackets = 0;
 	while (stack)
 	{
 		if (stack->content[0] == '|')
@@ -175,26 +208,17 @@ void	put_type_in_stack(t_token *stack, int *error_code)
 			}
 		}
 		else if (stack->content[0] == '(')
-		{
 			stack->type = O_BRACKET;
-			check_brackets--;
-		}
 		else if (stack->content[0] == ')')
-		{
 			stack->type = C_BRACKET;
-			check_brackets++;
-		}
 		else
 			stack->type = WORD;
-		if (check_brackets < 0)
-			*error_code = 4;
 		stack = stack->next;
 	}
-	if (check_brackets)
-		*error_code = 4;
 }
 
 // Parse the prompt and create a stack (last element is first in stack)
+// TODO: Change nomenclature of errors.
 // Error codes: 0 : OK
 //				1 : bad allocation
 //				2 : ' or " not closed
@@ -249,7 +273,7 @@ t_token	*tokenise(char *str)
 	}
 }*/
 
-/*
+
 #include <stdio.h>
 int	main(int argc,char **argv)
 {
@@ -265,15 +289,19 @@ int	main(int argc,char **argv)
 	error = tokenise(argv[1], &stack);
 	if (error)
 		return (printf("ERROR : %d\n", error));
+	if (check_syntax(stack))
+		return (1);
 	stack_copy = stack;
 	i = 0;
 	while (stack)
 	{
-		printf("TOKEN %d : \e[31m%s\e[0m%%\ttype : %d\tptr : %p\t prev ptr : %p\t next ptr : %p\n", i,
+		printf("TOKEN %d : \e[31m%s\e[0m%%\ttype : %d\tptr : %p\t" 
+			"prev ptr : %p\tnext ptr : %p\n", i,
 			stack->content, stack->type, stack, stack->prev, stack->next);
 		i++;
 		stack = stack->next;
 	}
 	kill_stack(&stack_copy);
 	return (error);
-}*/
+}
+// gcc -g token.c check_syntax.c token_utils.c -I./libft/ -L./libft/ -lft -o token

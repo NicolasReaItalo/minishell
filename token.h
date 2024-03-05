@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:08:35 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/04 16:01:53 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/05 11:41:58 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,5 @@ void	ft_display_stack(t_token *stack);
 int		ft_stack_size(t_token *stack);
 int		ft_free_token(t_token **token);
 void	ft_reverse_stack(t_token **stack);
+int		check_syntax(t_token *stack);
 #endif

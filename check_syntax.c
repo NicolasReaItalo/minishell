@@ -6,20 +6,18 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:21:18 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/04 17:37:18 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/05 15:11:53 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
 
-int	syntax_error(t_token *stack, )
+void	syntax_error(char *error)
 {
-	char	*error;
-		
-	ft_printf("syntax error near unexpected token '%s'\n", error);
+	ft_printf("syntax error near unexpected token `%s'\n", error);
 }
-
-t_syntax_rule	*init_syntax_rules(void)
+/*
+t_syntax_rule	**init_syntax_rules(void)
 {
 	t_syntax_rule	*rules[10];
 	int				i;
@@ -89,13 +87,89 @@ t_syntax_rule	*init_syntax_rules(void)
 int	check_syntax(t_token *stack)
 {
 	t_token	*ptr;
-	t_syntax_rule *rules;
+	t_syntax_rule **rules;
+	int		i;
 
 	ptr = ft_get_token(stack, -1);
 	rules = init_syntax_rules();
 	while (ptr)
 	{
-		while (rules[ptr->type] != -1 )	
+		i = 0;
+		while ((rules[ptr->type])->valid_next[i] != -1 && i < 0)
+		{
+			if (ptr->next && ptr->next->type == (rules[ptr->type])->valid_prev[i])
+				// ok
+			i++;
+		}	
 		ptr = ptr->prev;
 	}
+}*/
+
+static char	*check_start_and_end(t_token *ptr)
+{
+	if (!ptr->next)
+	{
+		if ((ptr->type > 0 && ptr->type < 4) || ptr->type == 9)
+			return (ptr->content);
+		else
+			return (NULL);
+	}
+	else if (!ptr->prev)
+	{
+		if ((ptr->type > 0 && ptr->type < 9))
+			return (ptr->content);
+		else
+			return (NULL);
+	}
+	return (NULL);
+}
+
+static char	*check_syntax_node(t_token *ptr)
+{
+	int	prev_type;
+
+	if (!ptr)
+		return (NULL);
+	if (!ptr->next || !ptr->prev)
+		return (check_start_and_end(ptr));
+	prev_type = ptr->prev->type;
+	if ((ptr->type == 2 || ptr->type == 3 || ptr->type == 8)
+		&& (prev_type > 0 && prev_type < 4 || prev_type == 9))
+		return (ptr->prev->content);
+	else if (ptr->type == 1
+		&& !((prev_type > 3 && prev_type < 8) || prev_type == 0))
+		return (ptr->prev->content);
+	else if ((ptr->type >= 4 && ptr->type <= 7) && prev_type)
+		return (ptr->prev->content);
+	else if ((ptr->type == 0) && (prev_type == 8))
+		return (ptr->prev->content);
+	else if ((ptr->type == 9) && !(prev_type == 2 || prev_type == 3))
+		return (ptr->prev->content);
+	return (NULL);
+}
+
+int	check_syntax(t_token *stack)
+{
+	t_token	*ptr;
+	char	*error;
+	int		check_brackets;
+
+	ptr = ft_get_token(stack, -1);
+	check_brackets = 0;
+	while (ptr)
+	{
+		error = check_syntax_node(ptr);
+		if (ptr->type == 8)
+			check_brackets++;
+		else if (ptr->type == 9)
+			check_brackets--;
+		if (check_brackets < 0)
+			error = ptr->content;
+		if (error)
+			return (syntax_error(error), 1);
+		ptr = ptr->prev;
+	}
+	if (check_brackets)
+		return (syntax_error("brackets unclosed"), 1);
+	return (0);
 }
