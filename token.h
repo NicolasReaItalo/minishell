@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:08:35 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/02/29 14:41:07 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/05 11:41:58 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,22 @@ typedef struct s_token
 	int				type;
 	char			*content;
 	struct s_token	*next;
+	struct s_token	*prev;
 }				t_token;
+typedef struct	s_syntax_rule
+{
+	int	token;
+	int	valid_next[10];
+	int valid_prev[10];
+}				t_syntax_rule;
+// TODO:Certaines fonctions font doublons...choisir!
+
+t_token	*ft_get_token(t_token *stack, int rank);
+// int		test_ft_add_token(t_token **stack, char *content, int type);
+// void	*ft_free_stack(t_token **stack);
+void	ft_display_stack(t_token *stack);
+int		ft_stack_size(t_token *stack);
+int		ft_free_token(t_token **token);
+void	ft_reverse_stack(t_token **stack);
+int		check_syntax(t_token *stack);
 #endif
