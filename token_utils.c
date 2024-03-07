@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:44:58 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/01 16:48:23 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/07 13:26:56 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ if rank = -1 returns the last token*/
 t_token	*ft_get_token(t_token *stack, int rank)
 {
 	if (rank < -1)
+		return (NULL);
+	if (!stack)
 		return (NULL);
 	if (rank == -1)
 	{
