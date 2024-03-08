@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 13:06:14 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 18:15:27 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/08 18:18:36 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,8 +205,8 @@ t_node	*ft_parse_tree(t_token **stack, int *error, int priority)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // /test du parser
-
-///cc -Wall -Wextra  -o test_parse_tree  ./srcs/parsing/*.c -I ./include -I./libft -L./libft  -lft -lreadline
+//cc -g  -Wall -Wextra  -o test_parse_tree  ./srcs/parsing/*.c  ./test/utils/test_utils.c
+/// -I ./include -I./libft -I ./test  -L./libft  -lft -lreadline
 ///
 
 #include "tests.h"
