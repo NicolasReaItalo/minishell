@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:23:26 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/05 16:26:16 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/08 14:19:07 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	is_operator(char c)
 /*
 int	error_msg(int i)
 {
-	return (i);		
+	return (i);
 }*/
 
 void	kill_stack(t_token **stack)
@@ -85,7 +85,7 @@ char	*next_token_operators(char **str, t_token **new, int *error_code)
 			return (*error_code = 1, NULL);
 		(*str)++;
 	}
-	return (*str);	
+	return (*str);
 }
 
 // Pass whitespace
@@ -128,7 +128,7 @@ char	*next_token(char *str, t_token **new, int *error_code)
 		if (!*new)
 			return (*error_code = 1, NULL);
 		str++;
-	}*/	
+	}*/
 	else
 	{
 		while (*(str + i) && !is_wspace(*(str + i)) && !is_operator(*(str + i)))
@@ -147,7 +147,7 @@ t_token	*add_token(t_token *stack, t_token *new)
 {
 	if (!stack)
 		stack = new;
-	else 
+	else
 	{
 		new->next = stack;
 		stack = new;
@@ -156,7 +156,7 @@ t_token	*add_token(t_token *stack, t_token *new)
 }
 */
 
-// Add front 
+// Add front
 t_token	*add_token(t_token *stack, t_token *new)
 {
 	if (!stack)
@@ -252,14 +252,14 @@ t_token	*tokenise(char *str)
 	int		i;
 	char	*s;
 	t_token	*stack;
-	
-	
+
+
 	while(is_wspace(*str))
 		str++;
 	p = str;
 		i = 0;
 	stack = NULL;
-	while (*(p + i) && !is_operator(*(p + i))&& !is_wspace(*(p+ i))) 
+	while (*(p + i) && !is_operator(*(p + i))&& !is_wspace(*(p+ i)))
 		i++;
 	s = NULL;
 	s = ft_substr(str, 0, i);
@@ -274,34 +274,34 @@ t_token	*tokenise(char *str)
 }*/
 
 
-#include <stdio.h>
-int	main(int argc,char **argv)
-{
-	int	i;
-	t_token *stack;
-	t_token *stack_copy;
-	int error;
-//	char arg[] = "ec\"h'o\"'";
-	
-	if (argc != 2)
-		return (1);
-	stack = NULL;
-	error = tokenise(argv[1], &stack);
-	if (error)
-		return (printf("ERROR : %d\n", error));
-	if (check_syntax(stack))
-		return (1);
-	stack_copy = stack;
-	i = 0;
-	while (stack)
-	{
-		printf("TOKEN %d : \e[31m%s\e[0m%%\ttype : %d\tptr : %p\t" 
-			"prev ptr : %p\tnext ptr : %p\n", i,
-			stack->content, stack->type, stack, stack->prev, stack->next);
-		i++;
-		stack = stack->next;
-	}
-	kill_stack(&stack_copy);
-	return (error);
-}
-// gcc -g token.c check_syntax.c token_utils.c -I./libft/ -L./libft/ -lft -o token
+// #include <stdio.h>
+// int	main(int argc,char **argv)
+// {
+// 	int	i;
+// 	t_token *stack;
+// 	t_token *stack_copy;
+// 	int error;
+// //	char arg[] = "ec\"h'o\"'";
+
+// 	if (argc != 2)
+// 		return (1);
+// 	stack = NULL;
+// 	error = tokenise(argv[1], &stack);
+// 	if (error)
+// 		return (printf("ERROR : %d\n", error));
+// 	if (check_syntax(stack))
+// 		return (1);
+// 	stack_copy = stack;
+// 	i = 0;
+// 	while (stack)
+// 	{
+// 		printf("TOKEN %d : \e[31m%s\e[0m%%\ttype : %d\tptr : %p\t"
+// 			"prev ptr : %p\tnext ptr : %p\n", i,
+// 			stack->content, stack->type, stack, stack->prev, stack->next);
+// 		i++;
+// 		stack = stack->next;
+// 	}
+// 	kill_stack(&stack_copy);
+// 	return (error);
+// }
+// // gcc -g token.c check_syntax.c token_utils.c -I./libft/ -L./libft/ -lft -o token
