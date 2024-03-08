@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:08:35 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/08 13:21:04 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/08 14:18:06 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ typedef struct	s_syntax_rule
 // TODO:Certaines fonctions font doublons...choisir!
 
 t_token	*ft_get_token(t_token *stack, int rank);
-// int		test_ft_add_token(t_token **stack, char *content, int type);
-// void	*ft_free_stack(t_token **stack);
+void	kill_stack(t_token **stack);
 void	ft_display_stack(t_token *stack);
 int		ft_stack_size(t_token *stack);
 int		ft_free_token(t_token **token);
