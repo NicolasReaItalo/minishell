@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/07 18:33:55 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/08 11:25:37 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,111 @@ int	ft_capture_here_doc(t_token *tok, char *eof)
 	return (0);
 }
 
+/*Delete a token in double linked stack*/
+void	ft_delete_token(t_token **token, t_token **stack)
+{
+	t_token	*prev;
+	t_token	*next;
+
+	if (!*token)
+		return ;
+	prev = (*token)->prev;
+	next = (*token)->next;
+	if (prev)
+		prev->next = next;
+	else
+		*stack= next;
+	if (next)
+		next->prev = prev;
+	free((*token)->content);
+	free(*token);
+	*token = NULL;
+}
+
+/*destroys the words once their content is used by redirections*/
+void	ft_clean_words(t_token **stack)
+{
+	t_token	*tok;
+	t_token	*prev;
+
+	tok = ft_get_token(*stack, -1);
+	if (!tok)
+		return ;
+	while (tok)
+	{
+		if (tok->type >= 4 && tok->type <= 7)
+		{
+			prev = tok->prev;
+			ft_delete_token(&prev, stack);
+		}
+		tok = tok->prev;
+	}
+}
+
+/*
+Parcours la satck de la fin au debut
+si <<, capture le heredoc et le EOF puis stocke le buffer dans token.content
+supprime le token word suivant
+si <,stocke le content du token suivant comme fichier de redirection
+si >,stocke le content du token suivant comme fichier de redirection
+supprime le token word suivant
+si >>,stocke le content du token suivant comme fichier de redirection
+*/
+int	ft_redirections(t_token **stack)
+{
+	t_token	*tok;
+	t_token	*prev_tok;
+
+	if (!*stack)
+		return (-1);
+	tok = ft_get_token(*stack, -1);
+	while (tok)
+	{
+		if (tok->type == R_HEREDOC)
+		{
+			prev_tok = tok->prev;
+			ft_capture_here_doc(tok, prev_tok->content);
+		}
+		else if (tok->type >= 4 && tok->type <= 6)
+		{
+			free(tok->content);
+			prev_tok = tok->prev;
+			tok->content = ft_strdup(prev_tok->content);
+		}
+		tok = tok->prev;
+	}
+		return (0);
+}
 
 
 //////////////////////////////////////////////////////////////////////////
-int test_ft_add_token(t_token **stack, char *content, int type) //////A supprimer
+///////////        TESTS                                //////////////////
+//////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+int	test_ft_add_token_front(t_token **stack, char *content, int type)
+{
+	t_token	*node;
+
+	node = NULL;
+	node = malloc (sizeof(t_token));
+	if (!node)
+		return (-1);
+	node->content = ft_strdup(content);
+	node->type = type;
+	node->next = *stack;
+	*stack = node;
+	return (0);
+}
+
+
+
+
+
+int test_ft_add_token_lst(t_token **stack, char *content, int type) //////A supprimer
 {
 	t_token *new_node;
 	t_token *last_node;
@@ -132,27 +233,6 @@ int test_ft_add_token(t_token **stack, char *content, int type) //////A supprime
 	last_node->next = new_node;
 	return (0);
 }
-
-
-void	ft_delete_token(t_token *token)
-{
-	t_token	*prev;
-	t_token	*next;
-
-	if (!token)
-		return ;
-	prev = token->prev;
-	next = token->next;
-	if (prev)
-		prev->next = next;
-	if (next)
-		next->prev = prev;
-	free(token->content);
-	free(token);
-}
-
-
-
 
 void	kill_stack(t_token **stack)
 {
@@ -193,21 +273,13 @@ char	*type(int type)
 	return ("UNKNOWN");
 }
 
-t_token	*ft_get_last(t_token *stack)
-{
-	while (stack->next)
-		stack = stack->next;
-	return (stack);
-}
-
-
 void	ft_display_stack(t_token *stack)
 {
 	t_token	*node;
 	int		rank;
 
 	rank = 0;
-	node = ft_get_last(stack);
+	node = ft_get_token(stack, -1);
 	if (!node)
 		printf("[NULL]\n");
 	while (node)
@@ -219,69 +291,6 @@ void	ft_display_stack(t_token *stack)
 }
 
 
-
-
-
-
-
-/// boucle principale
-///Parcours le satck de la fin au debut
-// si <<, capture le heredoc et le EOF puis stocke le buffer dans token.content
-// supprime le token word suivant
-// si <,stocke le content du token suivant comme fichier de redirection
-// si >,stocke le content du token suivant comme fichier de redirection
-// supprime le token word suivant
-// si >>,stocke le content du token suivant comme fichier de redirection
-int	ft_redirections(t_token **stack)
-{
-	t_token	*tok;
-	t_token	*prev_tok;
-
-	if (!*stack)
-		return (-1);
-	tok = ft_get_last(*stack);
-	while (tok)
-	{
-		if (tok->type == R_HEREDOC)
-		{
-			prev_tok = tok->prev;
-			ft_capture_here_doc(tok, prev_tok->content);
-		}
-		else if (tok->type >= 4 && tok->type <= 6)
-		{
-			free(tok->content);
-			prev_tok = tok->prev;
-			tok->content = ft_strdup(prev_tok->content);
-		}
-		tok = tok->prev;
-	}
-		return (0);
-}
-//destroys the words once their content is used by redirections
-void	ft_clean_words(t_token *stack)
-{
-	t_token	*tok;
-	t_token	*prev;
-
-	tok = ft_get_last(stack);
-	if (!tok)
-		return ;
-	while (tok)
-	{
-		if (tok->type >= 4 && tok->type <= 7)
-		{
-			prev = tok->prev;
-			ft_delete_token(prev);
-		}
-
-		tok = tok->prev;
-	}
-
-
-}
-
-
-
 int main()
 {
 	char *buffer;
@@ -289,23 +298,26 @@ int main()
 
 	stack = NULL;
 	buffer = NULL;
-	test_ft_add_token(&stack, "EOF", WORD);
-	test_ft_add_token(&stack, "<<",R_HEREDOC);
-	test_ft_add_token(&stack, "file3", WORD);
-	test_ft_add_token(&stack, ">>", R_APPEND);
-	test_ft_add_token(&stack, "file2", WORD);
-	test_ft_add_token(&stack, ">", R_OUT);
-	test_ft_add_token(&stack, "file1", WORD);
-	test_ft_add_token(&stack, "<", R_IN);
-	test_ft_add_token(&stack, "EOF", WORD);
-	test_ft_add_token(&stack, "<<", R_HEREDOC);
+	test_ft_add_token_lst(&stack, "arg2", WORD);
+	test_ft_add_token_lst(&stack, "EOF", WORD);
+	test_ft_add_token_lst(&stack, "<<",R_HEREDOC);
+	test_ft_add_token_lst(&stack, "file3", WORD);
+	test_ft_add_token_lst(&stack, ">>", R_APPEND);
+	test_ft_add_token_lst(&stack, "file2", WORD);
+	test_ft_add_token_lst(&stack, ">", R_OUT);
+	test_ft_add_token_lst(&stack, "file1", WORD);
+	test_ft_add_token_lst(&stack, "<", R_IN);
+	test_ft_add_token_lst(&stack, "arg1", WORD);
+	test_ft_add_token_lst(&stack, "cmd1", WORD);
+	test_ft_add_token_lst(&stack, "EOF", WORD);
+	test_ft_add_token_lst(&stack, "<<", R_HEREDOC);
 	printf("=============Avant redirections=============\n");
 	ft_display_stack(stack);
 	ft_redirections(&stack);
 	printf("=============Apres redirections =============\n");
 	ft_display_stack(stack);
 		printf("=============Apres clean =============\n");
-	ft_clean_words(stack); ///////////////////////// A REPARER !!!
+	ft_clean_words(&stack);
 	ft_display_stack(stack);
 	kill_stack(&stack);
 
