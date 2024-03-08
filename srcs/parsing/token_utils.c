@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:44:58 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/07 13:26:56 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/08 13:28:25 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,22 +70,22 @@ void	*ft_free_stack(t_token **stack)
 	return (NULL);
 }
 
-void	ft_display_stack(t_token *stack)
-{
-	t_token	*node;
-	int		rank;
+// void	ft_display_stack(t_token *stack)
+// {
+// 	t_token	*node;
+// 	int		rank;
 
-	rank = 0;
-	node = stack;
-	if (!node)
-		printf("[NULL]\n");
-	while (node)
-	{
-		printf("[%d][%s]\n", rank, node->content);
-		node = node->next;
-		rank++;
-	}
-}
+// 	rank = 0;
+// 	node = stack;
+// 	if (!node)
+// 		printf("[NULL]\n");
+// 	while (node)
+// 	{
+// 		printf("[%d][%s]\n", rank, node->content);
+// 		node = node->next;
+// 		rank++;
+// 	}
+// }
 
 /*Returns the size (node numbers) of a stack*/
 int	ft_stack_size(t_token *stack)

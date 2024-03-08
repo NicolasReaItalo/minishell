@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:43:49 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 13:09:04 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/08 13:28:02 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,7 @@ typedef struct s_node
 		};
 	};
 }			t_node;
+
+int	ft_capture_here_doc(t_token *tok, char *eof);
+int	ft_redirections(t_token **stack);
 #endif

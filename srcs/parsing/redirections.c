@@ -6,15 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 13:11:27 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/08 13:31:28 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
-#include "token_utils.h"
-#include <sys/wait.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "parser.h"
 
 /*Delete a token in double linked stack*/
 void	ft_delete_token(t_token **token, t_token **stack)
@@ -89,5 +85,6 @@ int	ft_redirections(t_token **stack)
 		}
 		tok = tok->prev;
 	}
+	ft_clean_words(stack);
 	return (0);
 }

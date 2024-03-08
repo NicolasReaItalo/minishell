@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 11:58:13 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 12:43:50 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/08 13:23:36 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,6 @@
 #include <sys/wait.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
-/*returns the size of a line \n and non null terminated string*/
-static size_t	ft_get_ret_size(char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] && s[i] != '\n')
-		i++;
-	return (i);
-}
 
 static void	ft_cpy_buf(char *buf, char *line, char *new_buf)
 {
