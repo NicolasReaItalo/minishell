@@ -2,6 +2,11 @@
 //////////////////////////////////////////////////////////////////////////
 ///////////       TEST SIMPLE DE ft_redirections        //////////////////
 //////////////////////////////////////////////////////////////////////////
+/*cc -Wall -Wextra -o test_redirections srcs/parsing/here_doc.c  srcs/parsing/redirections.c
+srcs/parsing/token_utils.c  ./test/utils/test_utils.c  srcs/parsing/token.c
+srcs/parsing/check_syntax.c ./test/test_redirections.c
+-g -I./include -I./libft -I ./test    -L ./libft -lft -lreadline */
+
 
 #include "parser.h"
 #include "tests.h"
@@ -9,11 +14,9 @@
 
 int main()
 {
-	char *buffer;
 	t_token	*stack;
 
 	stack = NULL;
-	buffer = NULL;
 	test_ft_add_token_lst(&stack, "arg2", WORD);
 	test_ft_add_token_lst(&stack, "EOF", WORD);
 	test_ft_add_token_lst(&stack, "<<",R_HEREDOC);
