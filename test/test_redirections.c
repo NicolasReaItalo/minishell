@@ -31,10 +31,10 @@ int main()
 	test_ft_add_token_lst(&stack, "EOF", WORD);
 	test_ft_add_token_lst(&stack, "<<", R_HEREDOC);
 	printf("=============Avant redirections=============\n");
-	ft_display_stack(stack);
+	ft_display_stack_forward(stack);
 	ft_redirections(&stack);
 	printf("=============Apres redirections =============\n");
-	ft_display_stack(stack);
+	ft_display_stack_forward(stack);
 	kill_stack(&stack);
 
 }

@@ -6,12 +6,13 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 13:50:32 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 13:54:11 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/08 15:59:11 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
+/*BROKEN!!!!! NE PAS UTILISER
+ne prends pas en compte le prev*/
 int	test_ft_add_token_front(t_token **stack, char *content, int type)
 {
 	t_token	*node;
@@ -81,7 +82,7 @@ char	*type(int type)
 	return ("UNKNOWN");
 }
 
-void	ft_display_stack(t_token *stack)
+void	ft_display_stack_reverse(t_token *stack)
 {
 	t_token	*node;
 	int		rank;
@@ -94,6 +95,23 @@ void	ft_display_stack(t_token *stack)
 	{
 		printf("[%d]	type[%s]	content:[%s]\n", rank,type(node->type), node->content);
 		node = node->prev;
+		rank++;
+	}
+}
+
+void	ft_display_stack_forward(t_token *stack)
+{
+	t_token	*node;
+	int		rank;
+
+	rank = 0;
+	node = stack;
+	if (!node)
+		printf("[NULL]\n");
+	while (node)
+	{
+		printf("[%d]	type[%s]	content:[%s]\n", rank,type(node->type), node->content);
+		node = node->next;
 		rank++;
 	}
 }
