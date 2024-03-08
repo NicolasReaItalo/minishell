@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 13:06:14 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 17:45:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/08 18:15:27 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ft_get_cond_type(t_token *stack, int rank)
 	t_token *tok;
 
 	tok = ft_get_token(stack, rank);
-	if (!tok && tok->type == OR)
+	if (tok->type == OR)
 		return (N_OR);
 	else
 		return (N_AND);
@@ -163,7 +163,7 @@ t_node * ft_create_exec_node(t_token **stack)
 	node->in = 0;
 	node->out = 1;
 	node->bultin = 0;
-	ft_dispatch_tokens(*stack, node->redir, node->cmd);
+	ft_dispatch_tokens(*stack, node->redir, node->cmd);  ///////BROKEN !!!!!!!!!!
 	return (node);
 }
 
@@ -223,15 +223,40 @@ char *node_type(int type)
 		return ("&&");
 }
 
+void	show_tree(t_node *node, int i);
 
-// void ft_display_tree(t_node *tree, int level)
-// {
-// 	if (!tree)
-// 		return ;
-// 	printf("level [%d] type [%s]\n", level,node_type( tree->type));
-// 	if (tree->type == N_EXEC)
 
-// }
+void	show_tree(t_node *node, int i)
+{
+	int t;
+
+	if (node->type == 0)
+	{
+			t = i;
+		while (t > 0)
+		{
+			ft_printf("\t");
+			t--;
+		}
+		ft_printf("->type %s : ",node_type( node->type));
+		// while (node->cmd)
+		// {
+		// 		ft_printf("%s ", node->cmd->content);
+		// 		node->cmd = node->cmd->next;
+		// }
+		ft_printf("\n");
+		return ;
+	}
+	t = i;
+	while (t > 0)
+	{
+		ft_printf("\t");
+		t--;
+	}
+	ft_printf("->type %s : \n", node_type(node->type));
+	show_tree(node->right, i + 1);
+	show_tree(node->left, i + 1);
+}
 
 
 int main()
@@ -246,11 +271,13 @@ int main()
 
 	error = 0;
 
-	test_ft_add_token_lst(&stack, "ls", WORD);
-	test_ft_add_token_lst(&stack, "-l", WORD);
-	test_ft_add_token_lst(&stack, "<", R_IN);
-	test_ft_add_token_lst(&stack, "&&", AND);
+	// test_ft_add_token_lst(&stack, "ls", WORD);
+	// test_ft_add_token_lst(&stack, "&&", AND);
 	test_ft_add_token_lst(&stack, "cat", WORD);
+	// test_ft_add_token_lst(&stack, "&&", AND);
+	test_ft_add_token_lst(&stack, "echo", WORD);
+	test_ft_add_token_lst(&stack, "||", OR);
+	test_ft_add_token_lst(&stack, "echo", WORD);
 
 
 	tree = ft_parse_tree(&stack, &error, 2);
@@ -265,7 +292,7 @@ int main()
 
 
 
-	// ft_display_tree(tree);  ////////A ecrire
+	show_tree(tree, 0);  ////////A ecrire
 	// ft_free_tree(tree);  ////////A ecrire
 }
 
