@@ -3,77 +3,48 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+         #
+#    By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/03/08 12:01:00 by tjoyeux          ###   ########.fr        #
+#    Updated: 2024/03/08 14:46:56by tjoyeux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #________________________________Variables___________________________________
 NAME = minishell
-#NAME_C = client
-#NAME_BONUS_S = server_bonus
-#NAME_BONUS_C = client_bonus
 LIBFT_PATH = ./libft/
 LIBFT = $(LIBFT_PATH)libft.a
 INCLUDE_PATH = ./include/
 
-CC		= gcc
-CFLAGS		= -Wall -Werror -Wextra -g3
-LDFLAGS		= -L$(LIBFT_PATH) -lft
-RM		= rm -f
+CC			= gcc
+CFLAGS		= -Wall -Werror -Wextra -g3 -I$(INCLUDE_PATH) -I$(LIBFT_PATH) 
+LDFLAGS		= -L$(LIBFT_PATH) -lft -lreadline
+RM			= rm -f
 
 SRC_PATH	= ./srcs/
 OBJ_PATH	= ./objs/
-#BONUS_PATH	= ./bonus/
-
-#COMMON_SRC	= $(filter-out $(SRC_PATH)main.c $(SRC_PATH)main_bonus.c, $(wildcard $(SRC_PATH)*.c))
-#SRC		= $(COMMON_SRC) $(SRC_PATH)main.c
-#SRC_BONUS	= $(COMMON_SRC) $(SRC_PATH)main_bonus.c
-#OBJ		= $(SRC:$(SRC_PATH)%.c=$(OBJ_PATH)%.o)
-#OBJ_BONUS	= $(SRC_BONUS:$(SRC_PATH)%.c=$(OBJ_PATH)%.o)
-SRC_C				= $(SRC_PATH)client.c
-SRC_S				= $(SRC_PATH)server.c
-OBJ_C				= $(SRC_C:$(SRC_PATH)%.c=$(OBJ_PATH)%.o)
-OBJ_S				= $(SRC_S:$(SRC_PATH)%.c=$(OBJ_PATH)%.o)
-SRC_BONUS_C			= $(SRC_PATH)client_bonus.c
-SRC_BONUS_S			= $(SRC_PATH)server_bonus.c
-OBJ_BONUS_C			= $(SRC_BONUS_C:$(SRC_PATH)%.c=$(OBJ_PATH)%.o)
-OBJ_BONUS_S			= $(SRC_BONUS_S:$(SRC_PATH)%.c=$(OBJ_PATH)%.o)
+#SRCS		= $(wildcard $(SRC_PATH)*.c) $(wildcard $(SRC_PATH)parsing/*.c) $(wildcard $(SRC_PATH)execution/*.c) 
+#OBJS		= $(SRC:$(SRC_PATH)%.c=$(OBJ_PATH)%.o)
+SRCS		= $(SRC_PATH)minishell.c \
+				$(SRC_PATH)parsing/token.c \
+				$(SRC_PATH)parsing/token_utils.c \
+				$(SRC_PATH)parsing/check_syntax.c \
+				$(SRC_PATH)parsing/redirections.c \
+				$(SRC_PATH)parsing/here_doc.c \
+				$(SRC_PATH)parsing/parser.c 
+OBJS		= $(addprefix $(OBJ_PATH),$(notdir $(SRCS:.c=.o)))
 
 FLAG_FILE	:= .build_started
 FLAG_BONUS	:= .build_started_bonus
 BUILD_FLAG	:= .build_done
-#________________________________Minitalk___________________________________
+#________________________________Minishell___________________________________
 
-all : $(NAME_S) $(NAME_C)
+all : $(NAME)
 
-$(NAME_S) : $(LIBFT) $(OBJ_S) minitalk.h
+$(NAME) : $(LIBFT) $(OBJS) 
 	@echo "$(GREEN)$(BOLD)$(ITALIC)$$LINKING$(RESET)\n"
 	@echo "$(MAGENTA)$(BOLD)Linking Server: $(RESET)$(BLUE)$(ITALIC)$@$(RESET)"
-	$(CC) $(CFLAGS) -o $(NAME_S) $(OBJ_S) $(LDFLAGS)
-
-$(NAME_C) : $(LIBFT) $(OBJ_C) minitalk.h
-	@echo "$(GREEN)$(BOLD)$(ITALIC)$$LINKING$(RESET)\n"
-	@echo "$(MAGENTA)$(BOLD)Linking Client: $(RESET)$(BLUE)$(ITALIC)$@$(RESET)"
-	$(CC) $(CFLAGS) -o $(NAME_C) $(OBJ_C) $(LDFLAGS)
-
-# #_________________________________Bonus____________________________________
-
-bonus : $(NAME_BONUS_C) $(NAME_BONUS_S)
-
-$(NAME_BONUS_S) : $(LIBFT) $(OBJ_BONUS_S) minitalk.h
-	@echo "$(GREEN)$(BOLD)$(ITALIC)$$LINKING$(RESET)\n"
-	@echo "$(MAGENTA)$(BOLD)Linking Server Bonus: $(RESET)$(BLUE)$(ITALIC)$@$(RESET)"
-	$(CC) $(CFLAGS) -o $(NAME_BONUS_S) $(OBJ_BONUS_S) $(LDFLAGS)
-
-$(NAME_BONUS_C) : $(LIBFT) $(OBJ_BONUS_C) minitalk.h
-	@echo "$(GREEN)$(BOLD)$(ITALIC)$$LINKING$(RESET)\n"
-	@echo "$(MAGENTA)$(BOLD)Linking Client Bonus: $(RESET)$(BLUE)$(ITALIC)$@$(RESET)"
-	$(CC) $(CFLAGS) -o $(NAME_BONUS_C) $(OBJ_BONUS_C) $(LDFLAGS)
-
-# #____________________________Common operations_______________________________
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
 
 $(LIBFT) : $(LIBFT_PATH)/Makefile
 	@echo "$(GREEN)$(BOLD)$(ITALIC)$$LIBFT_HEADER$(RESET)\n"
@@ -83,10 +54,26 @@ $(LIBFT) : $(LIBFT_PATH)/Makefile
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@if [ ! -f $(FLAG_FILE) ]; then touch $(FLAG_FILE); echo "$(GREEN)$(BOLD)$$COMPILATION$(RESET)"; fi
-	@mkdir -p $(@D)
+	@mkdir -p $(OBJ_PATH)
 #	@echo "$$COMPILATION\n"
 	@echo "$(MAGENTA)$(BOLD)Compilation: $(RESET)$(BLUE)$(ITALIC)$<$(RESET)"
-	$(CC) $(CFLAGS) -I. -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
+	@touch $(BUILD_FLAG)
+
+$(OBJ_PATH)%.o: $(SRC_PATH)parsing/%.c
+	@if [ ! -f $(FLAG_FILE) ]; then touch $(FLAG_FILE); echo "$(GREEN)$(BOLD)$$COMPILATION$(RESET)"; fi
+	@mkdir -p $(OBJ_PATH)
+#	@echo "$$COMPILATION\n"
+	@echo "$(MAGENTA)$(BOLD)Compilation: $(RESET)$(BLUE)$(ITALIC)$<$(RESET)"
+	$(CC) $(CFLAGS) -c $< -o $@
+	@touch $(BUILD_FLAG)
+
+$(OBJ_PATH)%.o: $(SRC_PATH)execution/%.c
+	@if [ ! -f $(FLAG_FILE) ]; then touch $(FLAG_FILE); echo "$(GREEN)$(BOLD)$$COMPILATION$(RESET)"; fi
+	@mkdir -p $(OBJ_PATH)
+#	@echo "$$COMPILATION\n"
+	@echo "$(MAGENTA)$(BOLD)Compilation: $(RESET)$(BLUE)$(ITALIC)$<$(RESET)"
+	$(CC) $(CFLAGS) -c $< -o $@
 	@touch $(BUILD_FLAG)
 
 #________________________________Cleaning____________________________________
@@ -103,10 +90,7 @@ fclean : clean
 	@echo "$(MAGENTA)$(BOLD)Cleaning: $(RESET)$(BLUE)$(ITALIC)$(LIBFT)$(RESET)"
 	make fclean -C $(LIBFT_PATH)
 	@echo "$(MAGENTA)$(BOLD)Cleaning: $(RESET)$(BLUE)$(ITALIC)$(NAME)$(RESET)"
-	$(RM) $(NAME_C)
-	$(RM) $(NAME_S)
-	$(RM) $(NAME_BONUS_C)
-	$(RM) $(NAME_BONUS_S)
+	$(RM) $(NAME)
 
 re : fclean all
 
@@ -155,21 +139,6 @@ define LIBFT_HEADER
 
 endef
 export LIBFT_HEADER
-
-define MLX_HEADER
-
- __   __  ___   __    _  ___   ___      ___   _______  __   __
-|  |_|  ||   | |  |  | ||   | |   |    |   | |  _    ||  |_|  |
-|       ||   | |   |_| ||   | |   |    |   | | |_|   ||       |
-|       ||   | |       ||   | |   |    |   | |       ||       |
-|       ||   | |  _    ||   | |   |___ |   | |  _   |  |     |
-| ||_|| ||   | | | |   ||   | |       ||   | | |_|   ||   _   |
-|_|   |_||___| |_|  |__||___| |_______||___| |_______||__| |__|
-
-
-
-endef
-export MLX_HEADER
 
 define COMPILATION
 
