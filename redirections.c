@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 11:25:37 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/08 12:42:36 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,92 +15,6 @@
 #include <sys/wait.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
-/*returns the size of a line \n and non null terminated string*/
-size_t	ft_get_ret_size(char *s)
-{
-	size_t i;
-
-	i = 0;
-	while (s[i] && s[i] != '\n')
-		i++;
-	return (i);
-}
-
-char	*ft_buffer_append(char *buf, char *line)
-{
-	char	*new_buf;
-	int i;
-	int j;
-
-	new_buf = NULL;
-	if (!buf)
-	{
-		buf = malloc(sizeof(char));
-		if(!buf)
-			return (NULL);
-		buf[0] = '\0';
-	}
-	new_buf = malloc((ft_strlen(buf) + ft_strlen(line) + 1) * sizeof(char));
-	if (!new_buf)
-	{
-		free(buf);
-		return (NULL);
-	}
-	i = 0;
-	while (buf[i])
-	{
-		new_buf[i] = buf[i];
-		i++;
-	}
-	if (i != 0)
-	{
-		new_buf[i] = '\n';
-		i++;
-	}
-	j = 0;
-	while (line[j])
-	{
-		new_buf[i + j] = line[j];
-		j++;
-	}
-	new_buf[i + j] = '\0';
-	free(buf);
-	return (new_buf);
-}
-
-
-int	ft_capture_here_doc(t_token *tok, char *eof)
-{
-	char	*line;
-
-	if (!tok || tok->type != R_HEREDOC || !eof)
-		return (-1);
-	line = NULL;
-	free(tok->content);
-	tok->content= NULL;
-	while(1)
-	{
-		line = readline(">");
-		if(!line)
-			break;
-		if (!ft_strncmp(line, eof, sizeof(eof)))
-		{
-			free(line);
-			if (!tok->content)
-			{
-				tok->content = malloc(sizeof(char));
-				if(!tok->content)
-					break ;
-				tok->content[0] = '\0';
-			}
-			break ;
-		}
-		tok->content = ft_buffer_append(tok->content, line);
-		free(line);
-	}
-	return (0);
-}
 
 /*Delete a token in double linked stack*/
 void	ft_delete_token(t_token **token, t_token **stack)
@@ -115,7 +29,7 @@ void	ft_delete_token(t_token **token, t_token **stack)
 	if (prev)
 		prev->next = next;
 	else
-		*stack= next;
+		*stack = next;
 	if (next)
 		next->prev = prev;
 	free((*token)->content);
@@ -175,9 +89,9 @@ int	ft_redirections(t_token **stack)
 		}
 		tok = tok->prev;
 	}
-		return (0);
+	return (0);
 }
-
+/*
 
 //////////////////////////////////////////////////////////////////////////
 ///////////        TESTS                                //////////////////
@@ -322,3 +236,4 @@ int main()
 	kill_stack(&stack);
 
 }
+*/
