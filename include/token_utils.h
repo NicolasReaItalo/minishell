@@ -6,14 +6,14 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:59:14 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/01 16:48:32 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/08 13:34:29 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKEN_UTILS_H
 # define TOKEN_UTILS_H
 # include "token.h"
-# include "libft.h"
+# include "libft/libft.h"
 # include "stdio.h"
 
 t_token	*ft_get_token(t_token *stack, int rank);
