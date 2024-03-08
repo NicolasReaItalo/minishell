@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 13:06:14 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 18:18:36 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/08 18:51:41 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	ft_token_add_front(t_token**lst, t_token *new)
 /*Dispatchs the tokens of the stack between redir(< > << >>) and cmd (WORD)
 the stack strts at the last token so we append at front !
 */
-void	ft_dispatch_tokens(t_token *stack, t_token *redir, t_token *cmd)
+void	ft_dispatch_tokens(t_token *stack, t_token **redir, t_token **cmd)
 {
 	t_token	*tok;
 	t_token	*next;
@@ -138,9 +138,9 @@ void	ft_dispatch_tokens(t_token *stack, t_token *redir, t_token *cmd)
 	{
 		next = tok->next;
 		if (tok->type >= 4 && tok->type <= 7)
-			ft_token_add_front(&redir, tok);
+			ft_token_add_front(redir, tok);
 		else
-			ft_token_add_front(&cmd, tok);
+			ft_token_add_front(cmd, tok);
 		tok = next;
 	}
 }
@@ -163,7 +163,7 @@ t_node * ft_create_exec_node(t_token **stack)
 	node->in = 0;
 	node->out = 1;
 	node->bultin = 0;
-	ft_dispatch_tokens(*stack, node->redir, node->cmd);  ///////BROKEN !!!!!!!!!!
+	ft_dispatch_tokens(*stack, &node->redir, &node->cmd);
 	return (node);
 }
 
@@ -189,13 +189,10 @@ t_node	*ft_parse_tree(t_token **stack, int *error, int priority)
 	op_rank = ft_find_operator(priority, *stack);
 	if (op_rank == -1) // Il n'a pas trouve de token avec la priorite recherchee
 		return (ft_parse_tree(stack, error, priority - 1)); // on reessaye avec une priorite + basse
-	else
-	{
-		if (priority == 2)
-			return (ft_create_cond_node(stack, op_rank, error)); /// cree un node condition split la stack
-		if (priority == 1)
-			return (ft_create_pipe_node(stack, op_rank, error)); /// cree un node pipe split la stack
-	}
+	if (priority == 2)
+		return (ft_create_cond_node(stack, op_rank, error)); /// cree un node condition split la stack
+	if (priority == 1)
+		return (ft_create_pipe_node(stack, op_rank, error)); /// cree un node pipe split la stac
 	return (NULL);
 }
 
@@ -238,12 +235,20 @@ void	show_tree(t_node *node, int i)
 			ft_printf("\t");
 			t--;
 		}
-		ft_printf("->type %s : ",node_type( node->type));
-		// while (node->cmd)
-		// {
-		// 		ft_printf("%s ", node->cmd->content);
-		// 		node->cmd = node->cmd->next;
-		// }
+		ft_printf("[%s] [cmd : ",node_type( node->type));
+		while (node->cmd)
+		{
+				ft_printf("%s ", node->cmd->content);
+				node->cmd = node->cmd->next;
+		}
+		ft_printf("]");
+		ft_printf("[redir : ");
+		while (node->redir)
+		{
+				ft_printf("%s ", node->redir->content);
+				node->redir = node->redir->next;
+		}
+		ft_printf("]");
 		ft_printf("\n");
 		return ;
 	}
@@ -253,7 +258,7 @@ void	show_tree(t_node *node, int i)
 		ft_printf("\t");
 		t--;
 	}
-	ft_printf("->type %s : \n", node_type(node->type));
+	ft_printf("[%s] : \n", node_type(node->type));
 	show_tree(node->right, i + 1);
 	show_tree(node->left, i + 1);
 }
@@ -271,14 +276,21 @@ int main()
 
 	error = 0;
 
-	// test_ft_add_token_lst(&stack, "ls", WORD);
-	// test_ft_add_token_lst(&stack, "&&", AND);
+	// test_ft_add_token_lst(&stack, "(", C_BRACKET);
 	test_ft_add_token_lst(&stack, "cat", WORD);
 	// test_ft_add_token_lst(&stack, "&&", AND);
-	test_ft_add_token_lst(&stack, "echo", WORD);
 	test_ft_add_token_lst(&stack, "||", OR);
-	test_ft_add_token_lst(&stack, "echo", WORD);
-
+	test_ft_add_token_lst(&stack, "arg 3", WORD);
+	test_ft_add_token_lst(&stack, "cmd3", WORD);
+	test_ft_add_token_lst(&stack, "file 1", R_IN);
+	test_ft_add_token_lst(&stack, "&&", AND);
+	test_ft_add_token_lst(&stack, "arg2", WORD);
+	test_ft_add_token_lst(&stack, "here_doc", R_HEREDOC);
+	test_ft_add_token_lst(&stack, "cmd2", WORD);
+	// test_ft_add_token_lst(&stack, ")", O_BRACKET);
+	test_ft_add_token_lst(&stack, "&&", AND);
+	test_ft_add_token_lst(&stack, "arg1", WORD);
+	test_ft_add_token_lst(&stack, "cmd1", WORD);
 
 	tree = ft_parse_tree(&stack, &error, 2);
 	if (error)
