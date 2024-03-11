@@ -46,7 +46,7 @@ int main()
 	tree = ft_create_tree(&stack, &error, 2);
 	if (error)
 	{
-		printf("Error during tree creation %s\n", ft_handle_error(error));
+		printf("Error during tree creation %s\n", ft_handle_tree_error(error));
 		// kill_stack(&stack);
 		ft_free_tree(tree);  ////////A ecrire
 		return (1);
