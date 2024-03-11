@@ -1,1 +1,1 @@
-(cmd1 arg1 && cmd2 <<EOF arg2 ) && <file1 cmd3 arg3 || cat
+(cmd1 arg1 && cmd2 arg2 ) && <file1 cmd3 arg3 || cat

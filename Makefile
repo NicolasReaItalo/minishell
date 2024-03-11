@@ -6,7 +6,7 @@
 #    By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/03/08 14:46:56by tjoyeux          ###   ########.fr        #
+#    Updated: 2024/03/11 16:38:35 by tjoyeux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,13 +17,13 @@ LIBFT = $(LIBFT_PATH)libft.a
 INCLUDE_PATH = ./include/
 
 CC			= gcc
-CFLAGS		= -Wall -Werror -Wextra -g3 -I$(INCLUDE_PATH) -I$(LIBFT_PATH) 
+CFLAGS		= -Wall -Werror -Wextra -g3 -I$(INCLUDE_PATH) -I$(LIBFT_PATH) -I./test
 LDFLAGS		= -L$(LIBFT_PATH) -lft -lreadline
 RM			= rm -f
 
 SRC_PATH	= ./srcs/
 OBJ_PATH	= ./objs/
-#SRCS		= $(wildcard $(SRC_PATH)*.c) $(wildcard $(SRC_PATH)parsing/*.c) $(wildcard $(SRC_PATH)execution/*.c) 
+#SRCS		= $(wildcard $(SRC_PATH)*.c) $(wildcard $(SRC_PATH)parsing/*.c) $(wildcard $(SRC_PATH)execution/*.c) $(wildcard test/utils/*.c) 
 #OBJS		= $(SRC:$(SRC_PATH)%.c=$(OBJ_PATH)%.o)
 SRCS		= $(SRC_PATH)minishell.c \
 				$(SRC_PATH)parsing/token.c \
@@ -31,7 +31,13 @@ SRCS		= $(SRC_PATH)minishell.c \
 				$(SRC_PATH)parsing/check_syntax.c \
 				$(SRC_PATH)parsing/redirections.c \
 				$(SRC_PATH)parsing/here_doc.c \
-				$(SRC_PATH)parsing/parser.c 
+				$(SRC_PATH)parsing/check_outer_brackets.c \
+				$(SRC_PATH)parsing/find_operator.c \
+				$(SRC_PATH)parsing/strip_brackets.c \
+				$(SRC_PATH)parsing/split_token_list.c \
+				$(SRC_PATH)parsing/parse_tree.c \
+				$(SRC_PATH)parsing/parse_tree_nodes.c \
+				test/utils/test_utils.c
 OBJS		= $(addprefix $(OBJ_PATH),$(notdir $(SRCS:.c=.o)))
 
 FLAG_FILE	:= .build_started
@@ -69,6 +75,14 @@ $(OBJ_PATH)%.o: $(SRC_PATH)parsing/%.c
 	@touch $(BUILD_FLAG)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)execution/%.c
+	@if [ ! -f $(FLAG_FILE) ]; then touch $(FLAG_FILE); echo "$(GREEN)$(BOLD)$$COMPILATION$(RESET)"; fi
+	@mkdir -p $(OBJ_PATH)
+#	@echo "$$COMPILATION\n"
+	@echo "$(MAGENTA)$(BOLD)Compilation: $(RESET)$(BLUE)$(ITALIC)$<$(RESET)"
+	$(CC) $(CFLAGS) -c $< -o $@
+	@touch $(BUILD_FLAG)
+
+$(OBJ_PATH)%.o: test/utils/%.c
 	@if [ ! -f $(FLAG_FILE) ]; then touch $(FLAG_FILE); echo "$(GREEN)$(BOLD)$$COMPILATION$(RESET)"; fi
 	@mkdir -p $(OBJ_PATH)
 #	@echo "$$COMPILATION\n"

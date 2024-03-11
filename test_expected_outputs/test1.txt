@@ -1,7 +1,7 @@
 [||] : 
 	[EXEC] [cmd : cat ][redir : ]
 	[&&] : 
-		[EXEC] [cmd : cmd3 arg 3 ][redir : file 1 ]
+		[EXEC] [cmd : cmd3 arg3 ][redir : file1 ]
 		[&&] : 
-			[EXEC] [cmd : cmd2 arg2 ][redir : here_doc ]
+			[EXEC] [cmd : cmd2 arg2 ][redir : ]
 			[EXEC] [cmd : cmd1 arg1 ][redir : ]
