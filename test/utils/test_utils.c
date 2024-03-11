@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 13:50:32 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 15:59:11 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/11 12:32:01 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,4 +114,61 @@ void	ft_display_stack_forward(t_token *stack)
 		node = node->next;
 		rank++;
 	}
+}
+
+char *node_type(int type)
+{
+	if (type == N_EXEC)
+		return ("EXEC");
+	if (type == N_PIPE)
+		return ("|");
+	if (type == N_OR)
+		return ("||");
+	if (type == N_AND)
+		return ("&&");
+	return("");
+}
+
+
+void	show_tree(t_node *node, int i)
+{
+	int t;
+	t_token	*display;
+
+	if (node->type == 0)
+	{
+			t = i;
+		while (t > 0)
+		{
+			ft_printf("\t");
+			t--;
+		}
+		ft_printf("[%s] [cmd : ",node_type( node->type));
+		display = node->cmd;
+		while (display)
+		{
+				ft_printf("%s ", display->content);
+				display= display->next;
+		}
+		ft_printf("]");
+		ft_printf("[redir : ");
+		display =node->redir;
+		while (display)
+		{
+				ft_printf("%s ", display->content);
+				display = display->next;
+		}
+		ft_printf("]");
+		ft_printf("\n");
+		return ;
+	}
+	t = i;
+	while (t > 0)
+	{
+		ft_printf("\t");
+		t--;
+	}
+	ft_printf("[%s] : \n", node_type(node->type));
+	show_tree(node->right, i + 1);
+	show_tree(node->left, i + 1);
 }

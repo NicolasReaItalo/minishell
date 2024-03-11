@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:21:18 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/05 15:11:53 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/11 14:10:12 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_syntax_rule	**init_syntax_rules(void)
 	int				j;
 	int				next;
 	int				prev;
-	
+
 	i = 0;
 	while (i < 10)
 	{
@@ -56,32 +56,32 @@ t_syntax_rule	**init_syntax_rules(void)
 		}
 		j = 0;
 		if (!next)
-			rules[i]->valid_next[j++] = WORD; 
+			rules[i]->valid_next[j++] = WORD;
 		else
 		{
 			while (next)
 			{
 				rules[i]->valid_next[j] = next % 10;
-				next /= 10;	
+				next /= 10;
 				j++;
 			}
 		}
 		rules[i]->valid_next[j] = -1;
 		j = 0;
 		if (!prev)
-			rules[i]->valid_prev[j++] = WORD; 
+			rules[i]->valid_prev[j++] = WORD;
 		else
 		{
 			while (prev)
 			{
 				rules[i]->valid_prev[j] = prev % 10;
-				prev /= 10;	
+				prev /= 10;
 				j++;
 			}
 		}
 		rules[i]->valid_prev[j] = -1;
 	}
-	return rules;	
+	return rules;
 }
 
 int	check_syntax(t_token *stack)
@@ -100,7 +100,7 @@ int	check_syntax(t_token *stack)
 			if (ptr->next && ptr->next->type == (rules[ptr->type])->valid_prev[i])
 				// ok
 			i++;
-		}	
+		}
 		ptr = ptr->prev;
 	}
 }*/
@@ -134,7 +134,7 @@ static char	*check_syntax_node(t_token *ptr)
 		return (check_start_and_end(ptr));
 	prev_type = ptr->prev->type;
 	if ((ptr->type == 2 || ptr->type == 3 || ptr->type == 8)
-		&& (prev_type > 0 && prev_type < 4 || prev_type == 9))
+		&& ((prev_type > 0 && prev_type < 4 )|| prev_type == 9))
 		return (ptr->prev->content);
 	else if (ptr->type == 1
 		&& !((prev_type > 3 && prev_type < 8) || prev_type == 0))
