@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 13:06:14 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/11 14:12:58 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/11 14:53:37 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_free_tree(t_node *tree)
 	3 : erreur de and
 	4 : erreur de parenthese
 	5 : erreur de malloc */
-char	*ft_handle_error(int error)
+char	*ft_handle_tree_error(int error)
 {
 	if (error == N_PIPE)
 		return ("near '|'");
@@ -52,7 +52,7 @@ char	*ft_handle_error(int error)
 	return ("");
 }
 
-void	*ft_set_error(int *error, int type, t_node *node)
+void	*ft_set_tree_error(int *error, int type, t_node *node)
 {
 	if (!*error)
 		*error = type;

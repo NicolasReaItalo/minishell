@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:43:49 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/11 14:16:11 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/11 14:58:01 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ t_node	*ft_create_cond_node(t_token **stack, int op_rank, int *error);
 t_node	*ft_create_pipe_node(t_token **stack, int op_rank, int *error);
 t_node	*ft_create_exec_node(t_token **stack);
 void	ft_free_tree(t_node *tree);
-void	*ft_set_error(int *error, int type, t_node *node);
-char	*ft_handle_error(int error);
+void	*ft_set_tree_error(int *error, int type, t_node *node);
+char	*ft_handle_tree_error(int error);
 #endif
