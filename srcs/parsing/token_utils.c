@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:44:58 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 13:56:35 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/11 13:50:40 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,16 @@ void	ft_reverse_stack(t_token **stack)
 		current = next;
 	}
 	*stack = prev;
+}
+
+/*Adds a token in front of a double linked list*/
+void	ft_token_add_front(t_token**lst, t_token *new)
+{
+	if (!new)
+		return ;
+	new->next = *lst;
+	new->prev = NULL;
+	if (*lst)
+		(*lst)->prev = new;
+	*lst = new;
 }

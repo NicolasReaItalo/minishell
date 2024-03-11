@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 15:03:47 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 15:32:41 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/08 17:08:26 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	ft_delete_first(t_token **stack)
 }
 
 /*strips the outer parenthesis token of a stack and returns the stack*/
-t_token	*ft_strip_bracket(t_token **stack)
+t_token	**ft_strip_bracket(t_token **stack)
 {
 	t_token	*first_token;
 	t_token	*last_token;
@@ -67,5 +67,5 @@ t_token	*ft_strip_bracket(t_token **stack)
 		return (NULL);
 	}
 	ft_delete_last(stack);
-	return (*stack);
+	return (stack);
 }

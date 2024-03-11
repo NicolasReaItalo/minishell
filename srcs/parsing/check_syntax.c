@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:21:18 by tjoyeux           #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2024/03/11 14:10:12 by nrea             ###   ########.fr       */
+=======
 /*   Updated: 2024/03/08 16:13:00 by tjoyeux          ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +28,7 @@ t_syntax_rule	**init_syntax_rules(void)
 	int				j;
 	int				next;
 	int				prev;
-	
+
 	i = 0;
 	while (i < 10)
 	{
@@ -56,32 +60,32 @@ t_syntax_rule	**init_syntax_rules(void)
 		}
 		j = 0;
 		if (!next)
-			rules[i]->valid_next[j++] = WORD; 
+			rules[i]->valid_next[j++] = WORD;
 		else
 		{
 			while (next)
 			{
 				rules[i]->valid_next[j] = next % 10;
-				next /= 10;	
+				next /= 10;
 				j++;
 			}
 		}
 		rules[i]->valid_next[j] = -1;
 		j = 0;
 		if (!prev)
-			rules[i]->valid_prev[j++] = WORD; 
+			rules[i]->valid_prev[j++] = WORD;
 		else
 		{
 			while (prev)
 			{
 				rules[i]->valid_prev[j] = prev % 10;
-				prev /= 10;	
+				prev /= 10;
 				j++;
 			}
 		}
 		rules[i]->valid_prev[j] = -1;
 	}
-	return rules;	
+	return rules;
 }
 
 int	check_syntax(t_token *stack)
@@ -100,7 +104,7 @@ int	check_syntax(t_token *stack)
 			if (ptr->next && ptr->next->type == (rules[ptr->type])->valid_prev[i])
 				// ok
 			i++;
-		}	
+		}
 		ptr = ptr->prev;
 	}
 }*/
