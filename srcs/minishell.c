@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/11 16:40:48 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/12 11:57:23 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char *ft_handle_token_errors(int error)
 		return ("Bad alocation");
 	if (error == 2 )
 		return ("unclosed quotes");
+	if (error == 3 )
+		return ("Empty string");
 	return ("");
 }
 

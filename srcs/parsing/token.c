@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:23:26 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/08 14:19:07 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/12 13:56:06 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char	*next_token(char *str, t_token **new, int *error_code)
 	while (*str && is_wspace(*str))
 		str++;
 	if (!*str)
-		return (*error_code = 2, NULL);
+		return (*error_code = 3, NULL);
 	else if (*str == 34 || *str == 39 || is_operator(*str))
 	{
 		if (!next_token_operators(&str, new, error_code))
@@ -222,7 +222,7 @@ void	put_type_in_stack(t_token *stack, int *error_code)
 // Error codes: 0 : OK
 //				1 : bad allocation
 //				2 : ' or " not closed
-//				3 : & alone
+//				3 : empty string
 //				4 : problem with brackets ()
 int	tokenise(char *str, t_token **stack)
 {
@@ -231,6 +231,8 @@ int	tokenise(char *str, t_token **stack)
 
 	new = NULL;
 	error_code = 0;
+	if (!*str)
+		error_code = 3;
 	while (*str)
 	{
 		new = NULL;

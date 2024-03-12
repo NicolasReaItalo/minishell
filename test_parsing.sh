@@ -82,7 +82,7 @@ for input_file in test_commands/*.txt; do
 
 		echo -e "${Green}######################################"
 		echo -e "$Test $base_name : good."
-		echo -e "${Color_Off}"
+		echo -e "\toutput waited: ${Color_Off}\t $(cat test_expected_outputs/$base_name.txt)\n"
 	else
 		echo -e "${Red}######################################"
 		echo -e "Test $base_name : failed. Differences :"

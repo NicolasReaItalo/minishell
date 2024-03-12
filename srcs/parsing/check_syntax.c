@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:21:18 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/12 11:35:43 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/12 14:11:49 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,6 @@ int	check_syntax(t_token *stack)
 		ptr = ptr->prev;
 	}
 	if (check_brackets)
-		return (syntax_error("brackets unclosed"), 1);
+		return (ft_printf("syntax error : brackets unclosed\n"), 1);
 	return (0);
 }
