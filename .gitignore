@@ -6,3 +6,4 @@ notes
 test_outputs
 minishell
 .build_started
+.build_done
