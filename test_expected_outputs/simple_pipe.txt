@@ -1,0 +1,3 @@
+[|] : 
+	[EXEC] [cmd : cmd2 ][redir : file4 file5 ]
+	[EXEC] [cmd : cmd1 arg1 arg2 arg3 ][redir : file1 file2 file3 ]

@@ -1,0 +1,1 @@
+<file1 cmd1 arg1 arg2 arg3 >file2 >file3 | cmd2 <file4 >file5|cmd3|cmd4<file6|cmd5>file7

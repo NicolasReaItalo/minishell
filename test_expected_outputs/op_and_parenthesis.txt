@@ -1,0 +1,9 @@
+[||] : 
+	[EXEC] [cmd : echo titi ][redir : ]
+	[&&] : 
+		[EXEC] [cmd : echo jojo ][redir : ]
+		[||] : 
+			[&&] : 
+				[EXEC] [cmd : ls ][redir : ]
+				[EXEC] [cmd : echo test ][redir : ]
+			[EXEC] [cmd : echo hello ][redir : ]
