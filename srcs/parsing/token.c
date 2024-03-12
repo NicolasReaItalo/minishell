@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:23:26 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/12 15:41:27 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/12 16:52:48 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,10 @@ char	*next_token_operators(char **str, t_token **new, int *error_code)
 	if (**str == 34 || **str == 39)
 	{
 		while (*(*str + ++i) && *(*str + i) != **str)
-		{
-		}
+			;
 		if (!*(*str + i))
 			return (*error_code = 2, NULL);
-		i++;
-		*new = new_token(*str, i);
+		*new = new_token(*str, ++i);
 		if (!*new)
 			return (*error_code = 1, NULL);
 		*str += i;
@@ -106,29 +104,6 @@ char	*next_token(char *str, t_token **new, int *error_code)
 		if (!next_token_operators(&str, new, error_code))
 			return (NULL);
 	}
-/*	else if (*str == 34 || *str == 39)
-	{
-		while (*(str + ++i) && *(str + i) != *str)
-		{
-		}
-		if (!*(str + i))
-			return (*error_code = 2, NULL);
-		i++;
-		*new = new_token(str, i);
-		if (!*new)
-			return (*error_code = 1, NULL);
-		str += i;
-	}
-	else if (is_operator(*str))
-	{
-		if (ft_strchr("|<>&", *str) && (*str == *(str + 1)))
-			*new = new_token(str++, 2);
-		else
-			*new = new_token(str, 1);
-		if (!*new)
-			return (*error_code = 1, NULL);
-		str++;
-	}*/
 	else
 	{
 		while (*(str + i) && !is_wspace(*(str + i)) && !is_operator(*(str + i)))
@@ -174,6 +149,7 @@ t_token	*add_token(t_token *stack, t_token *new)
 
 void	put_type_in_stack(t_token *stack, int *error_code)
 {
+	(void)error_code;
 	while (stack)
 	{
 		if (stack->content[0] == '|')
@@ -197,16 +173,8 @@ void	put_type_in_stack(t_token *stack, int *error_code)
 			else
 				stack->type = R_OUT;
 		}
-		else if (stack->content[0] == '&')
-		{
-			if (stack->content[1] == '&')
+		else if (stack->content[0] == '&' && stack->content[1] == '&')
 				stack->type = AND;
-			else
-			{
-				stack->type = WORD;
-				*error_code = 3;
-			}
-		}
 		else if (stack->content[0] == '(')
 			stack->type = O_BRACKET;
 		else if (stack->content[0] == ')')
