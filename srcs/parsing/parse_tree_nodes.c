@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 13:54:45 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/11 14:57:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/12 15:57:33 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_node	*ft_create_cond_node(t_token **stack, int op_rank, int *error)
 		kill_stack(stack);
 		return (ft_set_tree_error(error, 5, NULL));
 	}
+	ft_memset(node, 0, sizeof(t_node));
 	node->type = ft_get_cond_type(*stack, op_rank);
 	ft_split_token_list(op_rank, stack, &left, &right);
 	node->left = ft_create_tree(&left, error, 2);
@@ -67,6 +68,7 @@ t_node	*ft_create_pipe_node(t_token **stack, int op_rank, int *error)
 		kill_stack(stack);
 		return (ft_set_tree_error(error, 5, NULL));
 	}
+	ft_memset(node, 0, sizeof(t_node));
 	node->type = N_PIPE;
 	ft_split_token_list(op_rank, stack, &left, &right);
 	node->left = ft_create_tree(&left, error, 1);
@@ -113,12 +115,9 @@ t_node	*ft_create_exec_node(t_token **stack)
 		kill_stack(stack);
 		return (NULL);
 	}
+	ft_memset(node, 0, sizeof(t_node));
 	node->type = N_EXEC;
-	node->redir = NULL;
-	node->cmd = NULL;
-	node->in = 0;
 	node->out = 1;
-	node->bultin = 0;
 	ft_dispatch_tokens(*stack, &node->redir, &node->cmd);
 	return (node);
 }
