@@ -3,3 +3,6 @@ a.out
 *.a
 notes
 .vscode
+test_outputs
+minishell
+.build_started
