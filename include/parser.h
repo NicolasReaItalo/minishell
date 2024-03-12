@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:43:49 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/11 14:58:01 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/12 15:57:45 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_node
 		{
 			int				in;
 			int				out;
-			int				bultin;
+			int				builtin;
 			t_token			*redir;
 			t_token			*cmd;
 		};
