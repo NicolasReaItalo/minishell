@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:23:26 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/12 13:56:06 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/12 15:41:27 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ t_token	*new_token(char *str, int len)
 	new = malloc(sizeof(t_token));
 	if (!new)
 		return (NULL);
+	ft_memset(new, 0, sizeof(t_token));
 	new->content = ft_substr(str, 0, len);
 	if (!(new->content))
 		return (free(new), NULL);
-	new->next = NULL;
 	return (new);
 }
 
