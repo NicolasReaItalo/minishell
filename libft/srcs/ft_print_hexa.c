@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_hexa.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:39:37 by tjoyeux           #+#    #+#             */
-/*   Updated: 2023/12/31 00:12:57 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/13 13:15:26 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	create_tab(long n, char *tab, int i, int letter_case)
 	return (i);
 }
 
-int	ft_print_hexa_lower(va_list ap)
+int	ft_print_hexa_lower(int fd, va_list ap)
 {
 	unsigned int	nb;
 	int				i;
@@ -40,11 +40,11 @@ int	ft_print_hexa_lower(va_list ap)
 
 	nb = va_arg(ap, int);
 	i = create_tab(nb, tab, sizeof(tab) - 1, 87);
-	write(1, tab + i, sizeof(tab) - i - 1);
+	write(fd, tab + i, sizeof(tab) - i - 1);
 	return (sizeof(tab) - i - 1);
 }
 
-int	ft_print_hexa_upper(va_list ap)
+int	ft_print_hexa_upper(int fd, va_list ap)
 {
 	unsigned int	nb;
 	int				i;
@@ -52,6 +52,6 @@ int	ft_print_hexa_upper(va_list ap)
 
 	nb = va_arg(ap, int);
 	i = create_tab(nb, tab, sizeof(tab) - 1, 55);
-	write(1, tab + i, sizeof(tab) - i - 1);
+	write(fd, tab + i, sizeof(tab) - i - 1);
 	return (sizeof(tab) - i - 1);
 }
