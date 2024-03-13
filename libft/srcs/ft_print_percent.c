@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_percent.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 10:33:58 by tjoyeux           #+#    #+#             */
-/*   Updated: 2023/12/31 00:13:46 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/13 13:06:36 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_print_percent(va_list ap)
+int	ft_print_percent(int fd, va_list ap)
 {
 	(void)ap;
-	ft_putchar('%');
+	ft_putchar_fd(fd, '%');
 	return (1);
 }

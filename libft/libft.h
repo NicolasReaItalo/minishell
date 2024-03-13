@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 11:52:57 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/01/15 21:22:06 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/13 13:13:39 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 // strtrim - allocate and trim s1 with chars in set
 char	*ft_strtrim(char const *s1, char const *set);
-// split - allocate and send an array separating s with c / NULL_ending 
+// split - allocate and send an array separating s with c / NULL_ending
 char	**ft_split(char const *s, char c);
 // itoa - allocate and send a str representing an int
 char	*ft_itoa(int n);
@@ -106,19 +106,20 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 typedef struct s_conv
 {
 	char	*ph;
-	int		(*f)(va_list);
+	int		(*f)(int, va_list);
+	int		fd;
 }		t_conv;
 
 void	ft_putchar(int c);
-int		ft_print_c(va_list ap);
-int		ft_print_str(va_list ap);
-int		ft_print_percent(va_list ap);
-int		ft_print_int(va_list ap);
-int		ft_print_uint(va_list ap);
-int		ft_print_hexa_lower(va_list ap);
-int		ft_print_hexa_upper(va_list ap);
-int		ft_print_ptr(va_list ap);
-int		ft_printf(const char *format, ...);
+int		ft_print_c(int fd, va_list ap);
+int		ft_print_str(int fd, va_list ap);
+int		ft_print_percent(int fd, va_list ap);
+int		ft_print_int(int fd, va_list ap);
+int		ft_print_uint(int fd, va_list ap);
+int		ft_print_hexa_lower(int fd, va_list ap);
+int		ft_print_hexa_upper(int fd, va_list ap);
+int		ft_print_ptr(int fd, va_list ap);
+int		ft_dprintf(int fd, const char *format, ...);
 
 // GET_NEXT_LINE
 # ifndef BUFFER_SIZE

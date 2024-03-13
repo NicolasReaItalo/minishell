@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_uint.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:39:37 by tjoyeux           #+#    #+#             */
-/*   Updated: 2023/12/31 00:15:05 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/13 13:07:54 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	create_tab(long n, char *tab, int i)
 	return (i);
 }
 
-int	ft_print_uint(va_list ap)
+int	ft_print_uint(int fd, va_list ap)
 {
 	unsigned int	nb;
 	int				i;
@@ -37,6 +37,6 @@ int	ft_print_uint(va_list ap)
 
 	nb = va_arg(ap, int);
 	i = create_tab(nb, tab, sizeof(tab) - 1);
-	write(1, tab + i, sizeof(tab) - i - 1);
+	write(fd, tab + i, sizeof(tab) - i - 1);
 	return (sizeof(tab) - i - 1);
 }

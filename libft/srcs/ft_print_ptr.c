@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_ptr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:39:37 by tjoyeux           #+#    #+#             */
-/*   Updated: 2023/12/31 00:14:09 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/13 13:25:06 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	create_tab(unsigned long long n, char *tab, int i, int letter_case)
 	return (i);
 }
 
-int	ft_print_ptr(va_list ap)
+int	ft_print_ptr(int fd, va_list ap)
 {
 	void	*ptr;
 	int		i;
@@ -41,11 +41,11 @@ int	ft_print_ptr(va_list ap)
 	ptr = va_arg(ap, void *);
 	if (!ptr)
 	{
-		write(1, "(nil)", 5);
+		write(fd, "(nil)", 5);
 		return (5);
 	}
 	i = create_tab((unsigned long long)ptr, tab, sizeof(tab) - 1, 87);
-	write(1, "0x", 2);
-	write(1, tab + i, sizeof(tab) - i - 1);
+	write(fd, "0x", 2);
+	write(fd, tab + i, sizeof(tab) - i - 1);
 	return (2 + sizeof(tab) - i - 1);
 }
