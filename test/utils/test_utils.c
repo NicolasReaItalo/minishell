@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 13:50:32 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/12 11:43:16 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/15 14:42:03 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,35 +142,35 @@ void	show_tree(t_node *node, int i)
 			t = i;
 		while (t > 0)
 		{
-			ft_printf("\t");
+			ft_dprintf(1, "\t");
 			t--;
 		}
-		ft_printf("[%s] [cmd : ",node_type( node->type));
+		ft_dprintf(1 ,"[%s] [cmd : ",node_type( node->type));
 		display = node->cmd;
 		while (display)
 		{
-				ft_printf("%s ", display->content);
+				ft_dprintf(1 ,"%s ", display->content);
 				display= display->next;
 		}
-		ft_printf("]");
-		ft_printf("[redir : ");
+		ft_dprintf(1 ,"]");
+		ft_dprintf(1 ,"[redir : ");
 		display =node->redir;
 		while (display)
 		{
-				ft_printf("%s ", display->content);
+				ft_dprintf(1 ,"%s ", display->content);
 				display = display->next;
 		}
-		ft_printf("]");
-		ft_printf("\n");
+		ft_dprintf(1 ,"]");
+		ft_dprintf(1 ,"\n");
 		return ;
 	}
 	t = i;
 	while (t > 0)
 	{
-		ft_printf("\t");
+		ft_dprintf(1 ,"\t");
 		t--;
 	}
-	ft_printf("[%s] : \n", node_type(node->type));
+	ft_dprintf(1 ,"[%s] : \n", node_type(node->type));
 	show_tree(node->right, i + 1);
 	show_tree(node->left, i + 1);
 }

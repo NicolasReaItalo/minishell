@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:23:26 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/13 18:36:45 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/15 17:22:19 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,21 +157,20 @@ char	*next_token(char *str, t_token **new, int *error_code)
 	int j;
 
 	i = 0;
-	j = 0;
+	j = 1;
 	while (*str && is_wspace(*str))
 		str++;
 	if (!*str)
 		return (*error_code = 3, NULL);
 	else if (is_operator(*str))
 	{
-		
-		if (ft_strchr("|<>&", *str) && (*str == *str + 1))
+		if (ft_strchr("|<>&", *str) && (*str == *(str + 1)))
 			*new = new_token(str++, 2);
 		else
 			*new = new_token(str, 1);
 		if (!*new)
 			return (*error_code = 1, NULL);
-		(*str)++;
+		str++;
 	}
 	else
 	{
@@ -179,7 +178,7 @@ char	*next_token(char *str, t_token **new, int *error_code)
 		{
 			if (*(str + i) == '\'' || *(str + i) == '\"')
 			{
-				while (*(str + i) && *(str + i + j) != *(str + i))
+				while (*(str + i + j) && *(str + i + j) != *(str + i))
 					j++;
 				i += j;
 				j = 0;
@@ -323,7 +322,7 @@ t_token	*tokenise(char *str)
 	}
 }*/
 
-
+/*
 #include <stdio.h>
 int	main(int argc,char **argv)
 {
@@ -353,6 +352,6 @@ int	main(int argc,char **argv)
 	}
 	kill_stack(&stack_copy);
 	return (error);
-}
+}*/
 // // gcc -g token.c check_syntax.c token_utils.c -I./libft/ -L./libft/ -lft -o token
 // gcc -g srcs/parsing/token.c srcs/parsing/check_syntax.c srcs/parsing/token_utils.c -I./include/ -I./libft/ -L./libft/ -lft -o token
