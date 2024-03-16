@@ -6,7 +6,7 @@
 #    By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/03/11 16:38:35 by tjoyeux          ###   ########.fr        #
+#    Updated: 2024/03/16 17:48:14 by tjoyeux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ OBJ_PATH	= ./objs/
 SRCS		= $(SRC_PATH)minishell.c \
 				$(SRC_PATH)parsing/token.c \
 				$(SRC_PATH)parsing/token_utils.c \
+				$(SRC_PATH)parsing/token_utils2.c \
 				$(SRC_PATH)parsing/check_syntax.c \
 				$(SRC_PATH)parsing/redirections.c \
 				$(SRC_PATH)parsing/here_doc.c \
