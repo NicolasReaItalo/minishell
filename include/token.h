@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:08:35 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/11 14:51:33 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/16 14:33:44 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define O_BRACKET 8 // "("
 # define C_BRACKET 9 // ")"
 # define WORD 0 // Tout le reste
+# define INVALID -1 // ";" "&" "\"
 
 typedef struct s_token
 {

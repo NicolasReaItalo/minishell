@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:23:26 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/15 17:22:19 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/16 16:19:41tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,17 +147,42 @@ char	*next_token(char *str, t_token **new, int *error_code)
 	return (str);
 }*/
 
-// Pass whitespace
-// Identifie type du token
-// Pass whitespace
-// Return new pointer in string
-char	*next_token(char *str, t_token **new, int *error_code)
+char	*next_token_word(char *str, t_token **new, int *error_code)
 {
 	int	i;
-	int j;
+	int	j;
 
 	i = 0;
 	j = 1;
+	while (*(str + i) && !is_wspace(*(str + i)) && !is_operator(*(str + i)))
+	{
+		if (*(str + i) == '\'' || *(str + i) == '\"')
+		{
+			while (*(str + i + j) && *(str + i + j) != *(str + i))
+				j++;
+			i += j;
+			j = 0;
+			if (!*(str + i))
+				return (*error_code = 2, NULL);
+		}
+		i++;
+	}
+	*new = new_token(str, i);
+	if (!*new)
+		return (*error_code = 1, NULL);
+	return(str + i);
+}
+
+// Identify and create the next token in a string
+// It also pass the whitespace before and after the token
+// Return value : a pointer to the string after the token
+char	*next_token(char *str, t_token **new, int *error_code)
+{
+	// int	i;
+	// int	j;
+
+	// i = 0;
+	// j = 1;
 	while (*str && is_wspace(*str))
 		str++;
 	if (!*str)
@@ -173,26 +198,28 @@ char	*next_token(char *str, t_token **new, int *error_code)
 		str++;
 	}
 	else
-	{
-		while (*(str + i) && !is_wspace(*( str + i)) && !is_operator(*(str + i)))
-		{
-			if (*(str + i) == '\'' || *(str + i) == '\"')
-			{
-				while (*(str + i + j) && *(str + i + j) != *(str + i))
-					j++;
-				i += j;
-				j = 0;
-				if (!*(str + i))
-					return (*error_code = 2, NULL);
-			}
-			i++;
-		}
-		*new = new_token(str, i);
-		if (!*new)
-			return (*error_code = 1, NULL);
-		str += i;
-	}
-	while (*str && is_wspace(*str))
+		str = next_token_word(str, new, error_code);
+
+	// {
+	// 	while (*(str + i) && !is_wspace(*(str + i)) && !is_operator(*(str + i)))
+	// 	{
+	// 		if (*(str + i) == '\'' || *(str + i) == '\"')
+	// 		{
+	// 			while (*(str + i + j) && *(str + i + j) != *(str + i))
+	// 				j++;
+	// 			i += j;
+	// 			j = 0;
+	// 			if (!*(str + i))
+	// 				return (*error_code = 2, NULL);
+	// 		}
+	// 		i++;
+	// 	}
+	// 	*new = new_token(str, i);
+	// 	if (!*new)
+	// 		return (*error_code = 1, NULL);
+	// 	str += i;
+	// }
+	while (!*error_code && *str && is_wspace(*str))
 		str++;
 	return (str);
 }
@@ -252,12 +279,19 @@ void	put_type_in_stack(t_token *stack, int *error_code)
 			else
 				stack->type = R_OUT;
 		}
-		else if (stack->content[0] == '&' && stack->content[1] == '&')
+		else if (stack->content[0] == '&')
+		{
+			if (stack->content[1] == '&')
 				stack->type = AND;
+			else
+				stack->type = INVALID;
+		}
 		else if (stack->content[0] == '(')
 			stack->type = O_BRACKET;
 		else if (stack->content[0] == ')')
 			stack->type = C_BRACKET;
+		else if (stack->content[0] == ';' || stack->content[0] == '\\')
+			stack->type = INVALID;
 		else
 			stack->type = WORD;
 		stack = stack->next;
@@ -353,5 +387,6 @@ int	main(int argc,char **argv)
 	kill_stack(&stack_copy);
 	return (error);
 }*/
-// // gcc -g token.c check_syntax.c token_utils.c -I./libft/ -L./libft/ -lft -o token
-// gcc -g srcs/parsing/token.c srcs/parsing/check_syntax.c srcs/parsing/token_utils.c -I./include/ -I./libft/ -L./libft/ -lft -o token
+// gcc -g token.c check_syntax.c token_utils.c -I./libft/ -L./libft/ -lft -o token
+// gcc -g srcs/parsing/token.c srcs/parsing/check_syntax.c 
+// srcs/parsing/token_utils.c -I./include/ -I./libft/ -L./libft/ -lft -o token
