@@ -12,7 +12,7 @@ int main(int argc, char **argv, char **envp)
 	t_evar	*vars[58];
 	// char	*value = "chipmunks";
 
-	ft_init_env_var(vars);
+	ft_init_env_vars(vars);
 
 
 	(void) argc;
@@ -96,8 +96,31 @@ int main(int argc, char **argv, char **envp)
 
 	// ft_set_var("PATH", "DOUDDOU", vars);
 	ft_set_var("nico", (char *)0, vars);
-	ft_append_var("nico", "-", vars);
-	ft_append_var("nico", "lolo", vars);
+	ft_append_var("nico", "a", vars);
+	ft_append_var("nico", "b", vars);
+	ft_append_var("nico", "c", vars);
+	ft_append_var("nico", "d", vars);
+	ft_append_var("nico", "e", vars);
+	ft_append_var("nico", "f", vars);
+	ft_append_var("nico", "g", vars);
+	ft_append_var("nico", "h", vars);
+	ft_append_var("nico", "i", vars);
+	ft_append_var("nico", "j", vars);
+	ft_append_var("nico", "k", vars);
+	ft_append_var("nico", "l", vars);
+	ft_append_var("nico", "m", vars);
+	ft_append_var("nico", "n", vars);
+	ft_append_var("nico", "o", vars);
+	ft_append_var("nico", "p", vars);
+	ft_append_var("nico", "r", vars);
+	ft_append_var("nico", "s", vars);
+	ft_append_var("nico", "t", vars);
+	ft_append_var("nico", "u", vars);
+	ft_append_var("nico", "v", vars);
+	ft_append_var("nico", "w", vars);
+	ft_append_var("nico", "x", vars);
+	ft_append_var("nico", "y", vars);
+	ft_append_var("nico", "z", vars);
 	// ft_set_var("nicolas", "deuxieme", vars);
 	// ft_set_var("nicolaz", "troisieme", vars);
 	ft_display_vars(vars);
