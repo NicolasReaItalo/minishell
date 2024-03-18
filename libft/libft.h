@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 11:52:57 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/13 13:13:39 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/18 14:31:21 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,4 +130,6 @@ char	*get_next_line(int fd, int purge);
 char	*ft_strjoin_gnl(char **s1, char const *s2);
 char	*extract_line(char **stash);
 
+
+int	ft_strcmp(char *s1, char *s2);
 #endif
