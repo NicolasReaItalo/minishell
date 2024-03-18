@@ -17,7 +17,7 @@ int main(int argc, char **argv, char **envp)
 
 	(void) argc;
 	(void) argv;
-	// (void) envp;
+	(void) envp;
 
 
 	// var[0] = ft_create_var(key, value);
@@ -92,23 +92,31 @@ int main(int argc, char **argv, char **envp)
 
 	// ft_set_var("SA", NULL, vars);
 	// ft_set_var("SB", "seconde valeur", vars);
-	ft_fetch_env_vars(vars, envp);
+	// ft_fetch_env_vars(vars, envp);
 
 	// ft_set_var("PATH", "DOUDDOU", vars);
-	ft_set_var("nico", "froufrou", vars);
-	ft_set_var("nicolas", "deuxieme", vars);
-	ft_set_var("nicolaz", "troisieme", vars);
+	ft_set_var("nico", (char *)0, vars);
+	ft_append_var("nico", "-", vars);
+	ft_append_var("nico", "lolo", vars);
+	// ft_set_var("nicolas", "deuxieme", vars);
+	// ft_set_var("nicolaz", "troisieme", vars);
 	ft_display_vars(vars);
 	// ft_unset_var("nicolaz", vars);
 	// ft_unset_var("nicolaz", vars);
 	printf("\n\n\n*************************************** \n\n\n\n");
-	char	**v;
-	v = NULL;
-	v = ft_push_env_vars(vars);
-	ft_display_char_vars(v);
+
+
+
+
+
+//test de la mise en split
+	// char	**v;
+	// v = NULL;
+	// v = ft_push_env_vars(vars);
+	// ft_display_char_vars(v);
 	// ft_display_vars(vars);
 
-	ft_free_splitted(v);
+	// ft_free_splitted(v);
 	ft_free_env_vars(vars);
 
 }

@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:46:46 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/18 16:57:48 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/18 17:25:24 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	*ft_free_var(t_evar *var)
 	return (NULL);
 }
 
+//////////////////////////////////////////////////////////////////////////////////////
 void	ft_free_env_vars(t_evar *env_list[58])
 {
 	int		i;
@@ -51,8 +52,55 @@ void	ft_free_env_vars(t_evar *env_list[58])
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////
+void	*ft_free_splitted(char **splitted)
+{
+	int	i;
+
+	i = 0;
+	while (splitted[i])
+	{
+		free(splitted[i]);
+		i++;
+	}
+	free(splitted);
+	return (NULL);
+}
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+
+/*Checks if the key  string is a valid key for an environement
+variable
+returns1 in cqse o success, 0 otherwise
+RULES
+no empty string
+char : a-z or A-Z or 1-9 or _
+first char must not be a  digit*/
+int	ft_is_valid_key(char *key)
+{
+	if (!key || !key[0])
+		return (0);
+	if (!ft_isalpha(key[0]) && key[0] != '_')
+		return (0);
+	while (*key)
+	{
+		if (!ft_isalpha(*key) && !ft_isdigit(*key) && *key != '_')
+			return (0);
+		key++;
+	}
+	return (1);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
 /*allocate a var structure an initialize it with key and value*/
-t_evar	*ft_create_var(char *key, char *value)
+static t_evar	*ft_create_var(char *key, char *value)
 {
 	t_evar	*var;
 
@@ -78,31 +126,10 @@ t_evar	*ft_create_var(char *key, char *value)
 	return (var);
 }
 
-/*Checks if the key  string is a valid key for an environement
-variable
-returns1 in cqse o success, 0 otherwise
-RULES
-no empty string
-char : a-z or A-Z or 1-9 or _
-first char must not be a  digit*/
-int	ft_is_valid_key(char *key)
-{
-	if (!key || !key[0])
-		return (0);
-	if (!ft_isalpha(key[0]) && key[0] != '_')
-		return (0);
-	while (*key)
-	{
-		if (!ft_isalpha(*key) && !ft_isdigit(*key) && *key != '_')
-			return (0);
-		key++;
-	}
-	return (1);
-}
 
 /*get the value of the var identified by key
 if the var doesn't exists  -> returns null */
-t_evar	*ft_get_var(char *key, t_evar *sub_list)
+static t_evar	*ft_get_var(char *key, t_evar *sub_list)
 {
 	t_evar	*var;
 
@@ -120,7 +147,7 @@ t_evar	*ft_get_var(char *key, t_evar *sub_list)
 }
 
 /*create a new var and place it at the right ascii order in the right stack*/
-int	ft_create_and_place(char *key, char *value, t_evar **env_list)
+static int	ft_create_and_place(char *key, char *value, t_evar **env_list)
 {
 	t_evar	*var;
 	t_evar	*head;
@@ -172,13 +199,48 @@ int	ft_set_var(char *key, char *value, t_evar **env_list)
 		{
 			val = ft_strdup(value);
 			if (!val)
-				return (1);
+				return (0);
 		}
 		free((var)->value);
 		(var)->value = val;
 	}
 	return (1);
 }
+
+/*Similar to ft_set_var but append the value at the end of the var value
+like the export builtin with += */
+int	ft_append_var(char *key, char *value, t_evar **env_list)
+{
+	t_evar	*var;
+	int		index;
+	char	*or_val;
+	char	*new_val;
+
+	new_val = NULL;
+	if (!ft_is_valid_key(key))
+		return (0);
+	index = key[0] - 65;
+	if (index < 0 || index > 57)
+		return (0);
+	var = ft_get_var(key, env_list[index]);
+	if (!var)
+		return (ft_create_and_place(key, value, &env_list[index]));
+	else
+	{
+		or_val = ft_get_var_value(key, env_list);
+		new_val = ft_strjoin(or_val, value);
+		if (!new_val)
+			return (0);
+		if (var->value)
+			free((var)->value);
+		(var)->value = new_val;
+	}
+	return (1);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+
 
 /*unset an env variable identifie by the key parameter*/
 void	ft_unset_var(char *key, t_evar **vars)
@@ -210,6 +272,10 @@ void	ft_unset_var(char *key, t_evar **vars)
 	}
 }
 
+
+///////////////////////////////////////////////////////////////////////////
+
+
 /*get the value of the var identified by key
 ifthe var doesn't exists or it's value is null -> returns ""*/
 char	*ft_get_var_value(char *key, t_evar *env_list[58])
@@ -235,20 +301,6 @@ char	*ft_get_var_value(char *key, t_evar *env_list[58])
 		var = var->next;
 	}
 	return ("");
-}
-
-void	*ft_free_splitted(char **splitted)
-{
-	int	i;
-
-	i = 0;
-	while (splitted[i])
-	{
-		free(splitted[i]);
-		i++;
-	}
-	free(splitted);
-	return (NULL);
 }
 
 /*Fetch the environment variables from **envp
@@ -300,6 +352,8 @@ static int	ft_count_var(t_evar **vars)
 	}
 	return (nb);
 }
+
+
 
 /*concatenate the var in the form key=value*/
 static char	*ft_concatenate(t_evar *var)
