@@ -6,10 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:35:44 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/18 17:59:23 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/18 18:45:12 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "env_variables.h"
 #include "env_variables.h"
 #include "libft.h"
 #include <stdio.h>
@@ -17,9 +18,19 @@
 /*initialisation a 0 de la structure des varables d'environnement
 probablement a regrouper avec une fonction d'initialisation
 de toutes les variables de la structure shell */
-void	ft_init_env_vars(t_evar	*vars[58])
+int	ft_init_env_vars(t_evar	*vars[58], t_svars *shell_vars)
 {
 	ft_memset(vars, 0, 58 * sizeof(t_evar *));
+	shell_vars->exit_code = ft_strdup("0");
+	if (!shell_vars->exit_code)
+		return (0);
+	shell_vars->ifs = ft_strdup(" \t\n");
+	if (!shell_vars->ifs)
+	{
+		free(shell_vars->exit_code);
+		return (0);
+	}
+	return (1);
 }
 
 void	*ft_free_var(t_evar *var)
@@ -34,7 +45,7 @@ void	*ft_free_var(t_evar *var)
 	return (NULL);
 }
 
-void	ft_free_env_vars(t_evar *env_list[58])
+void	ft_free_env_vars(t_evar *env_list[58], t_svars *shell_vars)
 {
 	int		i;
 	t_evar	*prev;
@@ -57,6 +68,8 @@ void	ft_free_env_vars(t_evar *env_list[58])
 		}
 		i++;
 	}
+	free(shell_vars->exit_code);
+	free(shell_vars->ifs);
 }
 
 void	*ft_free_splitted(char **splitted)

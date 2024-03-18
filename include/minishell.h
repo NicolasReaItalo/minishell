@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:19:14 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/18 13:55:21 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/18 18:14:29 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@
 typedef struct	s_shell
 {
 	t_evar	*env_vars[58];
-	t_evar	shell_vars;
+	t_svars	shell_vars;
 }	t_shell;
 #endif

@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:48:02 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/18 17:50:20 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/18 18:50:36 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	ft_set_var(char *key, char *value, t_evar **env_list)
 
 /*Similar to ft_set_var but append the value at the end of the var value
 like the export builtin with +=  */
-int	ft_append_var(char *key, char *value, t_evar **env_list)
+int	ft_append_var(char *key, char *value, t_evar **env_list, t_svars *svars)
 {
 	t_evar	*var;
 	int		index;
@@ -141,7 +141,7 @@ int	ft_append_var(char *key, char *value, t_evar **env_list)
 		return (ft_create_and_place(key, value, &env_list[index]));
 	else
 	{
-		or_val = ft_get_var_value(key, env_list);
+		or_val = ft_get_var_value(key, env_list, *svars);
 		new_val = ft_strjoin(or_val, value);
 		if (!new_val)
 			return (0);

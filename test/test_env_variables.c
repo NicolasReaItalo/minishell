@@ -2,6 +2,7 @@
 
 
 #include "env_variables.h"
+#include "minishell.h"
 #include "libft.h"
 #include <stdio.h>
 #include "tests.h"
@@ -9,10 +10,10 @@
 int main(int argc, char **argv, char **envp)
 {
 
+	t_shell	shell;
 	t_evar	*vars[58];
-	// char	*value = "chipmunks";
 
-	ft_init_env_vars(vars);
+	ft_init_env_vars(vars, &shell.shell_vars);
 
 
 	(void) argc;
@@ -96,31 +97,31 @@ int main(int argc, char **argv, char **envp)
 
 	// ft_set_var("PATH", "DOUDDOU", vars);
 	ft_set_var("nico", (char *)0, vars);
-	ft_append_var("nico", "a", vars);
-	ft_append_var("nico", "b", vars);
-	ft_append_var("nico", "c", vars);
-	ft_append_var("nico", "d", vars);
-	ft_append_var("nico", "e", vars);
-	ft_append_var("nico", "f", vars);
-	ft_append_var("nico", "g", vars);
-	ft_append_var("nico", "h", vars);
-	ft_append_var("nico", "i", vars);
-	ft_append_var("nico", "j", vars);
-	ft_append_var("nico", "k", vars);
-	ft_append_var("nico", "l", vars);
-	ft_append_var("nico", "m", vars);
-	ft_append_var("nico", "n", vars);
-	ft_append_var("nico", "o", vars);
-	ft_append_var("nico", "p", vars);
-	ft_append_var("nico", "r", vars);
-	ft_append_var("nico", "s", vars);
-	ft_append_var("nico", "t", vars);
-	ft_append_var("nico", "u", vars);
-	ft_append_var("nico", "v", vars);
-	ft_append_var("nico", "w", vars);
-	ft_append_var("nico", "x", vars);
-	ft_append_var("nico", "y", vars);
-	ft_append_var("nico", "z", vars);
+	ft_append_var("nico", "a", vars, &shell.shell_vars);
+	ft_append_var("nico", "b", vars, &shell.shell_vars);
+	ft_append_var("nico", "c", vars, &shell.shell_vars);
+	ft_append_var("nico", "d", vars, &shell.shell_vars);
+	ft_append_var("nico", "e", vars, &shell.shell_vars);
+	ft_append_var("nico", "f", vars, &shell.shell_vars);
+	ft_append_var("nico", "g", vars, &shell.shell_vars);
+	ft_append_var("nico", "h", vars, &shell.shell_vars);
+	ft_append_var("nico", "i", vars, &shell.shell_vars);
+	ft_append_var("nico", "j", vars, &shell.shell_vars);
+	ft_append_var("nico", "k", vars, &shell.shell_vars);
+	ft_append_var("nico", "l", vars, &shell.shell_vars);
+	ft_append_var("nico", "m", vars, &shell.shell_vars);
+	ft_append_var("nico", "n", vars, &shell.shell_vars);
+	ft_append_var("nico", "o", vars, &shell.shell_vars);
+	ft_append_var("nico", "p", vars, &shell.shell_vars);
+	ft_append_var("nico", "r", vars, &shell.shell_vars);
+	ft_append_var("nico", "s", vars, &shell.shell_vars);
+	ft_append_var("nico", "t", vars, &shell.shell_vars);
+	ft_append_var("nico", "u", vars, &shell.shell_vars);
+	ft_append_var("nico", "v", vars, &shell.shell_vars);
+	ft_append_var("nico", "w", vars, &shell.shell_vars);
+	ft_append_var("nico", "x", vars, &shell.shell_vars);
+	ft_append_var("nico", "y", vars, &shell.shell_vars);
+	ft_append_var("nico", "z", vars, &shell.shell_vars);
 	// ft_set_var("nicolas", "deuxieme", vars);
 	// ft_set_var("nicolaz", "troisieme", vars);
 	ft_display_vars(vars);
@@ -129,7 +130,8 @@ int main(int argc, char **argv, char **envp)
 	printf("\n\n\n*************************************** \n\n\n\n");
 
 
-
+	printf("$? = [%s]", ft_get_var_value("?", vars, shell.shell_vars));
+	printf("$IFS = [%s]", ft_get_var_value("IFS", vars, shell.shell_vars));
 
 
 //test de la mise en split
@@ -140,7 +142,7 @@ int main(int argc, char **argv, char **envp)
 	// ft_display_vars(vars);
 
 	// ft_free_splitted(v);
-	ft_free_env_vars(vars);
+	ft_free_env_vars(vars, &shell.shell_vars);
 
 }
 
