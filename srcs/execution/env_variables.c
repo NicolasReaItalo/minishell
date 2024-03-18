@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:46:46 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/18 10:03:20 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/18 11:59:18 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,7 @@ void	*ft_free_splitted(char **splitted)
 
 /*Fetch the environment variables from **envp
 and store these in the shell vars structure*/
-void	ft_get_env_vars(t_evar *vars[58], char **envp)
+void	ft_fetch_env_vars(t_evar *vars[58], char **envp)
 {
 	char	**splitted;
 	int		i;
@@ -274,6 +274,63 @@ void	ft_get_env_vars(t_evar *vars[58], char **envp)
 	}
 }
 
+static int	ft_count_var(t_evar **vars)
+{
+	int		nb;
+	int		i;
+	t_evar	*var;
+
+	nb = 0;
+	i = 0;
+	var = NULL;
+	while (i < 58)
+	{
+		var = vars[i];
+		while (var)
+		{
+			nb++;
+			var = var->next;
+		}
+		i++;
+	}
+	return (nb);
+}
+
+/*Arrange the env variables in the form of a null terminated char** array suitable
+for the envp parameter of execve*/
+int	ft_push_env_vars(t_evar **vars, char ***envp)
+{
+	int		var_nb;
+	char	*var;
+	int		i;
+	int		j;
+	t_evar	*cur;
+
+	i = 0;
+	j = 0;
+	var = NULL;
+	cur = NULL;
+	var_nb = ft_count_var(vars);
+	envp = malloc((var_nb + 1) * sizeof(char *));
+	if (!envp)
+		return (0);
+	ft_memset(envp, 0, (var_nb + 1) * sizeof (char *));
+	while (i < 58)
+	{
+		cur = vars[i];
+		while (cur)
+		{
+
+			cur = cur->key;
+		}
+		i++;
+	}
+
+
+}
+
+
+/*unset an env variable identifie by the key parameter*/
 void	ft_unset_var(char *key, t_evar **vars)
 {
 	int		index;
@@ -303,21 +360,42 @@ void	ft_unset_var(char *key, t_evar **vars)
 	}
 }
 
-/*probablement a regrouper avec une fonction d'initialisation
+/*initialisation a 0 de la structure des varables d'environnement
+probablement a regrouper avec une fonction d'initialisation
 de toutes les variables de la structure shell */
 void	ft_init_env_var(t_evar	*vars[58])
 {
 	ft_memset(vars, 0, 58 * sizeof(t_evar *));
 }
 
+
+
+
+
+
 /*
 TODO
 
-ft_unset(key) => reduire le nb de lignes
-faire ft_ var to splitted -> pour passer a execve
+faire ft_push_env_vars-> pour passer a execve
 expand() avec le field splitting
 cc -Wall -Wextra -Werror -g srcs/execution/env_variables.c -I./include -I./libft -Llibft -lft
 */
+
+
+/*EXPANSION(TOKEN)
+
+rechercher les $
+SI entre '' -> ne fait rien
+SI entre "" -> expansion mis pas de split(ifs)
+SI pas entre quotes->expansion + split ( s )
+
+
+*/
+
+
+
+
+
 
 int main(int argc, char **argv, char **envp)
 {
@@ -390,20 +468,22 @@ int main(int argc, char **argv, char **envp)
 	// ft_set_var("P", "fuqhfeirufrei", vars);
 	// ft_set_var("Q", "fuqhfeirufrei", vars);
 	// ft_set_var("R", "fuqhfeirufrei", vars);
-	// ft_set_var("S", "fuqhfeirufrei", vars);
-	// ft_set_var("T", "fuqhfeirufrei", vars);
-	// ft_set_var("U", "fuqhfeirufrei", vars);
-	// ft_set_var("V", "fuqhfeirufrei", vars);
-	// ft_set_var("W", "fuqhfeirufrei", vars);
-	// ft_set_var("X", "fuqhfeirufrei", vars);
-	// ft_set_var("Y", "fuqhfeirufrei", vars);
-	// ft_set_var("Z", "fuqhfeirufrei", vars);
-	// ft_set_var("{Z}", "fuqhfeirufrei", vars);
+	ft_set_var("S", "fuqhfeirufrei", vars);
+	ft_set_var("T", "fuqhfeirufrei", vars);
+	ft_set_var("U", "fuqhfeirufrei", vars);
+	ft_set_var("V", "fuqhfeirufrei", vars);
+	ft_set_var("W", "fuqhfeirufrei", vars);
+	ft_set_var("X", "fuqhfeirufrei", vars);
+	ft_set_var("Y", "fuqhfeirufrei", vars);
+	ft_set_var("Z", "fuqhfeirufrei", vars);
+	ft_set_var("ZA", "fuqhfeirufrei", vars);
+	ft_set_var("ZB", "fuqhfeirufrei", vars);
+	ft_set_var("ZC", "fuqhfeirufrei", vars);
 
 
 	// ft_set_var("SA", NULL, vars);
 	// ft_set_var("SB", "seconde valeur", vars);
-	// ft_get_env_vars(vars, envp);
+	// ft_fetch_env_vars(vars, envp);
 
 	// ft_set_var("PATH", "DOUDDOU", vars);
 	ft_set_var("nico", "froufrou", vars);
@@ -415,10 +495,12 @@ int main(int argc, char **argv, char **envp)
 	printf("\n\n\nAPRES UNSET \n\n\n\n");
 	ft_display_vars(vars);
 
+
+	printf("nb de variables : [%d]", ft_count_var(vars));
+
 	ft_free_env_vars(vars);
 
 }
-
 
 
 
