@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   test_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 13:50:32 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/15 14:42:03 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/18 15:39:26 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "env_variables.h"
+
+
 /*BROKEN!!!!! NE PAS UTILISER
 ne prends pas en compte le prev*/
 int	test_ft_add_token_front(t_token **stack, char *content, int type)
@@ -82,22 +85,22 @@ char	*type(int type)
 	return ("UNKNOWN");
 }
 
-void	ft_display_stack_reverse(t_token *stack)
-{
-	t_token	*node;
-	int		rank;
+// void	ft_display_stack_reverse(t_token *stack)
+// {
+// 	t_token	*node;
+// 	int		rank;
 
-	rank = 0;
-	node = ft_get_token(stack, -1);
-	if (!node)
-		printf("[NULL]\n");
-	while (node)
-	{
-		printf("[%d]	type[%s]	content:[%s]\n", rank,type(node->type), node->content);
-		node = node->prev;
-		rank++;
-	}
-}
+// 	rank = 0;
+// 	node = ft_get_token(stack, -1);
+// 	if (!node)
+// 		printf("[NULL]\n");
+// 	while (node)
+// 	{
+// 		printf("[%d]	type[%s]	content:[%s]\n", rank,type(node->type), node->content);
+// 		node = node->prev;
+// 		rank++;
+// 	}
+// }
 
 void	ft_display_stack_forward(t_token *stack)
 {
@@ -174,3 +177,43 @@ void	show_tree(t_node *node, int i)
 	show_tree(node->right, i + 1);
 	show_tree(node->left, i + 1);
 }
+
+/*Dislay all env variables in the env_vars array*/
+void	ft_display_vars(t_evar *vars[58])
+{
+	int		i;
+	t_evar	*v;
+
+	v = NULL;
+	i = 0;
+	while (i < 58)
+	{
+		if (vars[i])
+		{
+			v = vars[i];
+			while (v)
+			{
+				printf("%s=%s\n", v->key, v->value);
+				v = v->next;
+			}
+			v = NULL;
+		}
+		i++;
+	}
+}
+
+/*Dislay all env variables in the **envp char array*/
+void	ft_display_char_vars(char **envp)
+{
+	int i = 0;
+
+	if (!envp)
+		return ;
+	while (envp[i])
+	{
+		printf("%s\n", envp[i]);
+		i++;
+	}
+}
+
+

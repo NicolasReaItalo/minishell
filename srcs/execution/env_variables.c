@@ -6,23 +6,13 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:46:46 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/18 13:59:42 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/18 16:42:23 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_variables.h"
 #include "libft.h"
 #include <stdio.h>
-
-int	ft_strcmp(char *s1, char *s2)
-{
-	while ((*s1 - *s2 == 0) && *s1 && *s2)
-	{
-		s1++;
-		s2++;
-	}
-	return (*s1 - *s2);
-}
 
 void	*ft_free_var(t_evar *var)
 {
@@ -248,29 +238,6 @@ char	*ft_get_var_value(char *key, t_evar *env_list[58])
 	return ("");
 }
 
-void	ft_display_vars(t_evar *vars[58])
-{
-	int		i;
-	t_evar	*v;
-
-	v = NULL;
-	i = 0;
-	while (i < 58)
-	{
-		if (vars[i])
-		{
-			v = vars[i];
-			while (v)
-			{
-				printf("%s=%s\n", v->key, v->value);
-				v = v->next;
-			}
-			v = NULL;
-		}
-		i++;
-	}
-}
-
 void	*ft_free_splitted(char **splitted)
 {
 	int	i;
@@ -314,176 +281,81 @@ void	ft_init_env_var(t_evar	*vars[58])
 	ft_memset(vars, 0, 58 * sizeof(t_evar *));
 }
 
-
-
-
-
-
-/*
-TODO
-
-faire ft_push_env_vars-> pour passer a execve
-expand()
-field splitting()
-cc -Wall -Wextra -Werror -g srcs/execution/env_variables.c -I./include -I./libft -Llibft -lft
-*/
-
-
-
-
-/*
-VAR="ls -l"
-
-$VAR
-
-epansion -> ls -l
-ifs ==> ls   -l
-
-
-'$VAR'
-expansion ==> '$VAR'
-ifs ==>  '$VAR'
-dequote ==> $VAR
-
-"$VAR"
-expansion ==> "ls -l"
-ifs ==> "ls -l"
-dequote ==> ls -l
-
-*/
-
-
-
-/*
-EXEC
-
-
-
-"$VAR -la"
-
-
-
-
-
-
-
-
-
-
-*/
-
-
-
-/*
-
-
-int main(int argc, char **argv, char **envp)
+static int	ft_count_var(t_evar **vars)
 {
+	int		nb;
+	int		i;
+	t_evar	*var;
 
-	t_evar	*vars[58];
-	// char	*value = "chipmunks";
-
-	ft_init_env_var(vars);
-
-
-	(void) argc;
-	(void) argv;
-	(void) envp;
-
-
-	// var[0] = ft_create_var(key, value);
-	// if (!var[0])
-	// 	return (1);
-	// var[57] = ft_create_var("zorglub", "nicolas");
-	// if (!var[57])
-		// return (1);
-	// ft_set_var("zorglub", "moustache", vars);
-	// ft_set_var("zorglub", "poilou", vars);
-	// ft_set_var("zorglubo", "OOOOO", vars);////A regler
-	// ft_set_var("zorgluba", "pedoncule", vars);
-	// ft_set_var("a", "fuqhfeirufrei", vars);
-	// ft_set_var("b", "fuqhfeirufrei", vars);
-	// ft_set_var("c", "fuqhfeirufrei", vars);
-	// ft_set_var("d", "fuqhfeirufrei", vars);
-	// ft_set_var("e", "fuqhfeirufrei", vars);
-	// ft_set_var("f", "fuqhfeirufrei", vars);
-	// ft_set_var("g", "fuqhfeirufrei", vars);
-	// ft_set_var("h", "fuqhfeirufrei", vars);
-	// ft_set_var("i", "fuqhfeirufrei", vars);
-	// ft_set_var("j", "fuqhfeirufrei", vars);
-	// ft_set_var("k", "fuqhfeirufrei", vars);
-	// ft_set_var("l", "fuqhfeirufrei", vars);
-	// ft_set_var("m", "fuqhfeirufrei", vars);
-	// ft_set_var("n", "fuqhfeirufrei", vars);
-	// ft_set_var("o", "fuqhfeirufrei", vars);
-	// ft_set_var("p", "fuqhfeirufrei", vars);
-	// ft_set_var("q", "fuqhfeirufrei", vars);
-	// ft_set_var("r", "fuqhfeirufrei", vars);
-	// ft_set_var("s", "fuqhfeirufrei", vars);
-	// ft_set_var("t", "fuqhfeirufrei", vars);
-	// ft_set_var("u", "fuqhfeirufrei", vars);
-	// ft_set_var("v", "fuqhfeirufrei", vars);
-	// ft_set_var("w", "fuqhfeirufrei", vars);
-	// ft_set_var("x", "fuqhfeirufrei", vars);
-	// ft_set_var("y", "fuqhfeirufrei", vars);
-	// ft_set_var("z", "fuqhfeirufrei", vars);
-	// ft_set_var("_", "fuqhfeirufrei", vars);
-	// ft_set_var("_fred", "fuqhfeirufrei", vars);
-	// ft_set_var("_albert", "fuqhfeirufrei", vars);
-	// ft_set_var("A", "fuqhfeirufrei", vars);
-	// ft_set_var("B", "fuqhfeirufrei", vars);
-	// ft_set_var("C", "fuqhfeirufrei", vars);
-	// ft_set_var("D", "fuqhfeirufrei", vars);
-	// ft_set_var("E", "fuqhfeirufrei", vars);
-	// ft_set_var("F", "fuqhfeirufrei", vars);
-	// ft_set_var("G", "fuqhfeirufrei", vars);
-	// ft_set_var("H", "fuqhfeirufrei", vars);
-	// ft_set_var("I", "fuqhfeirufrei", vars);
-	// ft_set_var("J", "fuqhfeirufrei", vars);
-	// ft_set_var("K", "fuqhfeirufrei", vars);
-	// ft_set_var("L", "fuqhfeirufrei", vars);
-	// ft_set_var("M", "fuqhfeirufrei", vars);
-	// ft_set_var("N", "fuqhfeirufrei", vars);
-	// ft_set_var("O", "fuqhfeirufrei", vars);
-	// ft_set_var("P", "fuqhfeirufrei", vars);
-	// ft_set_var("Q", "fuqhfeirufrei", vars);
-	// ft_set_var("R", "fuqhfeirufrei", vars);
-	ft_set_var("S", "fuqhfeirufrei", vars);
-	ft_set_var("T", "fuqhfeirufrei", vars);
-	ft_set_var("U", "fuqhfeirufrei", vars);
-	ft_set_var("V", "fuqhfeirufrei", vars);
-	ft_set_var("W", "fuqhfeirufrei", vars);
-	ft_set_var("X", "fuqhfeirufrei", vars);
-	ft_set_var("Y", "fuqhfeirufrei", vars);
-	ft_set_var("Z", "fuqhfeirufrei", vars);
-	ft_set_var("ZA", "fuqhfeirufrei", vars);
-	ft_set_var("ZB", "fuqhfeirufrei", vars);
-	ft_set_var("ZC", "fuqhfeirufrei", vars);
-
-
-	// ft_set_var("SA", NULL, vars);
-	// ft_set_var("SB", "seconde valeur", vars);
-	// ft_fetch_env_vars(vars, envp);
-
-	// ft_set_var("PATH", "DOUDDOU", vars);
-	ft_set_var("nico", "froufrou", vars);
-	ft_set_var("nicolas", "deuxieme", vars);
-	ft_set_var("nicolaz", "troisieme", vars);
-	ft_display_vars(vars);
-	// ft_unset_var("nicolaz", vars);
-	ft_unset_var("nicolaz", vars);
-	printf("\n\n\nAPRES UNSET \n\n\n\n");
-	ft_display_vars(vars);
-
-
-	printf("nb de variables : [%d]", ft_count_var(vars));
-
-	ft_free_env_vars(vars);
-
+	nb = 0;
+	i = 0;
+	var = NULL;
+	while (i < 58)
+	{
+		var = vars[i];
+		while (var)
+		{
+			nb++;
+			var = var->next;
+		}
+		i++;
+	}
+	return (nb);
 }
 
+/*concatenate the var in the form key=value*/
+char	*ft_concatenate(t_evar *var)
+{
+	char	*ret;
+	char	*ret2;
 
-*/
+	ret = NULL;
+	ret2 = NULL;
+	if (!var || !var->key)
+		return (NULL);
+	ret = ft_strjoin(var->key, "=");
+	if (!ret)
+		return (NULL);
+	if (!var->value)
+		return (ret);
+	ret2 = ft_strjoin(ret, var->value);
+	free(ret);
+	if (!ret2)
+		return (NULL);
+	return (ret2);
+}
 
+/*Arrange the env variables in the form of a null terminated
+ char** array suitable for the envp parameter of execve*/
+char	**ft_push_env_vars(t_evar **vars)
+{
+	int		var_nb;
+	int		i;
+	int		j;
+	t_evar	*cur;
+	char	**envp;
+
+	i = 0;
+	j = 0;
+	var_nb = ft_count_var(vars);
+	envp = malloc((var_nb + 1) * sizeof(char *));
+	if (!envp)
+		return (NULL);
+	ft_memset(envp, 0, (var_nb + 1) * sizeof(char *));
+	while (i < 58)
+	{
+		cur = vars[i];
+		while (cur)
+		{
+			envp[j] = ft_concatenate(cur);
+			if (!envp[j])
+				return (ft_free_splitted(envp), NULL);
+			j++;
+			cur = cur->next;
+		}
+		i++;
+	}
+	return (envp);
+}
 
 
