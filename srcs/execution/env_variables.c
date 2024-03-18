@@ -6,14 +6,13 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:46:46 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/15 19:43:56 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/18 10:03:20 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_variables.h"
 #include "libft.h"
 #include <stdio.h>
-
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -37,9 +36,7 @@ void	*ft_free_var(t_evar *var)
 	return (NULL);
 }
 
-
-
-void	ft_free_env_vars (t_evar *env_list[58])
+void	ft_free_env_vars(t_evar *env_list[58])
 {
 	int		i;
 	t_evar	*prev;
@@ -64,7 +61,7 @@ void	ft_free_env_vars (t_evar *env_list[58])
 	}
 }
 
-/*creates a var structure an initialize it with key and value*/
+/*allocate a var structure an initialize it with key and value*/
 t_evar	*ft_create_var(char *key, char *value)
 {
 	t_evar	*var;
@@ -91,9 +88,6 @@ t_evar	*ft_create_var(char *key, char *value)
 	return (var);
 }
 
-/*initialize the env var array*/
-
-
 /*Checks if the key  string is a valid delimiter for an environement
 variable
 returns1 in cqse o success, 0 otherwise
@@ -116,8 +110,6 @@ int	ft_is_valid_delimiter(char *key)
 	return (1);
 }
 
-
-
 /*get the value of the var identified by key
 if the var doesn't exists  -> returns null */
 t_evar	*ft_get_var(char *key, t_evar *sub_list)
@@ -137,6 +129,7 @@ t_evar	*ft_get_var(char *key, t_evar *sub_list)
 	return (NULL);
 }
 
+/*create a new var and place it at the right ascii order in the right stack*/
 int	ft_create_and_place(char *key, char *value, t_evar **env_list)
 {
 	t_evar	*var;
@@ -155,7 +148,7 @@ int	ft_create_and_place(char *key, char *value, t_evar **env_list)
 	}
 	else
 	{
-		while(head && ft_strcmp(head->key, key) < 0)
+		while (head && ft_strcmp(head->key, key) < 0)
 		{
 			prev = head;
 			head = head->next;
@@ -197,7 +190,6 @@ int	ft_set_var(char *key, char *value, t_evar **env_list)
 	return (1);
 }
 
-
 /*get the value of the var identified by key
 ifthe var doesn't exists or it's value is null -> returns ""*/
 char	*ft_get_var_value(char *key, t_evar *env_list[58])
@@ -225,17 +217,14 @@ char	*ft_get_var_value(char *key, t_evar *env_list[58])
 	return ("");
 }
 
-
-
-
 void	ft_display_vars(t_evar *vars[58])
 {
-	int	i;
+	int		i;
 	t_evar	*v;
 
 	v = NULL;
 	i = 0;
-	while(i < 58)
+	while (i < 58)
 	{
 		if (vars[i])
 		{
@@ -265,8 +254,8 @@ void	*ft_free_splitted(char **splitted)
 	return (NULL);
 }
 
-
-/*Fetch the environment variables from **envp and store these in the shell vars structure*/
+/*Fetch the environment variables from **envp
+and store these in the shell vars structure*/
 void	ft_get_env_vars(t_evar *vars[58], char **envp)
 {
 	char	**splitted;
@@ -283,9 +272,7 @@ void	ft_get_env_vars(t_evar *vars[58], char **envp)
 		splitted = NULL;
 		i++;
 	}
-
 }
-
 
 void	ft_unset_var(char *key, t_evar **vars)
 {
@@ -294,42 +281,34 @@ void	ft_unset_var(char *key, t_evar **vars)
 	t_evar	*prev;
 	t_evar	*next;
 
-	if (!ft_is_valid_delimiter(key))
-		return ;
 	index = key[0] - 65;
-	if (index < 0 || index > 57 || !vars[index])
+	if (!ft_is_valid_delimiter(key) || index < 0 || index > 57 || !vars[index])
 		return ;
 	cur = vars[index];
 	prev = NULL;
-	while(cur)
+	while (cur)
 	{
 		if (!ft_strcmp(cur->key, key))
 		{
 			next = cur->next;
 			ft_free_var(cur);
 			if (prev)
-			{
 				(prev)->next = next;
-				vars[index] = prev;
-			}
 			else
-				vars[index]= next;
-			return;
+				vars[index] = next;
+			return ;
 		}
 		prev = cur;
 		cur = cur->next;
 	}
 }
 
-
-/*probablement a regrouper avec une fonction d'initialisation de toutes les variables de la structure shell */
+/*probablement a regrouper avec une fonction d'initialisation
+de toutes les variables de la structure shell */
 void	ft_init_env_var(t_evar	*vars[58])
 {
-	ft_memset(vars, 0, 58 * sizeof(t_evar*));
+	ft_memset(vars, 0, 58 * sizeof(t_evar *));
 }
-
-
-
 
 /*
 TODO
@@ -432,7 +411,7 @@ int main(int argc, char **argv, char **envp)
 	ft_set_var("nicolaz", "troisieme", vars);
 	ft_display_vars(vars);
 	// ft_unset_var("nicolaz", vars);
-	ft_unset_var("nico", vars);
+	ft_unset_var("nicolaz", vars);
 	printf("\n\n\nAPRES UNSET \n\n\n\n");
 	ft_display_vars(vars);
 
@@ -442,42 +421,7 @@ int main(int argc, char **argv, char **envp)
 
 
 
-/*
-
-export
-verifie le nom de la variable:
-	le premier caractere doit etre a-z/A-Z ou _
-	verifie les caracteresinterdits ( tout sauf )
-	==> erreur not a valid identifier
-
-! Il y a une expansion
 
 
 
 
-
-expansion :voir si on gere le field splitting et la variable IFS
-
-*/
-/*
-
-
-
-REDIR : /usr/file
-
-
-
-
-
-CMD   "$NICO"
-CMD   "ls -la"
-SI dans l'expasion on trouve un caracter IFS
-alros SPLIT ajout token ord a la suite
-
-
-
-
-
-
-
-*/
