@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:46:46 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/18 16:42:23 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/18 16:57:48 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,6 @@ void	ft_unset_var(char *key, t_evar **vars)
 	}
 }
 
-
 /*get the value of the var identified by key
 ifthe var doesn't exists or it's value is null -> returns ""*/
 char	*ft_get_var_value(char *key, t_evar *env_list[58])
@@ -272,7 +271,6 @@ void	ft_fetch_env_vars(t_evar *vars[58], char **envp)
 	}
 }
 
-
 /*initialisation a 0 de la structure des varables d'environnement
 probablement a regrouper avec une fonction d'initialisation
 de toutes les variables de la structure shell */
@@ -304,7 +302,7 @@ static int	ft_count_var(t_evar **vars)
 }
 
 /*concatenate the var in the form key=value*/
-char	*ft_concatenate(t_evar *var)
+static char	*ft_concatenate(t_evar *var)
 {
 	char	*ret;
 	char	*ret2;
@@ -325,23 +323,14 @@ char	*ft_concatenate(t_evar *var)
 	return (ret2);
 }
 
-/*Arrange the env variables in the form of a null terminated
- char** array suitable for the envp parameter of execve*/
-char	**ft_push_env_vars(t_evar **vars)
+static void	ft_populate(t_evar **vars, char	**envp)
 {
-	int		var_nb;
 	int		i;
 	int		j;
 	t_evar	*cur;
-	char	**envp;
 
 	i = 0;
 	j = 0;
-	var_nb = ft_count_var(vars);
-	envp = malloc((var_nb + 1) * sizeof(char *));
-	if (!envp)
-		return (NULL);
-	ft_memset(envp, 0, (var_nb + 1) * sizeof(char *));
 	while (i < 58)
 	{
 		cur = vars[i];
@@ -349,13 +338,29 @@ char	**ft_push_env_vars(t_evar **vars)
 		{
 			envp[j] = ft_concatenate(cur);
 			if (!envp[j])
-				return (ft_free_splitted(envp), NULL);
+			{
+				ft_free_splitted(envp);
+				return ;
+			}
 			j++;
 			cur = cur->next;
 		}
 		i++;
 	}
-	return (envp);
 }
 
+/*Allocate and copy the env variables in the form of a null terminated
+ char** array suitable for the envp parameter of execve*/
+char	**ft_push_env_vars(t_evar **vars)
+{
+	int		var_nb;
+	char	**envp;
 
+	var_nb = ft_count_var(vars);
+	envp = malloc((var_nb + 1) * sizeof(char *));
+	if (!envp)
+		return (NULL);
+	ft_memset(envp, 0, (var_nb + 1) * sizeof(char *));
+	ft_populate(vars, envp);
+	return (envp);
+}
