@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:46:46 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/18 11:59:18 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/18 13:59:42 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,14 @@ t_evar	*ft_create_var(char *key, char *value)
 	return (var);
 }
 
-/*Checks if the key  string is a valid delimiter for an environement
+/*Checks if the key  string is a valid key for an environement
 variable
 returns1 in cqse o success, 0 otherwise
 RULES
 no empty string
 char : a-z or A-Z or 1-9 or _
 first char must not be a  digit*/
-int	ft_is_valid_delimiter(char *key)
+int	ft_is_valid_key(char *key)
 {
 	if (!key || !key[0])
 		return (0);
@@ -116,7 +116,7 @@ t_evar	*ft_get_var(char *key, t_evar *sub_list)
 {
 	t_evar	*var;
 
-	if (!ft_is_valid_delimiter(key))
+	if (!ft_is_valid_key(key))
 		return (NULL);
 	var = NULL;
 	var = sub_list;
@@ -168,7 +168,7 @@ int	ft_set_var(char *key, char *value, t_evar **env_list)
 	char	*val;
 
 	val = NULL;
-	if (!ft_is_valid_delimiter(key))
+	if (!ft_is_valid_key(key))
 		return (0);
 	index = key[0] - 65;
 	if (index < 0 || index > 57)
@@ -190,6 +190,37 @@ int	ft_set_var(char *key, char *value, t_evar **env_list)
 	return (1);
 }
 
+/*unset an env variable identifie by the key parameter*/
+void	ft_unset_var(char *key, t_evar **vars)
+{
+	int		index;
+	t_evar	*cur;
+	t_evar	*prev;
+	t_evar	*next;
+
+	index = key[0] - 65;
+	if (!ft_is_valid_key(key) || index < 0 || index > 57 || !vars[index])
+		return ;
+	cur = vars[index];
+	prev = NULL;
+	while (cur)
+	{
+		if (!ft_strcmp(cur->key, key))
+		{
+			next = cur->next;
+			ft_free_var(cur);
+			if (prev)
+				(prev)->next = next;
+			else
+				vars[index] = next;
+			return ;
+		}
+		prev = cur;
+		cur = cur->next;
+	}
+}
+
+
 /*get the value of the var identified by key
 ifthe var doesn't exists or it's value is null -> returns ""*/
 char	*ft_get_var_value(char *key, t_evar *env_list[58])
@@ -197,7 +228,7 @@ char	*ft_get_var_value(char *key, t_evar *env_list[58])
 	int		index;
 	t_evar	*var;
 
-	if (!ft_is_valid_delimiter(key) || !env_list)
+	if (!ft_is_valid_key(key) || !env_list)
 		return ("");
 	index = key[0] - 65;
 	if (index < 0)
@@ -274,91 +305,6 @@ void	ft_fetch_env_vars(t_evar *vars[58], char **envp)
 	}
 }
 
-static int	ft_count_var(t_evar **vars)
-{
-	int		nb;
-	int		i;
-	t_evar	*var;
-
-	nb = 0;
-	i = 0;
-	var = NULL;
-	while (i < 58)
-	{
-		var = vars[i];
-		while (var)
-		{
-			nb++;
-			var = var->next;
-		}
-		i++;
-	}
-	return (nb);
-}
-
-/*Arrange the env variables in the form of a null terminated char** array suitable
-for the envp parameter of execve*/
-int	ft_push_env_vars(t_evar **vars, char ***envp)
-{
-	int		var_nb;
-	char	*var;
-	int		i;
-	int		j;
-	t_evar	*cur;
-
-	i = 0;
-	j = 0;
-	var = NULL;
-	cur = NULL;
-	var_nb = ft_count_var(vars);
-	envp = malloc((var_nb + 1) * sizeof(char *));
-	if (!envp)
-		return (0);
-	ft_memset(envp, 0, (var_nb + 1) * sizeof (char *));
-	while (i < 58)
-	{
-		cur = vars[i];
-		while (cur)
-		{
-
-			cur = cur->key;
-		}
-		i++;
-	}
-
-
-}
-
-
-/*unset an env variable identifie by the key parameter*/
-void	ft_unset_var(char *key, t_evar **vars)
-{
-	int		index;
-	t_evar	*cur;
-	t_evar	*prev;
-	t_evar	*next;
-
-	index = key[0] - 65;
-	if (!ft_is_valid_delimiter(key) || index < 0 || index > 57 || !vars[index])
-		return ;
-	cur = vars[index];
-	prev = NULL;
-	while (cur)
-	{
-		if (!ft_strcmp(cur->key, key))
-		{
-			next = cur->next;
-			ft_free_var(cur);
-			if (prev)
-				(prev)->next = next;
-			else
-				vars[index] = next;
-			return ;
-		}
-		prev = cur;
-		cur = cur->next;
-	}
-}
 
 /*initialisation a 0 de la structure des varables d'environnement
 probablement a regrouper avec une fonction d'initialisation
@@ -377,24 +323,58 @@ void	ft_init_env_var(t_evar	*vars[58])
 TODO
 
 faire ft_push_env_vars-> pour passer a execve
-expand() avec le field splitting
+expand()
+field splitting()
 cc -Wall -Wextra -Werror -g srcs/execution/env_variables.c -I./include -I./libft -Llibft -lft
 */
 
 
-/*EXPANSION(TOKEN)
 
-rechercher les $
-SI entre '' -> ne fait rien
-SI entre "" -> expansion mis pas de split(ifs)
-SI pas entre quotes->expansion + split ( s )
+
+/*
+VAR="ls -l"
+
+$VAR
+
+epansion -> ls -l
+ifs ==> ls   -l
+
+
+'$VAR'
+expansion ==> '$VAR'
+ifs ==>  '$VAR'
+dequote ==> $VAR
+
+"$VAR"
+expansion ==> "ls -l"
+ifs ==> "ls -l"
+dequote ==> ls -l
+
+*/
+
+
+
+/*
+EXEC
+
+
+
+"$VAR -la"
+
+
+
+
+
+
+
+
 
 
 */
 
 
 
-
+/*
 
 
 int main(int argc, char **argv, char **envp)
@@ -503,7 +483,7 @@ int main(int argc, char **argv, char **envp)
 }
 
 
-
+*/
 
 
 
