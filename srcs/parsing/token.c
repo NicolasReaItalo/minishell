@@ -5,180 +5,140 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/27 15:23:26 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/12 16:52:48 by tjoyeux          ###   ########.fr       */
+/*   Created: 2024/03/16 17:41:59 by tjoyeux           #+#    #+#             */
+/*   Updated: 2024/03/16 17:44:58 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
 
-// Check if it's a whitespace
-int	is_wspace(char c)
-{
-	return (c == ' ' || (c >= '\t' && c <= '\r'));
-}
+// char	*next_token_operators(char **str, t_token **new, int *error_code)
+// {
+// 	int	i;
 
-int	is_operator(char c)
-{
-	return (c == '|' || c == '<' || c == '>' || c == '&'
-		|| c == '(' || c == ')');
-}
-/*
-int	error_msg(int i)
-{
-	return (i);
-}*/
+// 	i = 0;
+// 	if (**str == 34 || **str == 39)
+// 	{
+// 		while (*(*str + ++i) && *(*str + i) != **str)
+// 			;
+// 		if (!*(*str + i))
+// 			return (*error_code = 2, NULL);
+// 		*new = new_token(*str, ++i);
+// 		if (!*new)
+// 			return (*error_code = 1, NULL);
+// 		*str += i;
+// 	}
+// 	else if (is_operator(**str))
+// 	{
+// 		if (ft_strchr("|<>&", **str) && (**str == *(*str + 1)))
+// 			*new = new_token((*str)++, 2);
+// 		else
+// 			*new = new_token(*str, 1);
+// 		if (!*new)
+// 			return (*error_code = 1, NULL);
+// 		(*str)++;
+// 	}
+// 	return (*str);
+// }
 
-void	kill_stack(t_token **stack)
-{
-	t_token	*tmp;
-
-	while (*stack)
-	{
-		free((*stack)->content);
-		tmp = *stack;
-		*stack = (*stack)->next;
-		free(tmp);
-	}
-}
-
-// Create a new node
-t_token	*new_token(char *str, int len)
-{
-	t_token	*new;
-
-	new = malloc(sizeof(t_token));
-	if (!new)
-		return (NULL);
-	ft_memset(new, 0, sizeof(t_token));
-	new->content = ft_substr(str, 0, len);
-	if (!(new->content))
-		return (free(new), NULL);
-	return (new);
-}
-
-char	*next_token_operators(char **str, t_token **new, int *error_code)
+char	*next_token_word(char *str, t_token **new, int *error_code)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	if (**str == 34 || **str == 39)
+	j = 1;
+	while (*(str + i) && !is_wspace(*(str + i)) && !is_operator(*(str + i)))
 	{
-		while (*(*str + ++i) && *(*str + i) != **str)
-			;
-		if (!*(*str + i))
-			return (*error_code = 2, NULL);
-		*new = new_token(*str, ++i);
-		if (!*new)
-			return (*error_code = 1, NULL);
-		*str += i;
+		if (*(str + i) == '\'' || *(str + i) == '\"')
+		{
+			while (*(str + i + j) && *(str + i + j) != *(str + i))
+				j++;
+			i += j;
+			j = 0;
+			if (!*(str + i))
+				return (*error_code = 2, NULL);
+		}
+		i++;
 	}
-	else if (is_operator(**str))
-	{
-		if (ft_strchr("|<>&", **str) && (**str == *(*str + 1)))
-			*new = new_token((*str)++, 2);
-		else
-			*new = new_token(*str, 1);
-		if (!*new)
-			return (*error_code = 1, NULL);
-		(*str)++;
-	}
-	return (*str);
+	*new = new_token(str, i);
+	if (!*new)
+		return (*error_code = 1, NULL);
+	return (str + i);
 }
 
-// Pass whitespace
-// Identifie type du token
-// Pass whitespace
-// Return new pointer in string
+// Identify and create the next token in a string
+// It also pass the whitespace before and after the token
+// Return value : a pointer to the string after the token
 char	*next_token(char *str, t_token **new, int *error_code)
 {
-	int	i;
-
-	i = 0;
 	while (*str && is_wspace(*str))
 		str++;
 	if (!*str)
 		return (*error_code = 3, NULL);
-	else if (*str == 34 || *str == 39 || is_operator(*str))
+	else if (is_operator(*str))
 	{
-		if (!next_token_operators(&str, new, error_code))
-			return (NULL);
-	}
-	else
-	{
-		while (*(str + i) && !is_wspace(*(str + i)) && !is_operator(*(str + i)))
-			i++;
-		*new = new_token(str, i);
+		if (ft_strchr("|<>&", *str) && (*str == *(str + 1)))
+			*new = new_token(str++, 2);
+		else
+			*new = new_token(str, 1);
 		if (!*new)
 			return (*error_code = 1, NULL);
-		str += i;
+		str++;
 	}
-	while (*str && is_wspace(*str))
+	else
+		str = next_token_word(str, new, error_code);
+	while (!*error_code && *str && is_wspace(*str))
 		str++;
 	return (str);
 }
-/*
-t_token	*add_token(t_token *stack, t_token *new)
-{
-	if (!stack)
-		stack = new;
-	else
-	{
-		new->next = stack;
-		stack = new;
-	}
-	return (stack);
-}
-*/
 
-// Add front
-t_token	*add_token(t_token *stack, t_token *new)
+void	put_special_type_in_stack(t_token *stack)
 {
-	if (!stack)
-		return (new);
-	else if (!new)
-		return (stack);
-	else
+	if (stack->content[0] == '|')
 	{
-		new->next = stack;
-		stack = new;
-		new->next->prev = new;
+		if (stack->content[1] == '|')
+			stack->type = OR;
+		else
+			stack->type = PIPE;
 	}
-	return (stack);
+	else if (stack->content[0] == '<')
+	{
+		if (stack->content[1] == '<')
+			stack->type = R_HEREDOC;
+		else
+			stack->type = R_IN;
+	}
+	else if (stack->content[0] == '>')
+	{
+		if (stack->content[1] == '>')
+			stack->type = R_APPEND;
+		else
+		stack->type = R_OUT;
+	}
 }
 
+// Affect a type to each node of the stack
 void	put_type_in_stack(t_token *stack, int *error_code)
 {
 	(void)error_code;
 	while (stack)
 	{
-		if (stack->content[0] == '|')
+		if (ft_strchr("|<>", stack->content[0]))
+			put_special_type_in_stack(stack);
+		else if (stack->content[0] == '&')
 		{
-			if (stack->content[1] == '|')
-				stack->type = OR;
-			else
-				stack->type = PIPE;
-		}
-		else if (stack->content[0] == '<')
-		{
-			if (stack->content[1] == '<')
-				stack->type = R_HEREDOC;
-			else
-				stack->type = R_IN;
-		}
-		else if (stack->content[0] == '>')
-		{
-			if (stack->content[1] == '>')
-				stack->type = R_APPEND;
-			else
-				stack->type = R_OUT;
-		}
-		else if (stack->content[0] == '&' && stack->content[1] == '&')
+			if (stack->content[1] == '&')
 				stack->type = AND;
+			else
+				stack->type = INVALID;
+		}
 		else if (stack->content[0] == '(')
 			stack->type = O_BRACKET;
 		else if (stack->content[0] == ')')
 			stack->type = C_BRACKET;
+		else if (stack->content[0] == ';' || stack->content[0] == '\\')
+			stack->type = INVALID;
 		else
 			stack->type = WORD;
 		stack = stack->next;
@@ -215,63 +175,37 @@ int	tokenise(char *str, t_token **stack)
 		kill_stack(stack);
 	return (error_code);
 }
+
 /*
-t_token	*tokenise(char *str)
+#include <stdio.h>
+int	main(int argc,char **argv)
 {
-	char	*p;
-	int		i;
-	char	*s;
-	t_token	*stack;
+	int	i;
+	t_token *stack;
+	t_token *stack_copy;
+	int error;
+//	char arg[] = "ec\"h'o\"'";
 
-
-	while(is_wspace(*str))
-		str++;
-	p = str;
-		i = 0;
+	if (argc != 2)
+		return (1);
 	stack = NULL;
-	while (*(p + i) && !is_operator(*(p + i))&& !is_wspace(*(p+ i)))
-		i++;
-	s = NULL;
-	s = ft_substr(str, 0, i);
-	if (!s)
-		return (NULL);
-	stack = ft_add_node(stack, );
-	if (!stack)
+	error = tokenise(argv[1], &stack);
+	if (error)
+		return (printf("ERROR : %d\n", error));
+	if (check_syntax(stack))
+		return (1);
+	stack_copy = stack;
+	i = 0;
+	while (stack)
 	{
-		free(s);
-		return (NULL);
+		printf("TOKEN %d : \e[31m%s\e[0m%%\ttype : %d\tptr : %p\t"
+			"prev ptr : %p\tnext ptr : %p\n", i,
+			stack->content, stack->type, stack, stack->prev, stack->next);
+		i++;
+		stack = stack->next;
 	}
+	kill_stack(&stack_copy);
+	return (error);
 }*/
-
-
-// #include <stdio.h>
-// int	main(int argc,char **argv)
-// {
-// 	int	i;
-// 	t_token *stack;
-// 	t_token *stack_copy;
-// 	int error;
-// //	char arg[] = "ec\"h'o\"'";
-
-// 	if (argc != 2)
-// 		return (1);
-// 	stack = NULL;
-// 	error = tokenise(argv[1], &stack);
-// 	if (error)
-// 		return (printf("ERROR : %d\n", error));
-// 	if (check_syntax(stack))
-// 		return (1);
-// 	stack_copy = stack;
-// 	i = 0;
-// 	while (stack)
-// 	{
-// 		printf("TOKEN %d : \e[31m%s\e[0m%%\ttype : %d\tptr : %p\t"
-// 			"prev ptr : %p\tnext ptr : %p\n", i,
-// 			stack->content, stack->type, stack, stack->prev, stack->next);
-// 		i++;
-// 		stack = stack->next;
-// 	}
-// 	kill_stack(&stack_copy);
-// 	return (error);
-// }
-// // gcc -g token.c check_syntax.c token_utils.c -I./libft/ -L./libft/ -lft -o token
+// gcc -g srcs/parsing/token.c srcs/parsing/check_syntax.c 
+// srcs/parsing/token_utils.c -I./include/ -I./libft/ -L./libft/ -lft -o token

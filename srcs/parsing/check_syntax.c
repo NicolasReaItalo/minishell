@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:21:18 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/12 16:02:09 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/16 15:46:40 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	syntax_error(char *error)
 {
-	ft_printf("syntax error near unexpected token `%s'\n", error);
+	ft_dprintf(2, "syntax error near unexpected token `%s'\n", error);
 }
 /*
 t_syntax_rule	**init_syntax_rules(void)
@@ -130,6 +130,8 @@ static char	*check_syntax_node(t_token *ptr)
 
 	if (!ptr)
 		return (NULL);
+	if (ptr->type == -1)
+		return (ptr->content);
 	if (!ptr->next || !ptr->prev)
 		return (check_start_and_end(ptr));
 	prev_type = ptr->prev->type;
@@ -171,6 +173,6 @@ int	check_syntax(t_token *stack)
 		ptr = ptr->prev;
 	}
 	if (check_brackets)
-		return (ft_printf("syntax error : brackets unclosed\n"), 1);
+		return (ft_dprintf(2, "syntax error : brackets unclosed\n"), 1);
 	return (0);
 }
