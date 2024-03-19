@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:48:02 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/19 10:46:42 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/19 11:35:48 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	ft_set_var(char *key, char *value, t_evar **env_list, t_svars *svars)
 	val = NULL;
 	if (ft_isshell_var(key))
 		return (ft_set_shell_var(key, value, svars));
-	if (!ft_is_valid_key(key) || ft_get_index(key[0],&index) == -1)
+	if (!ft_is_valid_key(key) || ft_get_index(key[0], &index) == -1)
 		return (-1);
 	var = ft_get_var(key, env_list[index]);
 	if (!var)

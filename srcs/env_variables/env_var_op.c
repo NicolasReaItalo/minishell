@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:46:46 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/19 11:00:51 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/19 11:40:22 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ like the export builtin with +=
 Return values : 1 :success
 				0 : malloc error
 				-1: incorrect identifier key */
-int	ft_append_var(char *key, char *value, t_evar **env_list, t_svars *svars)
+int	ft_append_var(char *key, char *value, t_evar **env_l, t_svars *svars)
 {
 	t_evar	*var;
 	int		index;
@@ -87,18 +87,15 @@ int	ft_append_var(char *key, char *value, t_evar **env_list, t_svars *svars)
 
 	new_val = NULL;
 	if (ft_isshell_var(key))
-		return (ft_append_s_var(key, value, env_list, svars));
-	if (!ft_is_valid_key(key))
-		return (0-1);
-	index = key[0] - 65;
-	if (index < 0 || index > 57)
-		return (0);
-	var = ft_get_var(key, env_list[index]);
+		return (ft_append_s_var(key, value, env_l, svars));
+	if (!ft_is_valid_key(key) || ft_get_index(key[0], &index) == -1)
+		return (-1);
+	var = ft_get_var(key, env_l[index]);
 	if (!var)
-		return (ft_create_and_place(key, value, &env_list[index]));
+		return (ft_create_and_place(key, value, &env_l[index]));
 	else
 	{
-		or_val = ft_get_var_value(key, env_list, *svars);
+		or_val = ft_get_var_value(key, env_l, *svars);
 		new_val = ft_strjoin(or_val, value);
 		if (!new_val)
 			return (0);

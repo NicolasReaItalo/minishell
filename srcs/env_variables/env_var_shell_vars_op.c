@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:27:51 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/19 10:59:05 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/19 11:42:35 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	ft_set_shell_var(char *key, char *value, t_svars *svars)
 			if (!val)
 				return (0);
 		}
-			free(svars->ifs);
-			svars->ifs = val;
+		free(svars->ifs);
+		svars->ifs = val;
 	}
 	return (1);
 }
@@ -60,7 +60,7 @@ append the value to a shell variable
 Return values : 1 :success
 				0 : malloc error
 				-1: incorrect identifier key*/
-int	ft_append_s_var(char *key, char *value, t_evar **env_list, t_svars *svars)
+int	ft_append_s_var(char *key, char *value, t_evar **env_l, t_svars *svars)
 {
 	char	*or_val;
 	char	*new_val;
@@ -72,13 +72,13 @@ int	ft_append_s_var(char *key, char *value, t_evar **env_list, t_svars *svars)
 	{
 		if (value)
 		{
-			or_val = ft_get_var_value(key, env_list, *svars);
+			or_val = ft_get_var_value(key, env_l, *svars);
 			new_val = ft_strjoin(or_val, value);
 			if (!new_val)
 				return (0);
 		}
-			free(svars->ifs);
-			svars->ifs = new_val;
+		free(svars->ifs);
+		svars->ifs = new_val;
 	}
 	return (1);
 }

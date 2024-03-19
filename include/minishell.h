@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:19:14 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/18 18:14:29 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/19 11:39:24 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "libft.h"
 # include "env_variables.h"
 
-typedef struct	s_shell
+typedef struct s_shell
 {
 	t_evar	*env_vars[58];
 	t_svars	shell_vars;
