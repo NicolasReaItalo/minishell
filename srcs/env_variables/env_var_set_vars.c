@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_vars_set_append.c                              :+:      :+:    :+:   */
+/*   env_var_set_vars.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:48:02 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/18 18:50:36 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/19 10:46:42 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdio.h>
 
 /*allocate a var structure an initialize it with key and value*/
-static t_evar	*ft_create_var(char *key, char *value)
+t_evar	*ft_create_var(char *key, char *value)
 {
 	t_evar	*var;
 
@@ -43,7 +43,7 @@ static t_evar	*ft_create_var(char *key, char *value)
 
 /*get the value of the var identified by key
 if the var doesn't exists  -> returns null */
-static t_evar	*ft_get_var(char *key, t_evar *sub_list)
+t_evar	*ft_get_var(char *key, t_evar *sub_list)
 {
 	t_evar	*var;
 
@@ -61,7 +61,7 @@ static t_evar	*ft_get_var(char *key, t_evar *sub_list)
 }
 
 /*create a new var and place it at the right ascii order in the right stack*/
-static int	ft_create_and_place(char *key, char *value, t_evar **env_list)
+int	ft_create_and_place(char *key, char *value, t_evar **env_list)
 {
 	t_evar	*var;
 	t_evar	*head;
@@ -90,20 +90,35 @@ static int	ft_create_and_place(char *key, char *value, t_evar **env_list)
 	return (1);
 }
 
+/*set the index pointer from the first letter of the key,
+return 1 if the index is valid, -1 otherwise*/
+int	ft_get_index(char first_letter, int *index)
+{
+	int	ind;
+
+	ind = first_letter - 65;
+	*index = ind;
+	if (*index < 0 || *index > 57)
+		return (-1);
+	return (1);
+}
+
 /*if the var exists => modify its value
-else : create a new var and place it at the right spot*/
-int	ft_set_var(char *key, char *value, t_evar **env_list)
+else : create a new var and place it at the right spot
+Return values : 1 :success
+				0 : malloc error
+				-1: incorrect identifier key*/
+int	ft_set_var(char *key, char *value, t_evar **env_list, t_svars *svars)
 {
 	t_evar	*var;
 	int		index;
 	char	*val;
 
 	val = NULL;
-	if (!ft_is_valid_key(key))
-		return (0);
-	index = key[0] - 65;
-	if (index < 0 || index > 57)
-		return (0);
+	if (ft_isshell_var(key))
+		return (ft_set_shell_var(key, value, svars));
+	if (!ft_is_valid_key(key) || ft_get_index(key[0],&index) == -1)
+		return (-1);
 	var = ft_get_var(key, env_list[index]);
 	if (!var)
 		return (ft_create_and_place(key, value, &env_list[index]));
@@ -117,37 +132,6 @@ int	ft_set_var(char *key, char *value, t_evar **env_list)
 		}
 		free((var)->value);
 		(var)->value = val;
-	}
-	return (1);
-}
-
-/*Similar to ft_set_var but append the value at the end of the var value
-like the export builtin with +=  */
-int	ft_append_var(char *key, char *value, t_evar **env_list, t_svars *svars)
-{
-	t_evar	*var;
-	int		index;
-	char	*or_val;
-	char	*new_val;
-
-	new_val = NULL;
-	if (!ft_is_valid_key(key))
-		return (0);
-	index = key[0] - 65;
-	if (index < 0 || index > 57)
-		return (0);
-	var = ft_get_var(key, env_list[index]);
-	if (!var)
-		return (ft_create_and_place(key, value, &env_list[index]));
-	else
-	{
-		or_val = ft_get_var_value(key, env_list, *svars);
-		new_val = ft_strjoin(or_val, value);
-		if (!new_val)
-			return (0);
-		if (var->value)
-			free((var)->value);
-		(var)->value = new_val;
 	}
 	return (1);
 }

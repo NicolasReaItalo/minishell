@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_vars_inheritance.c                             :+:      :+:    :+:   */
+/*   env_var_inheritance.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:41:59 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/18 17:42:39 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/19 10:49:29 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_fetch_env_vars(t_evar *vars[58], char **envp)
 		splitted = ft_split(envp[i], '=');
 		if (!splitted)
 			return ;
-		ft_set_var(splitted[0], splitted[1], vars);
+		ft_set_var(splitted[0], splitted[1], vars, NULL);
 		ft_free_splitted(splitted);
 		splitted = NULL;
 		i++;

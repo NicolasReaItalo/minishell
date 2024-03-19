@@ -96,7 +96,7 @@ int main(int argc, char **argv, char **envp)
 	// ft_fetch_env_vars(vars, envp);
 
 	// ft_set_var("PATH", "DOUDDOU", vars);
-	ft_set_var("nico", (char *)0, vars);
+	ft_set_var("nico", (char *)0, vars, &shell.shell_vars);
 	ft_append_var("nico", "a", vars, &shell.shell_vars);
 	ft_append_var("nico", "b", vars, &shell.shell_vars);
 	ft_append_var("nico", "c", vars, &shell.shell_vars);
@@ -122,8 +122,10 @@ int main(int argc, char **argv, char **envp)
 	ft_append_var("nico", "x", vars, &shell.shell_vars);
 	ft_append_var("nico", "y", vars, &shell.shell_vars);
 	ft_append_var("nico", "z", vars, &shell.shell_vars);
-	// ft_set_var("nicolas", "deuxieme", vars);
-	// ft_set_var("nicolaz", "troisieme", vars);
+	ft_set_var("nicolas", "deuxieme", vars,  &shell.shell_vars);
+	ft_set_var("IFS", "j'ai modifie l'ifs !!!", vars, &shell.shell_vars);
+	ft_append_var("IFS", "-append-a-lifs", vars, &shell.shell_vars);
+	ft_set_var("?", "j'essaie de modifier EXIT STATUS", vars, &shell.shell_vars);
 	ft_display_vars(vars);
 	// ft_unset_var("nicolaz", vars);
 	// ft_unset_var("nicolaz", vars);

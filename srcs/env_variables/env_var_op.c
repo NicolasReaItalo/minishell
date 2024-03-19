@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_var_operations.c                               :+:      :+:    :+:   */
+/*   env_var_op.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:46:46 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/18 18:54:18 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/19 11:00:51 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,6 @@ void	ft_unset_var(char *key, t_evar **vars)
 	}
 }
 
-static int	ft_isshell_var(char *key)
-{
-	if (!ft_strcmp(key, "?") || !ft_strcmp(key, "IFS"))
-		return (1);
-	return (0);
-}
-
-static char	*ft_get_shell_var(char *key, t_svars shell_vars)
-{
-	if (!ft_strcmp(key, "?"))
-		return (shell_vars.exit_code);
-	if (!ft_strcmp(key, "IFS"))
-		return (shell_vars.ifs);
-	return ("");
-}
-
 /*get the value of the var identified by key
 ifthe var doesn't exists or it's value is null -> returns ""*/
 char	*ft_get_var_value(char *key, t_evar	*env_vars[58], t_svars shell_vars)
@@ -87,4 +71,40 @@ char	*ft_get_var_value(char *key, t_evar	*env_vars[58], t_svars shell_vars)
 		var = var->next;
 	}
 	return ("");
+}
+
+/*Similar to ft_set_var but append the value at the end of the var value
+like the export builtin with +=
+Return values : 1 :success
+				0 : malloc error
+				-1: incorrect identifier key */
+int	ft_append_var(char *key, char *value, t_evar **env_list, t_svars *svars)
+{
+	t_evar	*var;
+	int		index;
+	char	*or_val;
+	char	*new_val;
+
+	new_val = NULL;
+	if (ft_isshell_var(key))
+		return (ft_append_s_var(key, value, env_list, svars));
+	if (!ft_is_valid_key(key))
+		return (0-1);
+	index = key[0] - 65;
+	if (index < 0 || index > 57)
+		return (0);
+	var = ft_get_var(key, env_list[index]);
+	if (!var)
+		return (ft_create_and_place(key, value, &env_list[index]));
+	else
+	{
+		or_val = ft_get_var_value(key, env_list, *svars);
+		new_val = ft_strjoin(or_val, value);
+		if (!new_val)
+			return (0);
+		if (var->value)
+			free((var)->value);
+		(var)->value = new_val;
+	}
+	return (1);
 }
