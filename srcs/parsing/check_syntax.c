@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:21:18 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/16 15:46:40 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/18 15:54:18 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,94 +16,6 @@ void	syntax_error(char *error)
 {
 	ft_dprintf(2, "syntax error near unexpected token `%s'\n", error);
 }
-/*
-t_syntax_rule	**init_syntax_rules(void)
-{
-	t_syntax_rule	*rules[10];
-	int				i;
-	int				j;
-	int				next;
-	int				prev;
-
-	i = 0;
-	while (i < 10)
-	{
-		rules[i]->token = i;
-		if (i == AND || i == OR)
-		{
-			next = 456780;
-			prev = 90;
-		}
-		else if (i == PIPE)
-		{
-			next = 45670;
-			prev = 90;
-		}
-		else if (i >= 4 && i <= 7)
-		{
-			next = 0;
-			prev = 82310;
-		}
-		else if (i == WORD)
-		{
-			next = 123456790;
-			prev = 123456780;
-		}
-		else if (i == O_BRACKET)
-		{
-			next = 456780;
-			prev = 0;
-		}
-		j = 0;
-		if (!next)
-			rules[i]->valid_next[j++] = WORD;
-		else
-		{
-			while (next)
-			{
-				rules[i]->valid_next[j] = next % 10;
-				next /= 10;
-				j++;
-			}
-		}
-		rules[i]->valid_next[j] = -1;
-		j = 0;
-		if (!prev)
-			rules[i]->valid_prev[j++] = WORD;
-		else
-		{
-			while (prev)
-			{
-				rules[i]->valid_prev[j] = prev % 10;
-				prev /= 10;
-				j++;
-			}
-		}
-		rules[i]->valid_prev[j] = -1;
-	}
-	return rules;
-}
-
-int	check_syntax(t_token *stack)
-{
-	t_token	*ptr;
-	t_syntax_rule **rules;
-	int		i;
-
-	ptr = ft_get_token(stack, -1);
-	rules = init_syntax_rules();
-	while (ptr)
-	{
-		i = 0;
-		while ((rules[ptr->type])->valid_next[i] != -1 && i < 0)
-		{
-			if (ptr->next && ptr->next->type == (rules[ptr->type])->valid_prev[i])
-				// ok
-			i++;
-		}
-		ptr = ptr->prev;
-	}
-}*/
 
 static char	*check_start_and_end(t_token *ptr)
 {
