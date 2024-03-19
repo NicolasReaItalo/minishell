@@ -6,13 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:48:02 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/19 11:35:48 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/19 13:56:42 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_variables.h"
-#include "libft.h"
-#include <stdio.h>
 
 /*allocate a var structure an initialize it with key and value*/
 t_evar	*ft_create_var(char *key, char *value)

@@ -6,13 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:41:59 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/19 10:49:29 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/19 13:56:27 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_variables.h"
-#include "libft.h"
-#include <stdio.h>
 
 /*Fetch the environment variables from **envp
 and store these in the shell vars structure*/

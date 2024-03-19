@@ -6,14 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:46:46 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/19 11:40:22 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/19 13:56:33 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_variables.h"
-#include "libft.h"
-#include <stdio.h>
-
 /*unset an env variable identifie by the key parameter*/
 void	ft_unset_var(char *key, t_evar **vars)
 {

@@ -6,14 +6,14 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:40:05 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/19 11:42:14 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/19 13:59:14 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENV_VARIABLES_H
 # define ENV_VARIABLES_H
 # include <stdlib.h>
-
+# include "libft.h"
 //variables d'envionnement classique
 typedef struct s_evar
 {
@@ -56,4 +56,6 @@ char	*ft_get_shell_var(char *key, t_svars shell_vars);
 int		ft_set_shell_var(char *key, char *value, t_svars *svars);
 int		ft_append_s_var(char *key, char *value, t_evar **env_l, t_svars *svars);
 
+int		ft_get_exit_status(t_svars *svars);
+int		ft_set_exit_status(int status, t_svars *svars);
 #endif

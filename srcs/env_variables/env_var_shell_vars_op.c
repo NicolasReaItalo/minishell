@@ -6,12 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:27:51 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/19 11:42:35 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/19 13:59:33 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_variables.h"
-#include "libft.h"
 
 int	ft_isshell_var(char *key)
 {

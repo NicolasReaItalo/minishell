@@ -1,20 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_vars_utils.c                                   :+:      :+:    :+:   */
+/*   env_var_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:35:44 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/18 18:45:12 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/19 13:56:55 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_variables.h"
-#include "env_variables.h"
-#include "libft.h"
-#include <stdio.h>
-
 /*initialisation a 0 de la structure des varables d'environnement
 probablement a regrouper avec une fonction d'initialisation
 de toutes les variables de la structure shell */
