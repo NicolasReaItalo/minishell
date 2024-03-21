@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/21 13:19:59 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/21 16:14:04 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,6 @@ int	main(int argc, char **argv, char **envp)
 
 	printf("\n ===============  EXECUTION FINISHED ===============\n");
 	printf("exit status [%d]\n", ft_get_exit_status(&shell.shell_vars));
-
-	// char *cmd;
-
-	// ft_get_full_cmd(&cmd, "ls", &shell);
 
 
 	ft_free_shell(&shell);

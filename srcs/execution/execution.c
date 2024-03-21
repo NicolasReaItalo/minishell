@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:31:47 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/21 13:19:41 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/21 16:45:32 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -409,6 +409,180 @@ int ft_get_full_cmd(char **full_cmd , char *content, t_shell *shell)
 	return (ft_cmd_not_found_error(content));
 }
 
+/*Apply the redirection of the outfile in TRUNC_MODE
+	return 0 in case of success or the error code to output 1 */
+int	ft_apply_r_out(char *file)
+{
+int	out_file;
+
+out_file = open(file, O_CREAT | O_TRUNC | O_WRONLY, 0666);
+if (out_file == -1)
+{
+	perror(file);
+	return(1);
+}
+if (dup2(out_file, STDOUT_FILENO) == -1)
+{
+	close(out_file);
+	return(1);
+}
+	close(out_file);
+	return (0);
+}
+/*Apply the redirection of the outfile in APPEND_MODE
+	return 0 in case of success or the error code to output 1 */
+int	ft_apply_r_append(char *file)
+{
+int	out_file;
+
+out_file = open(file, O_CREAT | O_APPEND | O_WRONLY, 0666);
+if (out_file == -1)
+{
+	perror(file);
+	return(1);
+}
+if (dup2(out_file, STDOUT_FILENO) == -1)
+{
+	close(out_file);
+	return(1);
+}
+	close(out_file);
+	return (0);
+}
+
+/*Apply the redirection of the infile
+	return 0 in case of success or the error code to output : 1 */
+int	ft_apply_r_in(char *file)
+{
+int	in_file;
+
+in_file = open(file, O_RDONLY);
+if (in_file == -1)
+{
+	perror(file);
+	return(1);
+}
+if (dup2(in_file, STDIN_FILENO) == -1)
+{
+	close(in_file);
+	return(1);
+}
+	close(in_file);
+	return (0);
+}
+
+
+static void	ft_putnbr_base_l(unsigned long nbr, char *base, char *file )
+{
+	unsigned long	base_len;
+	unsigned long 	tmp;
+	int				char_nb;
+	int i;
+
+	i = 3;
+
+	tmp = nbr;
+	char_nb = 1;
+	base_len = ft_strlen(base);
+	while (tmp)
+	{
+		tmp /= base_len;
+		char_nb *= base_len;
+	}
+
+	while(nbr >= base_len)
+	{
+		file[i] = base[nbr / char_nb];
+		nbr %= char_nb;
+		char_nb /= base_len;
+		i++;
+	}
+}
+
+/*Genrate a unique here_doc filename in the form ms_hd_xxxx *where xxx is the address of the content pointer*/
+char	*ft_generate_u_filename(char *content)
+{
+	char	*file;
+
+	if (!content)
+		return (NULL);
+	file = malloc (20 * sizeof(char));
+	if (!file)
+		return (NULL);
+	ft_memset(file, 0, 20 * sizeof(char));
+	file[0] = 'm';
+	file[1] = 's';
+	file[2] = '_';
+	ft_dprintf(2,"file : %s\n", file);
+	ft_putnbr_base_l((unsigned long) content, "0123456789abcdef", file);
+	return (file);
+}
+
+/*Apply the here_doc redirection by creating a tmp file, copying the hd_buffer in it and redirect STDIN to it*/
+int	ft_apply_r_heredoc(char *content)
+{
+	int	in_file;
+	char	*file;
+
+	file = NULL;
+
+	file = ft_generate_u_filename(content);
+	if (!file)
+	{
+		write(2,"Filegeneration error!\n",23);
+		return (1);
+	}
+	/// creer un fichier dans /temp -> dterminer le nom
+	in_file = open(file, O_WRONLY | O_CREAT, 0666); // voir le cas d'etre sur que le fichier existe pas avant
+	if (in_file == -1)
+	{
+		perror(file);
+		return(1);
+	}
+	/// copier le contenu du buffer dans le fichier
+	if (write(in_file, content, ft_strlen(content)) == -1)
+	{
+		perror(file);
+		free(file);
+		return(1);
+	}
+	//  fermer le fichier
+	close(in_file);
+// ouvrir le fichier
+	in_file = open(file, O_RDONLY);
+	if (in_file == -1)
+	{
+		perror(file);
+		free(file);
+		return(1);
+	}
+// faire un dup2 du fichier
+	if (dup2(in_file, STDIN_FILENO) == -1)
+	{
+		perror(file);
+		free(file);
+		close(in_file);
+		return(1);
+	}
+// faire un unlink()
+	// if (unlink(file) == -1)
+	// {
+	// 	perror(file);
+	// 	free(file);
+	// 	close(in_file);
+	// 	return(1);
+	// }
+// fermer le fichier
+	close(in_file);
+	return (0);
+
+}
+
+
+
+
+
+
 
 
 void	ft_exec(t_node *node, int pipe_nb, t_shell *shell)
@@ -425,22 +599,46 @@ void	ft_exec(t_node *node, int pipe_nb, t_shell *shell)
 	(void) pipe_nb;
 
 
-	// si expansion == 0 -> lancer la suite expansion jusqu'a decote + detection builtin
+	//[1] si expansion == 0 -> lancer la suite expansion jusqu'a decote + detection builtin
 
-	// si builtin => executer la builtin et quitter penser a la question du free quand side = center
-	// si side != center -> gerer la redirection initiale
+	//[2]  si builtin => executer la builtin et quitter penser a la question du free quand side = center
+	//[3]   si side != center -> gerer la redirection initiale
 
-	// gerer les redirections heredocs etc... => soulever exception en caas d'erreur
+	//[4]  gerer les redirections heredocs etc... => soulever exception en cas d'erreur
+	t_token *redir;
 
-	// Si pas de token commande => free et  exit(0)
+	redir = node->redir;
+	int ret2;
+	while(redir)
+	{
+		if (redir->type == R_OUT)
+			ret2 = ft_apply_r_out(redir->content);
+		else if (redir->type == R_IN)
+			ret2 = ft_apply_r_in(redir->content);
+		else if (redir->type == R_APPEND)
+			ret2 = ft_apply_r_append(redir->content);
+		else if (redir->type == R_HEREDOC)
+			ret2 = ft_apply_r_heredoc(redir->content);
 
-	// sinon :
+		if (ret2) /// On quitte en cas d'erreur
+		{
+			ft_free_shell(shell);
+			exit (ret2);
+		}
+
+		redir = redir->next;
+	}
 
 
+/////[5] Si pas de token commande => free et  exit(0)
 
-
-//////// recuperation de lacommande / check si c'est un path ou un nom de commande a expanser
-//////// verifications : le fichier existe / il est valide ( pas un repertoire) et il est executable
+	if (node->cmd == NULL)
+	{
+		ft_free_shell(shell);
+		exit (0);
+	}
+//////// [6] recuperation de lacommande / check si c'est un path ou un nom de commande a expanser
+////////     verifications : le fichier existe / il est valide ( pas un repertoire) et il est executable
 	if (ft_strchr(node->cmd->content, '/') != NULL)  // detection de '/'
 	{
 
@@ -481,8 +679,7 @@ void	ft_exec(t_node *node, int pipe_nb, t_shell *shell)
     }
 
 
-
-	///////// iitiaalisation des tableau de comande et env pour execve
+///////// [7] iitiaalisation des tableau de comande et env pour execve
 	if (!ft_token_to_array(&node->cmd, &cmd_array))
 		{
 			write(2, "Error during malloc\n", 21);
@@ -496,8 +693,7 @@ void	ft_exec(t_node *node, int pipe_nb, t_shell *shell)
 			ft_free_shell(shell);
 			exit(1);
 		}
-
-	///////// lancer execve => si echec ( free et exit code = 1 )
+/////////[8] lancer execve => si echec ( free et exit code = 1 )
 	if (execve(full_cmd, cmd_array , env_array) == -1)
 	{
 		write(2, "Error during execve\n", 21);
