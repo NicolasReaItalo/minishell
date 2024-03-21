@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 11:58:13 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 13:23:36 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/21 15:31:10 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ int	ft_capture_here_doc(t_token *tok, char *eof)
 			free(line);
 			if (!tok->content)
 				tok->content = ft_strdup("");
+			else
+				tok->content = ft_buffer_append(tok->content, "");
 			break ;
 		}
 		tok->content = ft_buffer_append(tok->content, line);
