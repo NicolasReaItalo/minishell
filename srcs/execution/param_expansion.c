@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/20 17:16:22 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/21 15:09:15y tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,40 +22,17 @@
 // !!!L'expansion ne doit pas se faire entre ' '
 // ??? Expansion $?
 
-
-/*Checks if the key  string is a valid key for an environement
-variable
-returns 1 in case o success, 0 otherwise
-RULES
-no empty string
-char : a-z or A-Z or 1-9 or _
-first char must not be a  digit*/
-//TODO: Voir si j'ai vraiement besoin de cette fonction
-int	ft_is_valid_key_char(char *key)
-{
-	if (!key || !key[0])
-		return (0);
-	if (!ft_isalpha(key[0]) && key[0] != '_')
-		return (0);
-	while (*key)
-	{
-		if (!ft_isalpha(*key) && !ft_isdigit(*key) && *key != '_')
-			return (0);
-		key++;
-	}
-	return (1);
-}
-
 static int	is_valid_param_char(char c)
 {
 	return (ft_isalpha(c) || ft_isdigit(c) || c == '_');
 }
 
-// Fonction qui prend en entree une chaine de caractere et renvoie une chaine ayant les criteres d'une key
+// Fonction qui prend en entree une chaine de caractere et renvoie 
+// une chaine ayant les criteres d'une key
 char	*find_next_param_expansion(char *str, char **next)
 {
 	int		len;
-	
+
 	len = 0;
 	while (*str)
 	{
@@ -63,30 +40,22 @@ char	*find_next_param_expansion(char *str, char **next)
 		{
 			str++;
 			while (*str && *str != '\'')
-				str++;		
+				str++;
 		}
 		else if (*str == '$' && *(str + 1) == '?')
-		{
-//			param = ft_substr(str, 1, 1);
-			*str = '\0';
-			*next = str + 2;
-//			return (param);
-			return (ft_substr(str + 1, 0, 1));
-		}
+			return (*str = '\0', *next = str + 2, ft_substr(str + 1, 0, 1));
 		else if (*str == '$' && is_valid_param_char(*(str + 1)))
 		{
 			*str = '\0';
 			str++;
 			while (is_valid_param_char(*(str + len)))
-			{
 				len++;
-			}
 			*next = str + len;
-			return(ft_substr(str, 0, len));		
+			return (ft_substr(str, 0, len));
 		}						
 		str++;
 	}
-	return (NULL); 
+	return (NULL);
 }
 
 static char	*ft_concat_3str(char *first, char *second, char *third)
@@ -94,12 +63,14 @@ static char	*ft_concat_3str(char *first, char *second, char *third)
 	char	*output;
 	char	*first_concat;
 
-//	if (!first || !second || !third)
-//		return (NULL);
 	first_concat = ft_strjoin(first, second);
-	free (first);
+	if (!first_concat)
+		return (free(first), NULL);
 	output = ft_strjoin(first_concat, third);
-	return (free(first_concat), output);	
+	free (first);
+	if (!output)
+		return (free(first_concat), NULL);
+	return (free(first_concat), output);
 }
 
 //Fonction qui remplace une chaine de caractere en gerant l'expansion des variables
@@ -109,13 +80,15 @@ char	*expand_param(char *str, t_shell *shell)
 	char	*key;
 	char	*new;
 	char	*next;
-	char	*out1;
 	char	*output;
-	
+
 	if (!str)
 		return (NULL);
 	next = NULL;
 	output = ft_strdup(str);
+	if (!output)
+		return (NULL);
+	free (str);
 	key = find_next_param_expansion(output, &next);
 	if (!key)
 		return (output);
@@ -123,30 +96,59 @@ char	*expand_param(char *str, t_shell *shell)
 	{
 		new = ft_get_var_value(key, shell->env_vars, shell->shell_vars);
 		free (key);
-		//On doit joindre les trois bouts
 		output = ft_concat_3str(output, new, next);
-//		free(out1);
 		key = find_next_param_expansion(output, &next);
-//		if (!key)
-//			break;	
 	}
-	return (output);	
+	return (output);
+}
+
+// Gestion de l'IFS apres l'expansion des parametres
+int	field_splitting()
+{
+
+	// Gestion du retour d'erreur si besoin
+	return (0);
 }
 
 // Cette fonction gere le cycle d'expansions pour le node de type exec fournit en argument
 // pour chaques token :  parameter_expansion -> IFS -> pathname_expansion -> quote removal
 // !!! pour redir verif les operations a faire
-void	word_expand(t_node node, t_shell shell)
+int	word_expand(t_node *node, t_shell *shell)
 {
-		
-}
+	t_token	*ptr;
 
+	if (!node)
+		return (4);
+	ptr = node->cmd;
+	while (ptr)
+	{
+		ptr->content = expand_param(ptr->content, shell);
+//		TODO: que faire si return NULL?
+//				soit le content est vide, soit l'allocation de l'output n'a pas marche
+		if (!ptr->content)
+			return (1);
+		ptr = ptr->next;	
+	}
+	ptr = node->redir;
+	while (ptr)	
+	{
+		ptr->content = expand_param(ptr->content, shell);
+//		TODO: que faire si return NULL?
+		if (!ptr->content)
+			return (1);
+		ptr = ptr->next;	
+	}
+	return (0);
+}
+/*
 int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
 //	char	*next;
 	t_shell	shell;	
 
+	if (argc < 2)
+		return (0); 
 	ft_init_env_vars(shell.env_vars, &shell.shell_vars);
 	ft_fetch_env_vars(shell.env_vars, envp);
 //	next = NULL;	
@@ -157,7 +159,9 @@ int	main(int argc, char **argv, char **envp)
 	free (str);
 	ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 	return (0);
-}
+}*/
+//gcc -g3 srcs/execution/param_expansion.c srcs/env_variables/*.c -I./include/ -I./libft/ -L./libft/ -lft -o param_expansion 
+
 /*
 // main de test du strjoin special
 int	main(int argc, char **argv)
@@ -172,4 +176,80 @@ int	main(int argc, char **argv)
 	return (0);
 }*/
 
-//gcc -g3 srcs/execution/param_expansion.c srcs/env_variables/*.c -I./include/ -I./libft/ -L./libft/ -lft -o param_expansion 
+char	*ft_handle_token_errors(int error)
+{
+	if (error == 1)
+		return ("Bad alocation");
+	if (error == 2)
+		return ("unclosed quotes");
+	if (error == 3)
+		return ("Empty string");
+	if (error == 4)
+		return ("Empty node");
+	return ("");
+}
+#include "minishell.h"
+#include "tests.h"
+#include "token.h"
+int	main(int argc, char **argv, char **envp)
+{
+	t_token	*stack;
+	t_node	*tree;
+	int		token_error;
+	int		syntax_error;
+	int		tree_error;
+	int		expand_error;
+	t_shell	shell;	
+
+	if (argc != 2)
+		return (1);
+	token_error = 0;
+	syntax_error = 0;
+	tree_error = 0;
+	expand_error = 0;
+	tree = NULL;
+	stack = NULL;
+	ft_init_env_vars(shell.env_vars, &shell.shell_vars);
+	ft_fetch_env_vars(shell.env_vars, envp);
+	token_error = tokenise(argv[1], &stack);
+	if (token_error)
+	{
+		ft_dprintf(2, "tokenisation error: %s\n", ft_handle_token_errors(token_error));
+		kill_stack(&stack);
+		return (1);
+	}
+	syntax_error = check_syntax(stack);
+	if (syntax_error)
+	{
+		kill_stack(&stack);
+		return (2);
+	}
+	ft_redirections(&stack);
+	tree = ft_create_tree(&stack, &tree_error, 2);
+	if (tree_error)
+	{
+		ft_handle_tree_error(tree_error);
+		ft_free_tree(tree);
+		return (3);
+	}
+	ft_dprintf(1, "--------------------\n");
+	show_tree(tree, 0);
+	ft_dprintf(1, "----------After----------\n");
+	expand_error = word_expand(tree, &shell);
+	if (expand_error)
+	{
+		ft_dprintf(2, "expansion error: %s\n", ft_handle_token_errors(expand_error));
+		ft_free_tree(tree);
+		ft_free_env_vars(shell.env_vars, &shell.shell_vars);
+		return (4);
+	}
+	show_tree(tree, 0);
+	ft_free_tree(tree);
+	ft_free_env_vars(shell.env_vars, &shell.shell_vars);
+	return (0);
+}
+
+
+//gcc -g3 srcs/execution/param_expansion.c srcs/env_variables/*.c srcs/parsing/*.c test/utils/*.c -I./include/ -I./libft/ -I./test -L./libft/ -lft -lreadline -o param_expansion 
+
+//valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=valgrind.txt  ./param_expansion '<$SHLVL <<eof echo$SHELL $?-l la$? >file'
