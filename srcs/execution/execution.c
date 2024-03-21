@@ -6,12 +6,12 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:31:47 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/20 14:52:29 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/21 13:19:41 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
+#include <sys/stat.h>
 
 
 
@@ -275,6 +275,34 @@ int ft_count_pipes(t_node *node)
 	return (0);
 }
 
+
+
+
+
+
+
+
+void	ft_exec_pipe(t_node *node, int pipe_nb, t_shell *shell)
+{
+	(void) node;
+	(void) pipe_nb;
+	(void) shell;
+//// A ecrire...
+	return ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*convert the cmd list to an array** of char* with every token content
  initialise the cmd_array passed in parameter
 return 1 in case of success, 0 otherwise
@@ -307,52 +335,177 @@ int ft_token_to_array(t_token **cmd_list, char	***cmd_array)
 	return (1);
 }
 
-
-
-
-
-
-
-
-void	ft_exec_pipe(t_node *node, int pipe_nb, t_shell *shell)
+int	ft_malloc_error(void)
 {
-	(void) node;
-	(void) pipe_nb;
-	(void) shell;
-//// A ecrire...
-	return ;
+	write(2, "Error during malloc\n", 21);
+	return (1);
 }
+
+int	ft_cmd_not_found_error(char *cmd)
+{
+	write(2, cmd, ft_strlen(cmd));
+	write(2, ": command not found\n", 21);
+	return (127);
+}
+int	ft_cmd_forbidden(char *cmd)
+{
+	perror(cmd);
+	return (126);
+}
+
+char	*ft_join_paths(char const *path, char const *cmd)
+{
+	char	*full_path;
+	int		i;
+	int		j;
+
+	if (!path || !cmd)
+		return (NULL);
+	full_path = malloc(sizeof(char) * (ft_strlen(path) + ft_strlen(cmd) + 2));
+	if (!full_path)
+		return (NULL);
+	i = 0;
+	while (path[i])
+	{
+		full_path[i] = path[i];
+		i++;
+	}
+	full_path[i] = '/';
+	i++;
+	j = 0;
+	while (cmd[j])
+	{
+		full_path[i + j] = cmd[j];
+		j++;
+	}
+	full_path[i + j] = '\0';
+
+	return (full_path);
+}
+
+
+int ft_get_full_cmd(char **full_cmd , char *content, t_shell *shell)
+{
+	char	**paths;
+	int		i;
+	char	*var_path;
+
+	var_path = ft_get_var_value("PATH", shell->env_vars, shell->shell_vars);
+	paths = ft_split(var_path, ':');
+
+	i = 0;
+	while (paths[i])
+	{
+		*full_cmd = NULL;
+		*full_cmd =	ft_join_paths(paths[i], content);
+		if (!full_cmd)
+			return (ft_malloc_error());
+		if (access(*full_cmd, F_OK) == 0)
+			return (0);
+		free(*full_cmd);
+		i++;
+	}
+	ft_free_splitted(paths);
+	return (ft_cmd_not_found_error(content));
+}
+
+
 
 void	ft_exec(t_node *node, int pipe_nb, t_shell *shell)
 {
 	char	**cmd_array;
 	char	**env_array;
+	char	*full_cmd;
+	int		ret;
+	struct stat file_stat;
 
 	cmd_array = NULL;
+	env_array = NULL;
+	full_cmd = NULL;
 	(void) pipe_nb;
-	// si side != center -> gerer la redirection initiale
+
+
 	// si expansion == 0 -> lancer la suite expansion jusqu'a decote + detection builtin
+
+	// si builtin => executer la builtin et quitter penser a la question du free quand side = center
+	// si side != center -> gerer la redirection initiale
+
 	// gerer les redirections heredocs etc... => soulever exception en caas d'erreur
 
 	// Si pas de token commande => free et  exit(0)
-	// si builtin => executer la builtin et quitter penser a la question du free quand side = center
 
 	// sinon :
-	// access() pour execution simple
-	// si echec => recherche de paths => si pas trouve erreur 127
-	// si path trouve mais exceution interdite => erreur 126
+
+
+
+
+//////// recuperation de lacommande / check si c'est un path ou un nom de commande a expanser
+//////// verifications : le fichier existe / il est valide ( pas un repertoire) et il est executable
+	if (ft_strchr(node->cmd->content, '/') != NULL)  // detection de '/'
+	{
+
+		full_cmd = ft_strdup(node->cmd->content);
+		if (!full_cmd)
+			exit (ft_malloc_error());
+		if (access(full_cmd, F_OK) != 0 )
+		{
+			perror(full_cmd);
+			free(full_cmd);
+			ft_free_shell(shell);
+			exit(127);
+		}
+	}
+	else
+	{
+		ret = ft_get_full_cmd(&full_cmd ,node->cmd->content, shell);
+		if (ret != 0)
+		{
+			ft_free_shell(shell);
+			exit (ret);
+		}
+	}
+	if (stat(full_cmd, &file_stat) == -1) {
+		perror("stat");
+		exit(1) ;
+	}
+	if (!S_ISREG(file_stat.st_mode) || !(file_stat.st_mode & S_IXUSR))
+	{
+		write(2, full_cmd, ft_strlen(full_cmd));
+		if (S_ISDIR(file_stat.st_mode))
+			write(2, ": Is a directory\n", 18);
+		else
+			write(2, ": Permission denied\n", 21);
+		free(full_cmd);
+		ft_free_shell(shell);
+		exit (126);
+    }
+
+
+
+	///////// iitiaalisation des tableau de comande et env pour execve
 	if (!ft_token_to_array(&node->cmd, &cmd_array))
 		{
 			write(2, "Error during malloc\n", 21);
-			// free_shell
+			ft_free_shell(shell);
 			exit(1);
 		}
-	// lancer execve => si echec ( free et exit code = 1 )
-	env_array = ft_push_env_vars(shell->env_vars); // il faut reecrire cette fonction pour attraper les erreurs de malloc
-	if (execve(cmd_array[0], cmd_array , env_array) == -1)
+	if (!ft_push_env_vars(shell->env_vars, &env_array))
+		{
+			write(2, "Error during malloc\n", 21);
+			ft_free_splitted(cmd_array);
+			ft_free_shell(shell);
+			exit(1);
+		}
+
+	///////// lancer execve => si echec ( free et exit code = 1 )
+	if (execve(full_cmd, cmd_array , env_array) == -1)
 	{
 		write(2, "Error during execve\n", 21);
+		free(full_cmd);
 		ft_free_shell(shell);
+		ft_free_splitted(env_array);
+		ft_free_splitted(cmd_array);
+		exit(1);
 	}
 }
 
@@ -395,18 +548,18 @@ void	ft_exec_root(t_node *tree_root, t_shell *shell)
 		{
 			tree_root->side = center;
 			exit_status = ft_exec_in_fork(tree_root, -1,  shell);
-			if (exit_status == -1)
-				ft_dprintf(2, "Internal Error !");  // gestion erreur a affiner...
+			// if (exit_status != 0)
+			// 	ft_dprintf(2, "Internal Error !");  // gestion erreur a affiner pour detecter une erreur fork malloc etc...
+
 			ft_set_exit_status(exit_status, &shell->shell_vars);
 		}
 		else
 		{
-			// execution builtin
+			// execution builtin dans le processus principal
 		}
 	if (tree_root->type == N_PIPE) //pipe potentiellement plusieurs pipes a la suite
 		exit_status = ft_exec_in_fork(tree_root, 0,  shell);
 	}
-
 
 }
 

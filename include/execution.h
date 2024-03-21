@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:32:18 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/20 14:27:16 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/21 11:08:23 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,14 @@ void	ft_free_shell(t_shell *shell);
 void	ft_exec_root(t_node *tree_root, t_shell *shell);
 
 int ft_token_to_array(t_token **cmd_list, char	***cmd_array); ///pour test
+int ft_get_full_cmd(char **full_cmd , char *content, t_shell *shell);
+char	*ft_join_paths(char const *path, char const *cmd);
+int	ft_cmd_forbidden(char *cmd);
+int	ft_cmd_not_found_error(char *cmd);
+int	ft_malloc_error(void);
+int	ft_cmd_not_found_error(char *cmd);
+int	ft_cmd_forbidden(char *cmd);
+
+void	ft_exec(t_node *node, int pipe_nb, t_shell *shell);
+
 #endif

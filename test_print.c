@@ -8,12 +8,12 @@ pour debugger minishell
 */
 
 #include <stdio.h>
-
+#define KCYN  "\x1B[36m"
 
 int main(int argc, char **argv, char **env)
 {
 	int i = 0;
-
+printf(KCYN);
 printf("=============pgm arguments=============\n");
 	while (i < argc)
 	{
@@ -28,5 +28,6 @@ printf("=============pgm env var=============\n");
 		printf("%s\n", env[i]);
 		i++;
 	}
+	printf("\033[0m");
 	return 0;
 }

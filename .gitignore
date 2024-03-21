@@ -8,3 +8,7 @@ minishell
 .build_started
 .build_done
 test_print
+test_print.c
+my_print_hard_link
+my_ls_link
+test_print.c
