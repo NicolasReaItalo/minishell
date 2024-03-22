@@ -103,10 +103,35 @@ char	*expand_param(char *str, t_shell *shell)
 }
 
 // Gestion de l'IFS apres l'expansion des parametres
-int	field_splitting()
+int	field_splitting(t_token *token, t_shell *shell)
 {
+	char	*ifs;
+	//char	*next;
+	char	*str;
+	t_token	*new;
 
-	// Gestion du retour d'erreur si besoin
+	ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
+	str = token->content;
+	while (*str)
+	{
+		// Attention apres expansion il peux y avoir plusieurs caracteres ifs d'affilee (et au debut et a la fin)
+		// Peux etre essayer de representer sur un schema drawio 
+		if (ft_strchr(ifs, *str) && !ft_strchr(ifs, *(str + 1)))
+		{
+			new = new_token(str + 1, ft_strlen(str + 1) + 1);
+			if (!new)
+				return (1);
+			new->type = token->type;
+			new->next = token->next;
+			token->next = new;
+			new->prev = token;
+			if (new->next)
+				new->next->prev = new;
+			*str = '\0';
+			return (0);
+		}
+		str++;
+	}
 	return (0);
 }
 
@@ -115,28 +140,30 @@ int	field_splitting()
 // !!! pour redir verif les operations a faire
 int	word_expand(t_node *node, t_shell *shell)
 {
-	t_token	*ptr;
+	t_token	*token;
+	int		error;
 
 	if (!node)
 		return (4);
-	ptr = node->cmd;
-	while (ptr)
+	token = node->cmd;
+	while (token)
 	{
-		ptr->content = expand_param(ptr->content, shell);
-//		TODO: que faire si return NULL?
-//				soit le content est vide, soit l'allocation de l'output n'a pas marche
-		if (!ptr->content)
+		token->content = expand_param(token->content, shell);
+		if (!token->content)
 			return (1);
-		ptr = ptr->next;	
+		error = field_splitting(token, shell);
+		if (error)
+			return (error);
+		token = token->next;	
 	}
-	ptr = node->redir;
-	while (ptr)	
+	token = node->redir;
+	while (token)	
 	{
-		ptr->content = expand_param(ptr->content, shell);
+		token->content = expand_param(token->content, shell);
 //		TODO: que faire si return NULL?
-		if (!ptr->content)
+		if (!token->content)
 			return (1);
-		ptr = ptr->next;	
+		token = token->next;	
 	}
 	return (0);
 }
@@ -211,6 +238,7 @@ int	main(int argc, char **argv, char **envp)
 	stack = NULL;
 	ft_init_env_vars(shell.env_vars, &shell.shell_vars);
 	ft_fetch_env_vars(shell.env_vars, envp);
+//  ft_dprintf(1, "carac IFS : \"%s\"\n", ft_get_var_value("IFS", shell.env_vars, shell.shell_vars));
 	token_error = tokenise(argv[1], &stack);
 	if (token_error)
 	{

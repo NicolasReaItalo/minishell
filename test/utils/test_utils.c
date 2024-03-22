@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 13:50:32 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/18 15:39:26 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/22 17:24:41 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void	show_tree(t_node *node, int i)
 		display = node->cmd;
 		while (display)
 		{
-				ft_dprintf(1 ,"%s ", display->content);
+				ft_dprintf(1 ,"{%s} ", display->content);
 				display= display->next;
 		}
 		ft_dprintf(1 ,"]");
@@ -160,7 +160,7 @@ void	show_tree(t_node *node, int i)
 		display =node->redir;
 		while (display)
 		{
-				ft_dprintf(1 ,"%s ", display->content);
+				ft_dprintf(1 ,"{%s} ", display->content);
 				display = display->next;
 		}
 		ft_dprintf(1 ,"]");
