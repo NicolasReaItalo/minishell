@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 11:52:57 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/18 14:31:21 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/25 11:07:53 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strtrim(char const *s1, char const *set);
 // split - allocate and send an array separating s with c / NULL_ending
 char	**ft_split(char const *s, char c);
+// split_multiple - like split but w a string charset for separator
+char	**ft_split_multiple(char *str, char *charset);
 // itoa - allocate and send a str representing an int
 char	*ft_itoa(int n);
 // strmapi - apply f to each char of a string and create a new str (w alloc)
