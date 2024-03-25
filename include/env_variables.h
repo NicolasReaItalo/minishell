@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:40:05 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/20 15:33:52 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/25 11:29:14 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_evar
 variables de shells speciales
 ifs =  a initialiser avec " \t\n"
 EXIT_STATUS :  a initialiser a "0"*/
-typedef struct s_s_ars
+typedef struct s_svars
 {
 	char	*ifs;
 	char	*exit_code;

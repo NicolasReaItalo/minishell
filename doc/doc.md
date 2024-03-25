@@ -6,3 +6,5 @@
 [specification posix shell](https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_05_03)
 
 ## OTHER DOCS
+[Wildcard](https://www.geeksforgeeks.org/wildcard-pattern-matching/) \
+[Bash reference manuel](https://www.gnu.org/software/bash/manual/bash.html)
