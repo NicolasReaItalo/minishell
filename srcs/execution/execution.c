@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:31:47 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/21 16:45:32 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/25 11:09:22 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -472,48 +472,59 @@ if (dup2(in_file, STDIN_FILENO) == -1)
 }
 
 
+char    *ft_strcpy(char *s1, char *s2)
+{
+	int i;
+
+	i = 0;
+	while (s2[i])
+	{
+		s1[i] = s2[i];
+		i++;
+	}
+	s1[i] = s2[i];
+	return (s1);
+}
+
 static void	ft_putnbr_base_l(unsigned long nbr, char *base, char *file )
 {
 	unsigned long	base_len;
-	unsigned long 	tmp;
-	int				char_nb;
+	unsigned long	tmp;
+	unsigned long	div_value;
 	int i;
 
-	i = 3;
+	i = 8;
 
 	tmp = nbr;
-	char_nb = 1;
+	div_value = 1;
 	base_len = ft_strlen(base);
 	while (tmp)
 	{
 		tmp /= base_len;
-		char_nb *= base_len;
+		div_value *= base_len;
 	}
 
-	while(nbr >= base_len)
+	while(div_value >= 1)
 	{
-		file[i] = base[nbr / char_nb];
-		nbr %= char_nb;
-		char_nb /= base_len;
+		file[i] = base[nbr / div_value];
+		nbr %= div_value;
+		div_value /= base_len;
 		i++;
 	}
 }
 
 /*Genrate a unique here_doc filename in the form ms_hd_xxxx *where xxx is the address of the content pointer*/
-char	*ft_generate_u_filename(char *content)
+static char	*ft_generate_u_filename(char *content)
 {
 	char	*file;
 
 	if (!content)
 		return (NULL);
-	file = malloc (20 * sizeof(char));
+	file = malloc (30 * sizeof(char));
 	if (!file)
 		return (NULL);
-	ft_memset(file, 0, 20 * sizeof(char));
-	file[0] = 'm';
-	file[1] = 's';
-	file[2] = '_';
-	ft_dprintf(2,"file : %s\n", file);
+	ft_memset(file, 0, 30 * sizeof(char));
+	ft_strcpy(file, "/tmp/ms_");
 	ft_putnbr_base_l((unsigned long) content, "0123456789abcdef", file);
 	return (file);
 }
@@ -529,9 +540,10 @@ int	ft_apply_r_heredoc(char *content)
 	file = ft_generate_u_filename(content);
 	if (!file)
 	{
-		write(2,"Filegeneration error!\n",23);
+		write(2,"File generation error!\n",24);
 		return (1);
 	}
+	ft_dprintf(2,"file : %s\n", file); ////////////////////////////////////debug
 	/// creer un fichier dans /temp -> dterminer le nom
 	in_file = open(file, O_WRONLY | O_CREAT, 0666); // voir le cas d'etre sur que le fichier existe pas avant
 	if (in_file == -1)
@@ -565,24 +577,19 @@ int	ft_apply_r_heredoc(char *content)
 		return(1);
 	}
 // faire un unlink()
-	// if (unlink(file) == -1)
-	// {
-	// 	perror(file);
-	// 	free(file);
-	// 	close(in_file);
-	// 	return(1);
-	// }
+	if (unlink(file) == -1)
+	{
+		perror(file);
+		free(file);
+		close(in_file);
+		return(1);
+	}
 // fermer le fichier
 	close(in_file);
+	free(file);
 	return (0);
 
 }
-
-
-
-
-
-
 
 
 void	ft_exec(t_node *node, int pipe_nb, t_shell *shell)
@@ -598,13 +605,10 @@ void	ft_exec(t_node *node, int pipe_nb, t_shell *shell)
 	full_cmd = NULL;
 	(void) pipe_nb;
 
+	//[1]  si builtin => executer la builtin et quitter penser a la question du free quand side = center
+	//[2]   si pipe_nb !=-1 -> gerer la redirection initiale
 
-	//[1] si expansion == 0 -> lancer la suite expansion jusqu'a decote + detection builtin
-
-	//[2]  si builtin => executer la builtin et quitter penser a la question du free quand side = center
-	//[3]   si side != center -> gerer la redirection initiale
-
-	//[4]  gerer les redirections heredocs etc... => soulever exception en cas d'erreur
+	//[3]  gerer les redirections heredocs etc... => soulever exception en cas d'erreur
 	t_token *redir;
 
 	redir = node->redir;
@@ -630,14 +634,14 @@ void	ft_exec(t_node *node, int pipe_nb, t_shell *shell)
 	}
 
 
-/////[5] Si pas de token commande => free et  exit(0)
+/////[4] Si pas de token commande => free et  exit(0)
 
 	if (node->cmd == NULL)
 	{
 		ft_free_shell(shell);
 		exit (0);
 	}
-//////// [6] recuperation de lacommande / check si c'est un path ou un nom de commande a expanser
+//////// [5] recuperation de lacommande / check si c'est un path ou un nom de commande a expanser
 ////////     verifications : le fichier existe / il est valide ( pas un repertoire) et il est executable
 	if (ft_strchr(node->cmd->content, '/') != NULL)  // detection de '/'
 	{
@@ -679,7 +683,7 @@ void	ft_exec(t_node *node, int pipe_nb, t_shell *shell)
     }
 
 
-///////// [7] iitiaalisation des tableau de comande et env pour execve
+///////// [6] iitiaalisation des tableau de comande et env pour execve
 	if (!ft_token_to_array(&node->cmd, &cmd_array))
 		{
 			write(2, "Error during malloc\n", 21);
@@ -693,7 +697,7 @@ void	ft_exec(t_node *node, int pipe_nb, t_shell *shell)
 			ft_free_shell(shell);
 			exit(1);
 		}
-/////////[8] lancer execve => si echec ( free et exit code = 1 )
+/////////[7] lancer execve => si echec ( free et exit code = 1 )
 	if (execve(full_cmd, cmd_array , env_array) == -1)
 	{
 		write(2, "Error during execve\n", 21);
@@ -742,7 +746,6 @@ void	ft_exec_root(t_node *tree_root, t_shell *shell)
 		//expansion du node et detection builtin a ajouter
 		if (!tree_root->is_builtin)
 		{
-			tree_root->side = center;
 			exit_status = ft_exec_in_fork(tree_root, -1,  shell);
 			// if (exit_status != 0)
 			// 	ft_dprintf(2, "Internal Error !");  // gestion erreur a affiner pour detecter une erreur fork malloc etc...
