@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/25 11:08:20 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/25 14:11:07 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ int	main(int argc, char **argv, char **envp)
 	show_tree(shell.tree, 0);
 	printf("\n =============== START EXECUTION ===============\n");
 
-	// ft_exec_root(shell.tree, &shell);
-	ft_exec(shell.tree, -1,  &shell); //// debug
+	ft_exec_root(shell.tree, &shell);
+	// ft_exec(shell.tree, -1,  &shell); //// debug
 
 	printf("\n ===============  EXECUTION FINISHED ===============\n");
 	printf("exit status [%d]\n", ft_get_exit_status(&shell.shell_vars));
