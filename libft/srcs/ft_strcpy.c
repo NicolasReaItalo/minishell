@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 14:19:14 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/20 13:36:04 by nrea             ###   ########.fr       */
+/*   Created: 2024/03/25 13:09:37 by nrea              #+#    #+#             */
+/*   Updated: 2024/03/25 13:19:03 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-# include <sys/wait.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <errno.h>
-# include <string.h>
-# include <sys/types.h>
-# include <unistd.h>
-# include "parser.h"
-# include "token.h"
-# include "token_utils.h"
-# include "libft.h"
-# include "env_variables.h"
-# include "execution.h"
+#include "libft.h"
 
-#endif
+char	*ft_strcpy(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s2[i])
+	{
+		s1[i] = s2[i];
+		i++;
+	}
+	s1[i] = s2[i];
+	return (s1);
+}

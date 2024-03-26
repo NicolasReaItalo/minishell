@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+         #
+#    By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/03/16 17:48:14 by tjoyeux          ###   ########.fr        #
+#    Updated: 2024/03/26 14:02:35 by nrea             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ RM			= rm -f
 
 SRC_PATH	= ./srcs/
 OBJ_PATH	= ./objs/
-#SRCS		= $(wildcard $(SRC_PATH)*.c) $(wildcard $(SRC_PATH)parsing/*.c) $(wildcard $(SRC_PATH)execution/*.c) $(wildcard test/utils/*.c) 
+#SRCS		= $(wildcard $(SRC_PATH)*.c) $(wildcard $(SRC_PATH)parsing/*.c) $(wildcard $(SRC_PATH)execution/*.c) $(wildcard $(SRC_PATH)env_variables/*.c)  $(wildcard test/utils/*.c)
 #OBJS		= $(SRC:$(SRC_PATH)%.c=$(OBJ_PATH)%.o)
 SRCS		= $(SRC_PATH)minishell.c \
 				$(SRC_PATH)parsing/token.c \
@@ -38,7 +38,22 @@ SRCS		= $(SRC_PATH)minishell.c \
 				$(SRC_PATH)parsing/split_token_list.c \
 				$(SRC_PATH)parsing/parse_tree.c \
 				$(SRC_PATH)parsing/parse_tree_nodes.c \
+				$(SRC_PATH)env_variables/env_var_exit_status.c \
+				$(SRC_PATH)env_variables/env_var_inheritance.c \
+				$(SRC_PATH)env_variables/env_var_op.c \
+				$(SRC_PATH)env_variables/env_var_set_vars.c \
+				$(SRC_PATH)env_variables/env_var_shell_vars_op.c\
+				$(SRC_PATH)env_variables/env_var_utils.c\
+				$(SRC_PATH)execution/pipe_operations.c\
+				$(SRC_PATH)execution/redir_simple.c\
+				$(SRC_PATH)execution/apply_redirs.c\
+				$(SRC_PATH)execution/redir_here_doc.c\
+				$(SRC_PATH)execution/exec_root.c\
+				$(SRC_PATH)execution/exec_node.c\
+				$(SRC_PATH)execution/exec_pipe.c\
+				$(SRC_PATH)execution/exec_utils.c\
 				test/utils/test_utils.c
+
 OBJS		= $(addprefix $(OBJ_PATH),$(notdir $(SRCS:.c=.o)))
 
 FLAG_FILE	:= .build_started
@@ -48,7 +63,7 @@ BUILD_FLAG	:= .build_done
 
 all : $(NAME)
 
-$(NAME) : $(LIBFT) $(OBJS) 
+$(NAME) : $(LIBFT) $(OBJS)
 	@echo "$(GREEN)$(BOLD)$(ITALIC)$$LINKING$(RESET)\n"
 	@echo "$(MAGENTA)$(BOLD)Linking Server: $(RESET)$(BLUE)$(ITALIC)$@$(RESET)"
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
@@ -76,6 +91,14 @@ $(OBJ_PATH)%.o: $(SRC_PATH)parsing/%.c
 	@touch $(BUILD_FLAG)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)execution/%.c
+	@if [ ! -f $(FLAG_FILE) ]; then touch $(FLAG_FILE); echo "$(GREEN)$(BOLD)$$COMPILATION$(RESET)"; fi
+	@mkdir -p $(OBJ_PATH)
+#	@echo "$$COMPILATION\n"
+	@echo "$(MAGENTA)$(BOLD)Compilation: $(RESET)$(BLUE)$(ITALIC)$<$(RESET)"
+	$(CC) $(CFLAGS) -c $< -o $@
+	@touch $(BUILD_FLAG)
+
+$(OBJ_PATH)%.o: $(SRC_PATH)env_variables/%.c
 	@if [ ! -f $(FLAG_FILE) ]; then touch $(FLAG_FILE); echo "$(GREEN)$(BOLD)$$COMPILATION$(RESET)"; fi
 	@mkdir -p $(OBJ_PATH)
 #	@echo "$$COMPILATION\n"

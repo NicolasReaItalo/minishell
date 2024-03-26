@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 11:52:57 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/25 11:07:53 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/26 14:59:28 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,22 @@ int		ft_dprintf(int fd, const char *format, ...);
 #  define BUFFER_SIZE 5
 # endif
 
-char	*get_next_line(int fd, int purge);
-char	*ft_strjoin_gnl(char **s1, char const *s2);
-char	*extract_line(char **stash);
+typedef struct s_gnl_l
+{
+	char			*content;
+	struct s_gnl_l	*next;
+}			t_gnl_l;
 
+char	*get_next_line(int fd);
+void	ft_clean_list(t_gnl_l **list, char *buffer);
+char	*ft_copy_line(t_gnl_l *list, char *line, int eof);
+char	*ft_assemble_line(t_gnl_l **list, int eof, char *buffer);
+int		ft_search_eol(t_gnl_l *list);
+t_gnl_l	*ft_append_list(t_gnl_l **list, char *content, t_gnl_l **last_node);
+int		ft_countchar(t_gnl_l *list, int eof);
+void	*ft_lstfree(t_gnl_l **lst);
+t_gnl_l	*ft_lstgetlast(t_gnl_l *lst);
 
-int	ft_strcmp(char *s1, char *s2);
+int		ft_strcmp(char *s1, char *s2);
+char	*ft_strcpy(char *s1, char *s2);
 #endif

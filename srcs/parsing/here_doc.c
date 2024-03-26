@@ -6,62 +6,32 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 11:58:13 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 13:23:36 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/25 14:17:31 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
 #include "token_utils.h"
-#include <sys/wait.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 
-static void	ft_cpy_buf(char *buf, char *line, char *new_buf)
+/*appends the read line atthe end of the content*/
+int	ft_append(char **content, char *line)
 {
-	int	i;
-	int	j;
+	char	*buf;
 
-	i = 0;
-	while (buf[i])
-	{
-		new_buf[i] = buf[i];
-		i++;
-	}
-	if (i != 0)
-	{
-		new_buf[i] = '\n';
-		i++;
-	}
-	j = 0;
-	while (line[j])
-	{
-		new_buf[i + j] = line[j];
-		j++;
-	}
-	new_buf[i + j] = '\0';
+	buf = NULL;
+	buf = ft_strjoin(*content, line);
+	if (!buf)
+		return (-1);
+	free (*content);
+	*content = buf;
+	return (0);
 }
 
-static char	*ft_buffer_append(char *buf, char *line)
+/*the EOF has been detected we exit cleanly*/
+int	ft_return_safe(char *line)
 {
-	char	*new_buf;
-
-	new_buf = NULL;
-	if (!buf)
-	{
-		buf = malloc(sizeof(char));
-		if (!buf)
-			return (NULL);
-		buf[0] = '\0';
-	}
-	new_buf = malloc((ft_strlen(buf) + ft_strlen(line) + 1) * sizeof(char));
-	if (!new_buf)
-	{
-		free(buf);
-		return (NULL);
-	}
-	ft_cpy_buf(buf, line, new_buf);
-	free(buf);
-	return (new_buf);
+	free(line);
+	return (0);
 }
 
 /*Starts a readline loop to capture the user input and stores it
@@ -74,20 +44,22 @@ int	ft_capture_here_doc(t_token *tok, char *eof)
 		return (-1);
 	line = NULL;
 	free(tok->content);
-	tok->content = NULL;
+	tok->content = ft_strdup("");
+	if (!tok->content)
+		return (1);
 	while (1)
 	{
-		line = readline(">");
+		write(1, ">", 1);
+		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
-		if (!ft_strncmp(line, eof, sizeof(eof)))
+		if (!ft_strncmp(line, eof, ft_strlen(eof)))
+			return (ft_return_safe(line));
+		if (ft_append(&tok->content, line) == -1)
 		{
 			free(line);
-			if (!tok->content)
-				tok->content = ft_strdup("");
-			break ;
+			return (1);
 		}
-		tok->content = ft_buffer_append(tok->content, line);
 		free(line);
 	}
 	return (0);

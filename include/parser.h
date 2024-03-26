@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:43:49 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/12 15:57:45 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/25 10:53:43 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@
 # define N_OR 2
 # define N_AND 3
 
+typedef enum e_side
+{
+	left,
+	right
+}			t_side;
+
 typedef struct s_node
 {
 	int						type;
@@ -31,11 +37,11 @@ typedef struct s_node
 	{
 		struct
 		{
-			int				in;
-			int				out;
-			int				builtin;
-			t_token			*redir;
-			t_token			*cmd;
+			int				is_expanded; // est-ce-que l'expansion a deja eu lieu ?
+			int				is_builtin; // la cmd est-elle une builtin ?
+			t_side			side;  // LEFT RIGHT  : utile pour la gestion des pipes
+			t_token			*redir; // liste chainee contenant lesedirections a appliquer
+			t_token			*cmd; // liste chainee contenant la commande et les arguments a executer
 		};
 		struct
 		{
