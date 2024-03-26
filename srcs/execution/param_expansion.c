@@ -158,13 +158,48 @@ t_token	*tab_to_list(char **words)
 		{
 			ptr = ft_get_token(token, -1);
 			new->prev = ptr;
-			ptr->next = new;	
+			ptr->next = new; // FIXME: Il n' a pas de conversion en token	
 		}	
-		words++;
+		words++; 
 	}
 	return (token);
 }
 
+// Gestion de l'IFS apres l'expansion des parametres
+int	field_splitting(t_token *token, t_shell *shell)
+{
+	char	*ifs;
+	char	**words;
+	t_token	*new;
+	t_token *ptr;
+	char	*tmp;
+
+	ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
+	words = ft_split_multiple(token->content, ifs);
+	if (!words)
+		return (1);
+	tmp = token->content;
+	token->content = *words;
+	free (tmp);
+	words++;
+	ptr = token;
+	while (*words)
+	{
+		ft_dprintf(1, "check field split : %s\n", *words);
+		new = malloc(sizeof(t_token));
+		if (!new)
+			return (1);
+		ft_memset(new, 0, sizeof(t_token));
+		new->content = *words;
+		new->next = ptr->next;
+		ptr->next = new;
+		ptr = ptr->next;
+		words++;
+	}
+//	free (words);
+	return (0);
+}
+/*
 // Gestion de l'IFS apres l'expansion des parametres
 int	field_splitting(t_token **token, t_shell *shell)
 {
@@ -173,6 +208,7 @@ int	field_splitting(t_token **token, t_shell *shell)
 	char	**words;
 //	char	*str;
 	t_token	*new;
+	t_token *temp;
 
 	ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
 //	str = token->content;
@@ -180,34 +216,54 @@ int	field_splitting(t_token **token, t_shell *shell)
 	if (!words)
 		return (1);
 	new = tab_to_list(words);
-	new->prev = (*token)->prev;
+//	new->prev = (*token)->prev; // FIXME: attention le prev du premier est NULL
 	ft_get_token(new, -1)->next = (*token)->next;
-	free (*token);
+	new->prev = (*token)->prev;
+	temp = *token;
+//	(*token)->prev->next = new;
 //	new->prev->next = new;
-	*token = new;
 
-/*	while (*str)
+	*token = new;
+	free (temp);
+
+	// while (*str)
+	// {
+	// 	// Attention apres expansion il peux y avoir plusieurs caracteres ifs d'affilee (et au debut et a la fin)
+	// 	// Peux etre essayer de representer sur un schema drawio 
+	// 	if (ft_strchr(ifs, *str) && !ft_strchr(ifs, *(str + 1)))
+	// 	{
+	// 		new = new_token(str + 1, ft_strlen(str + 1) + 1);
+	// 		if (!new)
+	// 			return (1);
+	// 		new->type = token->type;
+	// 		new->next = token->next;
+	// 		token->next = new;
+	// 		new->prev = token;
+	// 		if (new->next)
+	// 			new->next->prev = new;
+	// 		*str = '\0';
+	// 		return (0);
+	// 	}
+	// 	str++;
+	// }
+	// return (0);
+}*/
+
+int	contains_ifs(t_token *token, t_shell *shell)
+{
+	char	*ifs;
+	char	*str;
+
+	ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
+	str = token->content;
+	while (*str)
 	{
-		// Attention apres expansion il peux y avoir plusieurs caracteres ifs d'affilee (et au debut et a la fin)
-		// Peux etre essayer de representer sur un schema drawio 
-		if (ft_strchr(ifs, *str) && !ft_strchr(ifs, *(str + 1)))
-		{
-			new = new_token(str + 1, ft_strlen(str + 1) + 1);
-			if (!new)
-				return (1);
-			new->type = token->type;
-			new->next = token->next;
-			token->next = new;
-			new->prev = token;
-			if (new->next)
-				new->next->prev = new;
-			*str = '\0';
-			return (0);
-		}
+		if (ft_strchr(ifs, *str))
+			return (1);
 		str++;
-	}*/
+	}
 	return (0);
-}
+} 
 
 // Cette fonction gere le cycle d'expansions pour le node de type exec fournit en argument
 // pour chaques token :  parameter_expansion -> IFS -> pathname_expansion -> quote removal
@@ -225,9 +281,14 @@ int	word_expand(t_node *node, t_shell *shell)
 		token->content = expand_param(token->content, shell);
 		if (!token->content)
 			return (1);
-		error = field_splitting(&token, shell);
-		if (error)
-			return (error);
+		if (contains_ifs(token, shell))
+		{
+			error = field_splitting(token, shell);
+			if (error)
+				return (error);
+		}
+//		if (!token->prev)
+		//	node->cmd = token; //TODO: Ne marche pas car nouveau node
 		token = token->next;	
 	}
 	token = node->redir;
@@ -337,7 +398,7 @@ int	main(int argc, char **argv, char **envp)
 	ft_dprintf(1, "--------------------\n");
 	show_tree(tree, 0);
 	ft_dprintf(1, "----------After----------\n");
-	expand_error = word_expand(tree, &shell);
+	 expand_error = word_expand(tree, &shell);
 	if (expand_error)
 	{
 		ft_dprintf(2, "expansion error: %s\n", ft_handle_token_errors(expand_error));
