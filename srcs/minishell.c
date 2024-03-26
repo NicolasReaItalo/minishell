@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/25 19:15:52 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/26 13:39:04 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	ft_init_shell(t_shell *shell, char **envp)
 		return (0);
 	}
 	shell->tree = NULL;
-	shell->pipe_array.pipes = NULL;
-	shell->pipe_array.nb_of_pipes = 0;
+	shell->pipe_ar.pipes = NULL;
+	shell->pipe_ar.pipes_nb = 0;
 	ft_fetch_env_vars(shell->env_vars, envp);
 	return (1);
 }
@@ -43,7 +43,6 @@ void	ft_free_shell(t_shell *shell)
 {
 	ft_free_env_vars(shell->env_vars, &shell->shell_vars);
 	ft_free_tree(shell->tree);
-	//ajouter une fonction pour free le pipe array
 }
 
 
@@ -67,7 +66,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (!ft_init_shell(&shell, envp))
 		return(1);
-	printf("\n =============== PARSING ===============\n");
+	// printf("\n =============== PARSING ===============\n");
 	token_error = tokenise(argv[1], &stack);
 	if (token_error)
 	{
@@ -89,15 +88,15 @@ int	main(int argc, char **argv, char **envp)
 		ft_free_tree(shell.tree);
 		return (3);
 	}
-	show_tree(shell.tree, 0);
-	printf("\n =============== START EXECUTION ===============\n");
+	// show_tree(shell.tree, 0);
+	// printf("\n =============== START EXECUTION ===============\n");
 
-	// ft_exec_root(shell.tree, &shell);
-	ft_exec(shell.tree, -1,  &shell); //// debug
+	ft_exec_root(shell.tree, &shell);
+	// ft_exec(shell.tree, -1,  &shell); //// debug
 
 	// ft_exec_pipe(shell.tree, 0,  &shell);  /// debug
-	printf("=====================================================\n");
-	printf("===============  EXECUTION FINISHED ===============\n");
+	// printf("=====================================================\n");
+	// printf("===============  EXECUTION FINISHED ===============\n");
 	printf("exit status [%d]\n", ft_get_exit_status(&shell.shell_vars));
 
 
