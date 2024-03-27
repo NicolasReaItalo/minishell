@@ -1,36 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_var_inheritance.c                              :+:      :+:    :+:   */
+/*   env_var_push.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:41:59 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/20 15:40:36 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/27 15:36:15 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_variables.h"
-
-/*Fetch the environment variables from **envp
-and store these in the shell vars structure*/
-void	ft_fetch_env_vars(t_evar *vars[58], char **envp)
-{
-	char	**splitted;
-	int		i;
-
-	i = 0;
-	while (envp[i])
-	{
-		splitted = ft_split(envp[i], '=');
-		if (!splitted)
-			return ;
-		ft_set_var(splitted[0], splitted[1], vars, NULL);
-		ft_free_splitted(splitted);
-		splitted = NULL;
-		i++;
-	}
-}
 
 static int	ft_count_var(t_evar **vars)
 {
@@ -91,7 +71,7 @@ static int	ft_populate(t_evar **vars, char	***envp)
 		{
 			(*envp)[j] = ft_concatenate(cur);
 			if (!(*envp)[j])
-				return (0) ;
+				return (0);
 			j++;
 			cur = cur->next;
 		}
@@ -107,7 +87,7 @@ int	ft_push_env_vars(t_evar **vars, char ***envp)
 	int		var_nb;
 
 	var_nb = ft_count_var(vars);
-	*envp = (char**) malloc((var_nb + 1) * sizeof(char *));
+	*envp = (char **) malloc((var_nb + 1) * sizeof(char *));
 	if (!*envp)
 		return (0);
 	ft_memset(*envp, 0, (var_nb + 1) * sizeof(char *));

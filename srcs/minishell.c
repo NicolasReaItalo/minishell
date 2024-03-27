@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/27 14:08:06 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/27 15:20:59 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ char	*ft_handle_token_errors(int error)
 	return ("");
 }
 
+void	ft_free_shell(t_shell *shell)
+{
+	ft_free_env_vars(shell->env_vars, &shell->shell_vars);
+	ft_free_tree(shell->tree);
+}
+
 int	ft_init_shell(t_shell *shell, char **envp)
 {
 	if (!ft_init_env_vars(shell->env_vars, &shell->shell_vars))
@@ -34,15 +40,12 @@ int	ft_init_shell(t_shell *shell, char **envp)
 	shell->tree = NULL;
 	shell->p_ar.pipes = NULL;
 	shell->p_ar.pipes_nb = 0;
-	ft_fetch_env_vars(shell->env_vars, envp);
+	if (ft_fetch_env_vars(shell->env_vars, envp) == -1)
+	{
+		ft_free_shell(shell);
+		return (0);
+	}
 	return (1);
-}
-
-
-void	ft_free_shell(t_shell *shell)
-{
-	ft_free_env_vars(shell->env_vars, &shell->shell_vars);
-	ft_free_tree(shell->tree);
 }
 
 
