@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:43:49 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/25 10:53:43 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/27 16:31:59 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_node
 	{
 		struct
 		{
-			int				is_expanded; // est-ce-que l'expansion a deja eu lieu ?
 			int				is_builtin; // la cmd est-elle une builtin ?
 			t_side			side;  // LEFT RIGHT  : utile pour la gestion des pipes
 			t_token			*redir; // liste chainee contenant lesedirections a appliquer

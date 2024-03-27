@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/27 15:00:05 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/27 16:26:32 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ int	contains_ifs(t_token *token, t_shell *shell)
 		str++;
 	}
 	return (0);
-} 
+}
 
-// Cette fonction gere le cycle d'expansions pour le node de type exec fournit en argument
-// pour chaques token :  parameter_expansion -> IFS -> pathname_expansion -> quote removal
+// Cycle d'expansions pour le node de type exec fournit en argument
+// pour chaques token :  
+//   parameter_expansion -> IFS -> pathname_expansion -> quote removal
 // TODO: !!! pour redir verif les operations a faire
 int	word_expand(t_node *node, t_shell *shell)
 {
 	t_token	*token;
-	int		error;
 
 	if (!node)
 		return (4);
@@ -45,20 +45,17 @@ int	word_expand(t_node *node, t_shell *shell)
 		if (!token->content)
 			return (1);
 		if (contains_ifs(token, shell))
-		{
-			error = field_splitting(token, shell);
-			if (error)
-				return (error);
-		}
-		token = token->next;	
+			if (field_splitting(token, shell))
+				return (1);
+		token = token->next;
 	}
 	token = node->redir;
-	while (token)	
+	while (token)
 	{
 		token->content = expand_param(token->content, shell);
 		if (!token->content)
 			return (1);
-		token = token->next;	
+		token = token->next;
 	}
 	return (0);
 }
@@ -83,7 +80,8 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 	return (0);
 }*/
-//gcc -g3 srcs/execution/param_expansion.c srcs/env_variables/*.c -I./include/ -I./libft/ -L./libft/ -lft -o param_expansion 
+//gcc -g3 srcs/execution/param_expansion.c srcs/env_variables/*.c 
+//     -I./include/ -I./libft/ -L./libft/ -lft -o param_expansion 
 
 /*
 // main de test du strjoin special
@@ -98,7 +96,7 @@ int	main(int argc, char **argv)
 	free (output);
 	return (0);
 }*/
-
+/*
 char	*ft_handle_token_errors(int error)
 {
 	if (error == 1)
@@ -134,11 +132,11 @@ int	main(int argc, char **argv, char **envp)
 	stack = NULL;
 	ft_init_env_vars(shell.env_vars, &shell.shell_vars);
 	ft_fetch_env_vars(shell.env_vars, envp);
-//  ft_dprintf(1, "carac IFS : \"%s\"\n", ft_get_var_value("IFS", shell.env_vars, shell.shell_vars));
 	token_error = tokenise(argv[1], &stack);
 	if (token_error)
 	{
-		ft_dprintf(2, "tokenisation error: %s\n", ft_handle_token_errors(token_error));
+		ft_dprintf(2, "tokenisation error: %s\n", 
+			ft_handle_token_errors(token_error));
 		kill_stack(&stack);
 		return (1);
 	}
@@ -162,7 +160,8 @@ int	main(int argc, char **argv, char **envp)
 	 expand_error = word_expand(tree, &shell);
 	if (expand_error)
 	{
-		ft_dprintf(2, "expansion error: %s\n", ft_handle_token_errors(expand_error));
+		ft_dprintf(2, "expansion error: %s\n", 
+			ft_handle_token_errors(expand_error));
 		ft_free_tree(tree);
 		ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 		return (4);
@@ -171,9 +170,12 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_tree(tree);
 	ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 	return (0);
-}
+}*/
 
+//gcc -g3 srcs/expansion/param_expansion.c srcs/env_variables/*.c 
+//   srcs/parsing/*.c test/utils/*.c -I./include/ -I./libft/ 
+//   -I./test -L./libft/ -lft -lreadline -o param_expansion 
 
-//gcc -g3 srcs/expansion/param_expansion.c srcs/env_variables/*.c srcs/parsing/*.c test/utils/*.c -I./include/ -I./libft/ -I./test -L./libft/ -lft -lreadline -o param_expansion 
-
-//valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=valgrind.txt  ./param_expansion '<$SHLVL <<eof echo$SHELL $?-l la$? >file'
+//valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes 
+//   --trace-children=yes --suppressions=valgrind.txt 
+//   ./param_expansion '<$SHLVL <<eof echo$SHELL $?-l la$? >file'

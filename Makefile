@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+         #
+#    By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/03/26 14:02:35 by nrea             ###   ########.fr        #
+#    Updated: 2024/03/27 16:25:05 by tjoyeux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,9 @@ SRCS		= $(SRC_PATH)minishell.c \
 				$(SRC_PATH)execution/exec_node.c\
 				$(SRC_PATH)execution/exec_pipe.c\
 				$(SRC_PATH)execution/exec_utils.c\
+				$(SRC_PATH)expansion/expansion.c \
+				$(SRC_PATH)expansion/field_splitting.c \
+				$(SRC_PATH)expansion/param_expansion.c \
 				test/utils/test_utils.c
 
 OBJS		= $(addprefix $(OBJ_PATH),$(notdir $(SRCS:.c=.o)))
@@ -91,6 +94,14 @@ $(OBJ_PATH)%.o: $(SRC_PATH)parsing/%.c
 	@touch $(BUILD_FLAG)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)execution/%.c
+	@if [ ! -f $(FLAG_FILE) ]; then touch $(FLAG_FILE); echo "$(GREEN)$(BOLD)$$COMPILATION$(RESET)"; fi
+	@mkdir -p $(OBJ_PATH)
+#	@echo "$$COMPILATION\n"
+	@echo "$(MAGENTA)$(BOLD)Compilation: $(RESET)$(BLUE)$(ITALIC)$<$(RESET)"
+	$(CC) $(CFLAGS) -c $< -o $@
+	@touch $(BUILD_FLAG)
+
+$(OBJ_PATH)%.o: $(SRC_PATH)expansion/%.c
 	@if [ ! -f $(FLAG_FILE) ]; then touch $(FLAG_FILE); echo "$(GREEN)$(BOLD)$$COMPILATION$(RESET)"; fi
 	@mkdir -p $(OBJ_PATH)
 #	@echo "$$COMPILATION\n"
