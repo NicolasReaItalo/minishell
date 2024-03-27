@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/26 13:39:04 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/27 14:08:06 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	ft_init_shell(t_shell *shell, char **envp)
 		return (0);
 	}
 	shell->tree = NULL;
-	shell->pipe_ar.pipes = NULL;
-	shell->pipe_ar.pipes_nb = 0;
+	shell->p_ar.pipes = NULL;
+	shell->p_ar.pipes_nb = 0;
 	ft_fetch_env_vars(shell->env_vars, envp);
 	return (1);
 }
@@ -88,18 +88,8 @@ int	main(int argc, char **argv, char **envp)
 		ft_free_tree(shell.tree);
 		return (3);
 	}
-	// show_tree(shell.tree, 0);
-	// printf("\n =============== START EXECUTION ===============\n");
-
 	ft_exec_root(shell.tree, &shell);
-	// ft_exec(shell.tree, -1,  &shell); //// debug
-
-	// ft_exec_pipe(shell.tree, 0,  &shell);  /// debug
-	// printf("=====================================================\n");
-	// printf("===============  EXECUTION FINISHED ===============\n");
-	printf("exit status [%d]\n", ft_get_exit_status(&shell.shell_vars));
-
-
+	printf("exit status [%d]\n", ft_get_exit_status(&shell.shell_vars)); /// Debug
 	ft_free_shell(&shell);
 	return (0);
 }

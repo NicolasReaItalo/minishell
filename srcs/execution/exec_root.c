@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:31:47 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/26 14:23:40 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/27 14:12:48 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	ft_exec_and_or(t_node *tree_root, t_shell *shell)
 }
 
 /*The base execution function called at the root of the parse tree*/
-void	ft_exec_root(t_node *tree_root, t_shell *shell)
+int	ft_exec_root(t_node *tree_root, t_shell *shell)
 {
 	int	exit_status;
 
@@ -64,19 +64,21 @@ void	ft_exec_root(t_node *tree_root, t_shell *shell)
 		if (!tree_root->is_builtin)
 		{
 			exit_status = ft_exec_in_fork(tree_root, -1, shell);
+			if (exit_status == -1)
+				return (-1);
 			ft_set_exit_status(exit_status, &shell->shell_vars);
 		}
 		else
 		{
-			// execution builtin dans le processus principal
-			// penser a restaurer les fds
+			// execution builtin dans le processus principal// penser a restaurer les fds
 		}
 	}
 	else if (tree_root->type == N_PIPE)
 	{
-		exit_status = ft_exec_in_fork(tree_root, 0, shell);
-		ft_set_exit_status(exit_status, &shell->shell_vars);
+		if (ft_exec_pipe(tree_root, 0, shell) == -1)
+			return (-1);
 	}
 	else
 		ft_exec_and_or(tree_root, shell);
+	return (1);
 }

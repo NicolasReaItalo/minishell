@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:04:09 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/26 13:39:04 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/27 14:15:59 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,65 +20,70 @@ int	ft_count_pipes(t_node *node)
 	return (0);
 }
 
-int	ft_create_pipe_ar(t_node *node, t_shell *shell)
+/*Create an array oof pipes int[2] by counting the nb of pipes
+needed and allocate the array at the right size
+*/
+int	p_ar(t_node *node, t_shell *shell)
 {
 	int	pipes_nb;
 	int	i;
 
 	pipes_nb = ft_count_pipes(node);
-	shell->pipe_ar.pipes_nb = pipes_nb;
-	shell->pipe_ar.pipes = (int **) malloc(pipes_nb * sizeof(int *));
-	if (!shell->pipe_ar.pipes)
+	shell->p_ar.pipes_nb = pipes_nb;
+	shell->p_ar.pipes = (int **) malloc(pipes_nb * sizeof(int *));
+	if (!shell->p_ar.pipes)
 		return (-1);
 	i = 0;
 	while (i < pipes_nb)
 	{
-		shell->pipe_ar.pipes[i] = malloc (2 * sizeof (int));
-		if (!shell->pipe_ar.pipes[i])
-			return (ft_free_pipe_ar(shell->pipe_ar.pipes, i));
+		shell->p_ar.pipes[i] = malloc (2 * sizeof (int));
+		if (!shell->p_ar.pipes[i])
+			return (ft_free_p_ar(shell->p_ar.pipes, i));
 		i++;
 	}
 	return (0);
 }
 
-int	ft_init_pipe_ar(int **pipe_ar, int pipes_nb)
+/*initialize all the pipes in the array
+returns -1 in case of failure*/
+int	init_p(int **p_ar, int pipes_nb)
 {
 	int	i;
 
 	i = 0;
 	while (i < pipes_nb)
 	{
-		if (pipe(pipe_ar[i]) == -1)
-			ft_close_pipe_ar(pipe_ar, i);
+		if (pipe(p_ar[i]) == -1)
+			ft_close_p_ar(p_ar, i);
 		i++;
 	}
 	return (1);
 }
 
-void	ft_close_pipe_ar(int **pipe_ar, int pipes_nb)
+void	ft_close_p_ar(int **p_ar, int pipes_nb)
 {
 	int	i;
 
 	i = 0;
 	while (i < pipes_nb)
 	{
-		close(pipe_ar[i][0]);
-		close(pipe_ar[i][1]);
+		close(p_ar[i][0]);
+		close(p_ar[i][1]);
 		i++;
 	}
 }
 
-int	ft_free_pipe_ar(int	**pipe_ar, int pipes_nb)
+int	ft_free_p_ar(int	**p_ar, int pipes_nb)
 {
 	int	i;
 
 	i = 0;
 	while (i < pipes_nb)
 	{
-		free(pipe_ar[i]);
+		free(p_ar[i]);
 		i++;
 	}
 	if (pipes_nb)
-		free(pipe_ar);
+		free(p_ar);
 	return (1);
 }
