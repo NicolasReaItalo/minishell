@@ -6,7 +6,7 @@
 #    By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/03/27 16:25:05 by tjoyeux          ###   ########.fr        #
+#    Updated: 2024/03/28 14:47:21 by tjoyeux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,8 @@ SRCS		= $(SRC_PATH)minishell.c \
 				$(SRC_PATH)parsing/parse_tree.c \
 				$(SRC_PATH)parsing/parse_tree_nodes.c \
 				$(SRC_PATH)env_variables/env_var_exit_status.c \
-				$(SRC_PATH)env_variables/env_var_inheritance.c \
+				$(SRC_PATH)env_variables/env_var_fetch.c \
+				$(SRC_PATH)env_variables/env_var_push.c \
 				$(SRC_PATH)env_variables/env_var_op.c \
 				$(SRC_PATH)env_variables/env_var_set_vars.c \
 				$(SRC_PATH)env_variables/env_var_shell_vars_op.c\
