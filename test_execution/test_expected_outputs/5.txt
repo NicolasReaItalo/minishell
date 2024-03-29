@@ -1,0 +1,2 @@
+USER=nrea
+USER_ZDOTDIR=/home/nrea

@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/27 15:20:59 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/27 16:06:20 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ int	main(int argc, char **argv, char **envp)
 	int		token_error;
 	int		syntax_error;
 	int		tree_error;
+	int		exit_status;
 
+	exit_status = 0;
 	if (argc != 2)
 		return (1);
 	token_error = 0;
@@ -92,7 +94,8 @@ int	main(int argc, char **argv, char **envp)
 		return (3);
 	}
 	ft_exec_root(shell.tree, &shell);
-	printf("exit status [%d]\n", ft_get_exit_status(&shell.shell_vars)); /// Debug
+	// printf("exit status [%d]\n", ft_get_exit_status(&shell.shell_vars)); /// Debug
+	exit_status = ft_get_exit_status(&shell.shell_vars);
 	ft_free_shell(&shell);
-	return (0);
+	return (exit_status);
 }
