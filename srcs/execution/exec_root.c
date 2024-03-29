@@ -6,35 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:31:47 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/29 11:45:52 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/29 13:05:44 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-/*
-execute builtin
-l'expansion ifs wildcards et dequotes ont ete faits
-On applique les redirections de pipes si pipe_nb != -1
-On applique ls redirections
-On execute la fonction builtin ( le premier token retourne la fonction a executer, les autres les arguments)
-On set l'exit status selon le retour de cette commande
-si pipe_nb == -1
-	On restaure les fds
-	dup2(0, STDIN)
-	dup2(1, STDOUT)
-
-pointeur de fonction sous la forme
-builtin(T_token *cmd)
-
-il faudrait un tableau de fonction [7] et un fonction int get_builtin qui renvoie
-l'index de la fonction a utiliser dans le tableau
-
-
-
-*/
-
-
 
 /*execute a node (pipe or exec) in a child process and return the exit status
 returns -1 in case of failure*/
@@ -51,7 +27,7 @@ int	ft_exec_in_fork(t_node *node, int pipe_nb, t_shell *shell)
 		if (node->type == N_PIPE)
 			ft_exec_pipe(node, pipe_nb, shell);
 		else if (node->type == N_EXEC)
-			ft_exec(node, pipe_nb, shell);
+			ft_exec_binary(node, pipe_nb, shell);
 	}
 	else
 	{

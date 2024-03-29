@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:13:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/27 14:13:19 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/29 13:08:02 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	ft_exec_left(t_node *node, int pipe_lvl, t_shell *s)
 	{
 		///////Ajouter l'expansion et la gestion des builtins
 		node->left->side = left;
-		ft_exec(node->left, pipe_lvl, s);
+		ft_exec_binary(node->left, pipe_lvl, s);
 	}
 }
 
@@ -49,7 +49,7 @@ static void	ft_exec_right(t_node *node, int pipe_lvl, t_shell *s)
 {
 	///////Ajouter l'expansion et la gestion des builtins
 	node->right->side = right;
-	ft_exec(node->right, pipe_lvl, s);
+	ft_exec_binary(node->right, pipe_lvl, s);
 }
 
 static void	ft_close_pipes_and_wait(t_shell *s, int pids[2])

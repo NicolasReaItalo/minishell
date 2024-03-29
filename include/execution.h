@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:32:18 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/27 14:08:06 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/29 13:05:58 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void		ft_free_shell(t_shell *shell);
 int	ft_exec_root(t_node *tree_root, t_shell *shell);
 
 
-void		ft_exec(t_node *node, int pipe_nb, t_shell *shell);
+void		ft_exec_binary(t_node *node, int pipe_nb, t_shell *shell);
 
 int			ft_exec_pipe(t_node *node, int pipe_lvl, t_shell *s);
 

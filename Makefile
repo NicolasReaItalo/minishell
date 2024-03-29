@@ -6,7 +6,7 @@
 #    By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/03/27 15:35:54 by nrea             ###   ########.fr        #
+#    Updated: 2024/03/29 13:09:09 by nrea             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ SRCS		= $(SRC_PATH)minishell.c \
 				$(SRC_PATH)execution/apply_redirs.c\
 				$(SRC_PATH)execution/redir_here_doc.c\
 				$(SRC_PATH)execution/exec_root.c\
-				$(SRC_PATH)execution/exec_node.c\
+				$(SRC_PATH)execution/exec_binary.c\
 				$(SRC_PATH)execution/exec_pipe.c\
 				$(SRC_PATH)execution/exec_utils.c\
 				test/utils/test_utils.c
