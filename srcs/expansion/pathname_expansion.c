@@ -1,32 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   pathname_expansion.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/07 11:00:03 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/29 13:18:40 by tjoyeux          ###   ########.fr       */
+/*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
+/*   Updated: 2024/03/28 15:30:32 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "word_expansion.h"
 
-char	*ft_strchr(const char *s, int c)
-{
-	size_t	i;
-
-	if (!s)
-		return (NULL);
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c % 256)
-			return ((char *)s + i);
-		i++;
-	}
-	if (c == '\0')
-		return ((char *)s + i);
-	else
-		return (NULL);
-}
