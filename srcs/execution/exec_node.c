@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:50:23 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/27 13:56:37 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/29 16:29:24 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ void	ft_exec(t_node *node, int pipe_lvl, t_shell *shell)
 	full_cmd = NULL;
 	if (pipe_lvl != -1)
 	{
+		if (!shell->p_ar.pipes || shell->p_ar.pipes == NULL)
+			ft_exec_exit_err(1, shell, exec, full_cmd);
 		if (ft_apply_pipe_redir(node, pipe_lvl, shell) == -1)
 			ft_exec_exit_err(1, shell, exec, full_cmd);
 	}

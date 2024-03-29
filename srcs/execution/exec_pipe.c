@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:13:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/27 14:13:19 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/29 16:26:56 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,12 @@ static int	ft_abort_safe(int pipe_lvl, t_shell *s)
 	write(2, "Internal Error\n", 16);
 	if (pipe_lvl == 0)
 	{
-		ft_close_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
-		ft_free_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
+		if (s->p_ar.pipes_nb != 0)
+		{
+			ft_close_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
+			ft_free_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
+			s->p_ar.pipes_nb = 0;
+		}
 		s->p_ar.pipes_nb = 0;
 		while (wait(NULL) != -1)
 		{
@@ -57,9 +61,12 @@ static void	ft_close_pipes_and_wait(t_shell *s, int pids[2])
 	int	exit_status;
 
 	exit_status = 0;
-	ft_close_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
-	ft_free_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
-	s->p_ar.pipes_nb = 0;
+	if (s->p_ar.pipes_nb != 0)
+	{
+		ft_close_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
+		ft_free_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
+		s->p_ar.pipes_nb = 0;
+	}
 	waitpid(pids[1], &exit_status, 0);
 	while (wait(NULL) != -1)
 	{
@@ -79,8 +86,12 @@ int	ft_exec_pipe(t_node *n, int pipe_lvl, t_shell *s)
 	int	pids[2];
 
 	if (pipe_lvl == 0)
-		if (p_ar(n, s) == -1 || init_p(s->p_ar.pipes, s->p_ar.pipes_nb) == -1)
-			ft_abort_safe(pipe_lvl, s);
+	{
+		if (p_al(n, s) == -1)
+			return (ft_abort_safe(pipe_lvl, s));
+		if (init_p(s->p_ar.pipes, s->p_ar.pipes_nb) == -1)
+			return (ft_abort_safe(pipe_lvl, s));
+	}
 	if (n->left->type == N_EXEC)
 	{
 		pids[0] = fork();

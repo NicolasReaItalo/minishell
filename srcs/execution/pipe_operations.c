@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:04:09 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/27 14:15:59 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/29 15:12:42 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_count_pipes(t_node *node)
 /*Create an array oof pipes int[2] by counting the nb of pipes
 needed and allocate the array at the right size
 */
-int	p_ar(t_node *node, t_shell *shell)
+int	p_al(t_node *node, t_shell *shell)
 {
 	int	pipes_nb;
 	int	i;
@@ -31,8 +31,11 @@ int	p_ar(t_node *node, t_shell *shell)
 	pipes_nb = ft_count_pipes(node);
 	shell->p_ar.pipes_nb = pipes_nb;
 	shell->p_ar.pipes = (int **) malloc(pipes_nb * sizeof(int *));
-	if (!shell->p_ar.pipes)
+	if (shell->p_ar.pipes == NULL)
+	{
+		shell->p_ar.pipes_nb = 0;
 		return (-1);
+	}
 	i = 0;
 	while (i < pipes_nb)
 	{
@@ -65,6 +68,8 @@ void	ft_close_p_ar(int **p_ar, int pipes_nb)
 	int	i;
 
 	i = 0;
+	if (!pipes_nb)
+		return ;
 	while (i < pipes_nb)
 	{
 		close(p_ar[i][0]);
@@ -85,5 +90,6 @@ int	ft_free_p_ar(int	**p_ar, int pipes_nb)
 	}
 	if (pipes_nb)
 		free(p_ar);
+	p_ar = NULL;
 	return (1);
 }

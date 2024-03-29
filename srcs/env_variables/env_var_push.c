@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:41:59 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/27 15:36:15 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/29 14:36:20 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	ft_push_env_vars(t_evar **vars, char ***envp)
 
 	var_nb = ft_count_var(vars);
 	*envp = (char **) malloc((var_nb + 1) * sizeof(char *));
-	if (!*envp)
+	if (!*envp || !envp)
 		return (0);
 	ft_memset(*envp, 0, (var_nb + 1) * sizeof(char *));
 	if (!ft_populate(vars, envp))

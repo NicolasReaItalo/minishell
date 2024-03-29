@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:35:15 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/27 15:36:22 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/29 15:23:22 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,12 @@ int	ft_fetch_env_vars(t_evar *vars[58], char **envp)
 		value = NULL;
 		if (ft_separate_var(envp[i], &key, &value) == -1)
 			return (-1);
-		ft_set_var(key, value, vars, NULL);
+		if (!ft_set_var(key, value, vars, NULL))
+		{
+			free(key);
+			free(value);
+			return (-1);
+		}
 		free(key);
 		free(value);
 		i++;

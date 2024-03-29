@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 13:06:14 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/11 14:53:37 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/29 15:08:54 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ t_node	*ft_create_tree(t_token **stack, int *error, int priority)
 		if (ft_check_outer_brackets(*stack))
 			return (ft_create_tree(ft_strip_bracket(stack), error, 2));
 		else
-			return (ft_create_exec_node(stack));
+			return (ft_create_exec_node(stack)); // A modifier pour la gestion d'erreur avec un autre argument *error
 	}
 	op_rank = -2;
 	op_rank = ft_find_operator(priority, *stack);

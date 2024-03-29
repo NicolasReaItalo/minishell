@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/27 16:06:20 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/29 15:33:30 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,16 @@ int	ft_init_shell(t_shell *shell, char **envp)
 	if (!ft_init_env_vars(shell->env_vars, &shell->shell_vars))
 	{
 		ft_dprintf(2, "Error during environement variables initialisation\n");
-		return (0);
+		exit (1);
 	}
 	shell->tree = NULL;
 	shell->p_ar.pipes = NULL;
 	shell->p_ar.pipes_nb = 0;
 	if (ft_fetch_env_vars(shell->env_vars, envp) == -1)
 	{
+		ft_dprintf(2, "Error during environement variables initialisation\n");
 		ft_free_shell(shell);
-		return (0);
+		exit (1);
 	}
 	return (1);
 }
@@ -87,7 +88,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	ft_redirections(&stack);
 	shell.tree = ft_create_tree(&stack, &tree_error, 2);
-	if (tree_error)
+	if (tree_error || !shell.tree)
 	{
 		ft_handle_tree_error(tree_error);
 		ft_free_tree(shell.tree);

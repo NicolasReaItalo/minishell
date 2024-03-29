@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:31:47 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/29 11:45:52 by nrea             ###   ########.fr       */
+/*   Updated: 2024/03/29 16:13:07 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ int	ft_exec_in_fork(t_node *node, int pipe_nb, t_shell *shell)
 	}
 	else
 	{
-		waitpid(pid, &exit_status, 0);
+		if (waitpid(pid, &exit_status, 0) == -1)
+			return (-1);
 		return (WEXITSTATUS(exit_status));
 	}
 	return (0);
@@ -82,6 +83,8 @@ int	ft_exec_root(t_node *tree_root, t_shell *shell)
 {
 	int	exit_status;
 
+	if (!tree_root || !shell)
+		return(-1);
 	if (tree_root->type == N_EXEC)
 	{
 		//expansion du node et detection builtin a ajouter
@@ -89,7 +92,11 @@ int	ft_exec_root(t_node *tree_root, t_shell *shell)
 		{
 			exit_status = ft_exec_in_fork(tree_root, -1, shell);
 			if (exit_status == -1)
+			{
+				write(2, "Internal Error\n", 16);
+				ft_set_exit_status(1, &shell->shell_vars);
 				return (-1);
+			}
 			ft_set_exit_status(exit_status, &shell->shell_vars);
 		}
 		else
