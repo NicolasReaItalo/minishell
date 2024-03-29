@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/29 13:33:49 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/29 13:49:27 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	main(int argc, char **argv)
 	free (output);
 	return (0);
 }*/
-
+/*
 char	*ft_handle_token_errors(int error)
 {
 	if (error == 1)
@@ -173,7 +173,7 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_tree(tree);
 	ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 	return (0);
-}
+}*/
 
 //gcc -g3 srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c test/utils/*.c -I./include/ -I./libft/ 
 //   -I./test -L./libft/ -lft -lreadline -o param_expansion 
