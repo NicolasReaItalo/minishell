@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 11:00:03 by tjoyeux           #+#    #+#             */
-/*   Updated: 2023/11/13 15:16:18 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/29 13:18:40 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	*ft_strchr(const char *s, int c)
 {
 	size_t	i;
 
+	if (!s)
+		return (NULL);
 	i = 0;
 	while (s[i])
 	{

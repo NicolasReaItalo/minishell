@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/28 15:09:58 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/29 13:33:49 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	contains_ifs(t_token *token, t_shell *shell)
 	char	*str;
 
 	ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
+	if (!ifs)
+		return (0);
 	str = token->content;
 	while (*str)
 	{
@@ -130,7 +132,8 @@ int	main(int argc, char **argv, char **envp)
 	expand_error = 0;
 	tree = NULL;
 	stack = NULL;
-	ft_init_env_vars(shell.env_vars, &shell.shell_vars);
+	if (!ft_init_env_vars(shell.env_vars, &shell.shell_vars))
+		return (1);
 	ft_fetch_env_vars(shell.env_vars, envp);
 	token_error = tokenise(argv[1], &stack);
 	if (token_error)
@@ -172,8 +175,7 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
-//gcc -g3 srcs/expansion/param_expansion.c srcs/env_variables/*.c 
-//   srcs/parsing/*.c test/utils/*.c -I./include/ -I./libft/ 
+//gcc -g3 srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c test/utils/*.c -I./include/ -I./libft/ 
 //   -I./test -L./libft/ -lft -lreadline -o param_expansion 
 
 //valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes 
