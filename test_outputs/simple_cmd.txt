@@ -1,1 +1,1 @@
-[EXEC] [cmd : cmd arg1 arg2 ][redir : ]
+cmd: Command not found

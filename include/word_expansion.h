@@ -6,12 +6,13 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/27 16:28:53 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/03/29 14:29:05 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WORD_EXPANSION_H
 # define WORD_EXPANSION_H
+# include <dirent.h>
 # include "libft.h"
 # include "parser.h"
 # include "env_variables.h"

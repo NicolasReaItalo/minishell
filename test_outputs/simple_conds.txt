@@ -1,7 +1,2 @@
-[&&] : 
-	[EXEC] [cmd : cmd4 ][redir : ]
-	[||] : 
-		[EXEC] [cmd : cmd3 ][redir : ]
-		[&&] : 
-			[EXEC] [cmd : cmd2 ][redir : ]
-			[EXEC] [cmd : cmd1 ][redir : ]
+cmd1: Command not found
+cmd3: Command not found

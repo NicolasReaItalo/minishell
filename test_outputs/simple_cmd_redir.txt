@@ -1,1 +1,1 @@
-[EXEC] [cmd : cmd arg1 arg2 ][redir : file3 file1 file2 ]
+file3: No such file or directory
