@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:50:23 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/29 16:29:24 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/02 12:32:50 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	ft_look_for_cmd(t_node *node, t_shell *s, char **full_cmd, t_exec exec)
 }
 
 /*cmd called to execute a node_exec  */
-void	ft_exec(t_node *node, int pipe_lvl, t_shell *shell)
+void	ft_exec_binary(t_node *node, int pipe_lvl, t_shell *shell)
 {
 	t_exec		exec;
 	char		*full_cmd;

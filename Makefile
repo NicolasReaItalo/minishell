@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+         #
+#    By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/03/28 14:47:21 by tjoyeux          ###   ########.fr        #
+#    Updated: 2024/04/02 12:33:32 by nrea             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,12 +50,14 @@ SRCS		= $(SRC_PATH)minishell.c \
 				$(SRC_PATH)execution/apply_redirs.c\
 				$(SRC_PATH)execution/redir_here_doc.c\
 				$(SRC_PATH)execution/exec_root.c\
-				$(SRC_PATH)execution/exec_node.c\
+				$(SRC_PATH)execution/exec_binary.c\
 				$(SRC_PATH)execution/exec_pipe.c\
 				$(SRC_PATH)execution/exec_utils.c\
 				$(SRC_PATH)expansion/expansion.c \
 				$(SRC_PATH)expansion/field_splitting.c \
 				$(SRC_PATH)expansion/param_expansion.c \
+				$(SRC_PATH)builtins/builtins.c\
+				$(SRC_PATH)builtins/pwd.c\
 				test/utils/test_utils.c
 
 OBJS		= $(addprefix $(OBJ_PATH),$(notdir $(SRCS:.c=.o)))
@@ -111,6 +113,14 @@ $(OBJ_PATH)%.o: $(SRC_PATH)expansion/%.c
 	@touch $(BUILD_FLAG)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)env_variables/%.c
+	@if [ ! -f $(FLAG_FILE) ]; then touch $(FLAG_FILE); echo "$(GREEN)$(BOLD)$$COMPILATION$(RESET)"; fi
+	@mkdir -p $(OBJ_PATH)
+#	@echo "$$COMPILATION\n"
+	@echo "$(MAGENTA)$(BOLD)Compilation: $(RESET)$(BLUE)$(ITALIC)$<$(RESET)"
+	$(CC) $(CFLAGS) -c $< -o $@
+	@touch $(BUILD_FLAG)
+
+$(OBJ_PATH)%.o: $(SRC_PATH)builtins/%.c
 	@if [ ! -f $(FLAG_FILE) ]; then touch $(FLAG_FILE); echo "$(GREEN)$(BOLD)$$COMPILATION$(RESET)"; fi
 	@mkdir -p $(OBJ_PATH)
 #	@echo "$$COMPILATION\n"
