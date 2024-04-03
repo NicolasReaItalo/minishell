@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:32:18 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/03 16:20:12 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/03 17:05:25 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_shell
 					//d'echec de excve
 }	t_shell;
 
-typedef int (*builtin)(t_token *cmd);
+typedef int (*builtin)(t_token *cmd, t_shell *shell);
 
 void		ft_free_shell(t_shell *shell);
 
@@ -83,8 +83,9 @@ builtin		ft_getbuiltin(char *cmd);
 int			ft_is_builtin(t_node *node);
 int			ft_exec_builtin(t_node *node, int pipe_lvl, t_shell *shell);
 
-int			pwd(t_token *cmd);
-int			echo(t_token *cmd);
+int			pwd(t_token *cmd, t_shell *shell);
+int			echo(t_token *cmd,  t_shell *shell);
+int			env(t_token *cmd,  t_shell *shell);
 
 
 #endif

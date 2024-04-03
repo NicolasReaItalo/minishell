@@ -6,15 +6,16 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:19:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/03 16:31:29 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/03 17:17:46 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-int	dummy(t_token *cmd)
+int	dummy(t_token *cmd, t_shell *shell)
 {
 	(void) cmd;
+	(void) shell;
 	return (0);
 }
 
@@ -58,7 +59,7 @@ builtin	ft_getbuiltin(char *cmd)
 	else if (!ft_strcmp(cmd, "pwd"))
 		return ((builtin) pwd);
 	else if (!ft_strcmp(cmd, "env"))
-		return ((builtin) dummy);
+		return ((builtin) env);
 	else if (!ft_strcmp(cmd, "exit"))
 		return ((builtin) dummy);
 	else
@@ -97,7 +98,7 @@ int	ft_exec_builtin(t_node *node, int pipe_lvl, t_shell *shell)
 	f = ft_getbuiltin(node->cmd->content);
 	if (!f)
 		ft_builtin_exit_err(1, node->cmd->content);
-	exit_status = f(node->cmd);
+	exit_status = f(node->cmd, shell);
 	if (pipe_lvl == -1)
 	{
 		dup2(0, STDIN_FILENO);

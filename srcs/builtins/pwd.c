@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 12:15:43 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/02 13:26:57 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/03 17:28:31 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,13 @@ static int	get_directory(char *buffer, int buffer_size)
 }
 
 /*Builtin: print name of current/working directory*/
-int	pwd(t_token *cmd)
+int	pwd(t_token *cmd, t_shell *shell)
 {
 	char		*buffer;
 	int			buffer_size;
 
 	(void) cmd;
+	(void) shell;
 	buffer = NULL;
 	buffer_size = 100;
 	if (get_directory(buffer, buffer_size) == 1)

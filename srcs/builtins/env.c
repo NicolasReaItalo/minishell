@@ -1,46 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/03 17:06:40 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/03 17:27:57 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-static int	exit_echo(int trailing_nl)
+int	env(t_token *cmd, t_shell *shell)
 {
-	if (trailing_nl)
+	char	**vars;
+	int		i;
+
+	(void) cmd;
+	vars = NULL;
+	if (ft_push_env_vars(shell->env_vars, &vars) == -1)
+	{
+		write(2, "An error has occured during the variables retrieval\n", 53);
+		return (125);
+	}
+	i = 0;
+	while (vars[i])
+	{
+		write(1, vars[i], ft_strlen(vars[i]));
 		write(1, "\n", 1);
+		i++;
+	}
+	ft_free_splitted(vars);
 	return (0);
-}
-
-int	echo(t_token *cmd, t_shell *shell)
-{
-	int	trailing_nl;
-
-	(void) shell;
-	if (!cmd)
-		return (1);
-	trailing_nl = 1;
-	cmd = cmd->next;
-	if (!cmd)
-		return (exit_echo(trailing_nl));
-	if (!strcmp(cmd->content, "-n"))
-	{
-		trailing_nl = 0;
-		cmd = cmd->next;
-	}
-	while (cmd)
-	{
-		write(1, cmd->content, ft_strlen(cmd->content));
-		if (cmd->next)
-			write(1, " ", 1);
-		cmd = cmd->next;
-	}
-	return (exit_echo(trailing_nl));
 }
