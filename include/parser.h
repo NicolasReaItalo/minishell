@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:43:49 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/27 16:31:59 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/03 15:56:01 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_node
 	{
 		struct
 		{
-			int				is_builtin; // la cmd est-elle une builtin ?
 			t_side			side;  // LEFT RIGHT  : utile pour la gestion des pipes
 			t_token			*redir; // liste chainee contenant lesedirections a appliquer
 			t_token			*cmd; // liste chainee contenant la commande et les arguments a executer

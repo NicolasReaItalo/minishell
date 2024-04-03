@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 13:54:45 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/29 14:19:49 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/03 15:56:35 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ t_node	*ft_create_exec_node(t_token **stack)
 	}
 	ft_memset(node, 0, sizeof(t_node));
 	node->type = N_EXEC;
-	node->is_builtin = 0;
 	ft_dispatch_tokens(*stack, &node->redir, &node->cmd);
 	return (node);
 }
