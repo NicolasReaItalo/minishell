@@ -6,12 +6,15 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:40 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/27 15:25:38 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/02 16:05:49 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "word_expansion.h"
 
+// Create and add new tokens in a linked list
+// Add content from a tab of char*
+// Return 1 if error
 int	words_to_token(t_token **ptr, char **words)
 {
 	t_token	*new;
