@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:13:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/03 11:15:27 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/03 11:54:09 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,22 +73,26 @@ static void	ft_exec_right(t_node *node, int pipe_lvl, t_shell *s)
 		ft_exec_binary(node->right, pipe_lvl, s);
 }
 
-static void	ft_close_pipes_and_wait(t_shell *s, int pids[2])
+static int	ft_close_pipes_and_wait(int pipe_lvl, t_shell *s, int pids[2])
 {
 	int	exit_status;
 
-	exit_status = 0;
-	if (s->p_ar.pipes_nb != 0)
+	if (pipe_lvl == 0)
 	{
-		ft_close_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
-		ft_free_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
-		s->p_ar.pipes_nb = 0;
+		exit_status = 0;
+		if (s->p_ar.pipes_nb != 0)
+		{
+			ft_close_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
+			ft_free_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
+			s->p_ar.pipes_nb = 0;
+		}
+		waitpid(pids[1], &exit_status, 0);
+		while (wait(NULL) != -1)
+		{
+		}
+		ft_set_exit_status(WEXITSTATUS(exit_status), &s->shell_vars);
 	}
-	waitpid(pids[1], &exit_status, 0);
-	while (wait(NULL) != -1)
-	{
-	}
-	ft_set_exit_status(WEXITSTATUS(exit_status), &s->shell_vars);
+	return (1);
 }
 
 /*The function that execeute a node pipe
@@ -124,7 +128,5 @@ int	ft_exec_pipe(t_node *n, int pipe_lvl, t_shell *s)
 		ft_abort_safe(pipe_lvl, s);
 	if (pids[1] == 0)
 		ft_exec_right(n, pipe_lvl, s);
-	if (pipe_lvl == 0)
-		ft_close_pipes_and_wait(s, pids);
-	return (1);
+	return (ft_close_pipes_and_wait(pipe_lvl, s, pids));
 }
