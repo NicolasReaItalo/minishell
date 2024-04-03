@@ -83,6 +83,7 @@ static int	match_pattern(char *pattern, char *str)
 		return (0);
 }
 
+/*
 // Creation d'un tableau de string de tous les fichiers valides
 void show_directory(char *pathname)
 {
@@ -99,20 +100,147 @@ void show_directory(char *pathname)
 			printf("%s\n", file->d_name);
 	}
 	closedir(dir);
-}
+}*/
 
-// Gestion de l'expansion du wildcard *
-int	expand_pathname(t_token *token)
+int	count_valid_pathname(char *content)
 {
+	DIR	*dir;
+	struct dirent	*file;
+	int	count;
+
+	dir = opendir(".");
+	if (!dir)
+		return (-1);
+	count = 0;
+	while ((file = readdir(dir)) != NULL)
+	{
+		if (match_pattern(content, file->d_name))
+		{	
+			count++;
+//			printf("%s\n", file->d_name);
+		}
+	}
+	closedir(dir);
+//	printf("\nnumber of valid files : %d\n\n", count);
+	return (count);
+}
+
+char **create_pathname_tab(t_token *token)
+{
+	DIR	*dir;
+	struct dirent	*file;
+	int	count;
+	char	**words;
+	int		i;
+
+	i = 0;
+	count = count_valid_pathname(token->content) + 1;
+	words = malloc(count * sizeof(char *));
+	if (!words)
+		return (NULL);
+	dir = opendir(".");
+	if (!dir)
+		return (NULL);
+	while ((file = readdir(dir)) != NULL)
+	{
+		if (match_pattern(token->content, file->d_name))
+		{	
+			words[i] = ft_strdup(file->d_name);
+//			printf("\"%s\" put in tab\n", file->d_name);
+			i++;
+		}
+	}
+	words[i] = NULL;
+	closedir(dir);
+//	printf("PRETEST : %s\n", words[0]);
+	return (words);
 
 }
 
+int	expand_pathname_cmd(t_token *token)
+{
+	char	**words;
+	char	*tmp;
+	t_token	*ptr;
 
+	words = create_pathname_tab(token);
+	if (!words)
+		return (1);
+	tmp = token->content;
+//	printf ("TEST : %s\n", *words);
+	token->content = ft_strdup(*words);
+	free (tmp);
+	ptr = token;
+	words_to_token(&ptr, words);
+	free_words_tab(&words);
+	return (0);
+
+/*	DIR	*dir;
+	struct dirent	*file;
+	int	count;
+	char	**words;
+	int		i;
+
+	i = 0;
+	count = count_valid_pathname(token->content) + 1;
+	words = malloc(count * sizeof(char *));
+	if (!words)
+		return (1);
+	dir = opendir(".");
+	if (!dir)
+		return (1);
+	while ((file = readdir(dir)) != NULL)
+	{
+		if (match_pattern(token->content, file->d_name))
+		{	
+			words[i] = ft_strdup(file->d_name);
+			printf("\"%s\" put in tab\n", file->d_name);
+			i++;
+		}
+	}
+	words [i] = NULL;
+	closedir(dir);
+	return (0);*/
+}
+/*
+// Gestion de l'expansion du wildcard * pour la redirection
+// Return error code
+int expand_pathname_redir(t_token *token)
+{	
+	int	count;
+	char *tmp;
+
+	count = count_valid_pathname(token->content);
+	if (token->type >= R_IN && token->type <= R_APPEND)
+	{
+		if (count > 1)
+		// error msg: "%s: ambiguous redirect", token->content 
+		else if (count == 1)
+		{
+			tmp = token->content;
+			token->content = // Dois je utiliser un tableau, ou adapter la fonction count_valid_pathname
+		}
+		// change node
+
+	}
+
+
+}*/
 /*
 //# include <stdio.h>
 int	main(int argc, char **argv)
 {
 //	show_directory();
+//	count_valid_pathname(argv[1]);
+	t_token	*test;
+
+	test = malloc(sizeof(t_token));
+	if (!test)
+		return (1);
+	test->content = argv[1];
+	expand_pathname_cmd(test);
+	return (0);
+}*/
 /*	if (argc == 3)
 	{
 		if (is_valid_pathname(argv[1], argv[2]))
