@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:04:09 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/29 15:12:42 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/03 12:23:59 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	ft_close_p_ar(int **p_ar, int pipes_nb)
 	int	i;
 
 	i = 0;
-	if (!pipes_nb)
+	if (pipes_nb <= 0 || !p_ar || !*p_ar || !**p_ar)
 		return ;
 	while (i < pipes_nb)
 	{
@@ -91,5 +91,5 @@ int	ft_free_p_ar(int	**p_ar, int pipes_nb)
 	if (pipes_nb)
 		free(p_ar);
 	p_ar = NULL;
-	return (1);
+	return (-1);
 }

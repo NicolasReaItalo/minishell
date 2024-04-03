@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:13:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/03 11:54:09 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/03 12:16:42 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	ft_abort_safe(int pipe_lvl, t_shell *s)
 	write(2, "Internal Error\n", 16);
 	if (pipe_lvl == 0)
 	{
-		if (s->p_ar.pipes_nb != 0)
+		if (s->p_ar.pipes_nb != 0 && s->p_ar.pipes != NULL)
 		{
 			ft_close_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
 			ft_free_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);

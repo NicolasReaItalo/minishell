@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:31:47 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/02 12:50:14 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/03 12:08:20 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ we determine first if it calls a builtin or a binary commmand
 if builtin: execution in main process
 if binary : child process creatio and execve
 in both cases, redirections are applied*/
-static int ft_n_exec(t_node *tree_root, t_shell *shell)
+static int	ft_n_exec(t_node *tree_root, t_shell *shell)
 {
 	int	exit_status;
 
@@ -83,9 +83,9 @@ static int ft_n_exec(t_node *tree_root, t_shell *shell)
 int	ft_exec_root(t_node *tree_root, t_shell *shell)
 {
 	if (!tree_root || !shell)
-		return(-1);
+		return (-1);
 	if (tree_root->type == N_EXEC)
-		return(ft_n_exec(tree_root, shell));
+		return (ft_n_exec(tree_root, shell));
 	else if (tree_root->type == N_PIPE)
 	{
 		if (ft_exec_pipe(tree_root, 0, shell) == -1)
@@ -95,6 +95,3 @@ int	ft_exec_root(t_node *tree_root, t_shell *shell)
 		ft_exec_and_or(tree_root, shell);
 	return (1);
 }
-
-
-
