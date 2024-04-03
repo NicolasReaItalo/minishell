@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:19:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/02 13:26:23 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/03 16:31:29 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ builtin	ft_getbuiltin(char *cmd)
 	if (!cmd)
 		return (NULL);
 	if (!ft_strcmp(cmd, "echo"))
-		return ((builtin) dummy);
+		return ((builtin) echo);
 	else if (!ft_strcmp(cmd, "cd"))
 		return ((builtin) dummy);
 	else if (!ft_strcmp(cmd, "export"))

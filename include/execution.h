@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:32:18 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/02 12:32:37 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/03 16:20:12 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,9 @@ int			ft_apply_pipe_redir(t_node *node, int p_lvl, t_shell *s);
 builtin		ft_getbuiltin(char *cmd);
 int			ft_is_builtin(t_node *node);
 int			ft_exec_builtin(t_node *node, int pipe_lvl, t_shell *shell);
+
 int			pwd(t_token *cmd);
+int			echo(t_token *cmd);
 
 
 #endif
