@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:13:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/02 12:34:01 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/03 11:15:27 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,38 @@ static int	ft_abort_safe(int pipe_lvl, t_shell *s)
 
 static void	ft_exec_left(t_node *node, int pipe_lvl, t_shell *s)
 {
+	int	exit_status;
+
 	if (node->left->type == N_PIPE)
 		ft_exec_pipe(node->left, pipe_lvl + 1, s);
 	else if (node->left->type == N_EXEC)
 	{
-		///////Ajouter l'expansion et la gestion des builtins
+		///////Ajouter l'expansion
 		node->left->side = left;
-		ft_exec_binary(node->left, pipe_lvl, s);
+		if (ft_is_builtin(node->left))
+		{
+			exit_status = ft_exec_builtin(node->left, pipe_lvl, s);
+			ft_free_shell(s);
+			exit(exit_status);
+		}
+		else
+			ft_exec_binary(node->left, pipe_lvl, s);
 	}
 }
 
 static void	ft_exec_right(t_node *node, int pipe_lvl, t_shell *s)
 {
-	///////Ajouter l'expansion et la gestion des builtins
+	int	exit_status;
+	///////Ajouter l'expansion
 	node->right->side = right;
-	ft_exec_binary(node->right, pipe_lvl, s);
+	if (ft_is_builtin(node->right))
+	{
+		exit_status = ft_exec_builtin(node->right, pipe_lvl, s);
+		ft_free_shell(s);
+		exit(exit_status);
+	}
+	else
+		ft_exec_binary(node->right, pipe_lvl, s);
 }
 
 static void	ft_close_pipes_and_wait(t_shell *s, int pids[2])
