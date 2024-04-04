@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:43:49 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/04 10:08:52 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/04 16:53:48 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ typedef struct s_node
 	{
 		struct
 		{
-			t_side			side;  // LEFT RIGHT  : utile pour la gestion des pipes
-			t_token			*redir; // liste chainee contenant lesedirections a appliquer
-			t_token			*cmd; // liste chainee contenant la commande et les arguments a executer
+			t_side			side;
+			t_token			*redir;
+			t_token			*cmd;
 		};
 		struct
 		{

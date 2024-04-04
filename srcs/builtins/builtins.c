@@ -6,18 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:19:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/04 15:39:13 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/04 16:15:34 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-int	dummy(t_token *cmd, t_shell *shell)
-{
-	(void) cmd;
-	(void) shell;
-	return (0);
-}
 
 int	ft_is_builtin(t_node *node)
 {
@@ -61,7 +54,7 @@ t_builtin	ft_getbuiltin(char *cmd)
 	else if (!ft_strcmp(cmd, "env"))
 		return ((t_builtin) env);
 	else if (!ft_strcmp(cmd, "exit"))
-		return ((t_builtin) dummy);
+		return ((t_builtin) bt_exit);
 	else
 		return (NULL);
 }
