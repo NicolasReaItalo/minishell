@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:32:18 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/03 17:05:25 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/04 10:48:28 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,6 @@ int			ft_exec_builtin(t_node *node, int pipe_lvl, t_shell *shell);
 int			pwd(t_token *cmd, t_shell *shell);
 int			echo(t_token *cmd,  t_shell *shell);
 int			env(t_token *cmd,  t_shell *shell);
-
+int			export(t_token *cmd, t_shell *shell);
 
 #endif

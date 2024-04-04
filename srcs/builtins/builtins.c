@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:19:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/03 17:17:46 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/04 12:10:32 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_is_builtin(t_node *node)
 {
 	char	*cmd;
 
-	if (!node || node->type != N_EXEC || !node->cmd)
+	if (!node || node->type != N_EXEC || !node->cmd || !node->cmd->content)
 		return (0);
 	cmd = node->cmd->content;
 	if (!ft_strcmp(cmd, "echo"))
@@ -53,7 +53,7 @@ builtin	ft_getbuiltin(char *cmd)
 	else if (!ft_strcmp(cmd, "cd"))
 		return ((builtin) dummy);
 	else if (!ft_strcmp(cmd, "export"))
-		return ((builtin) dummy);
+		return ((builtin) export);
 	else if (!ft_strcmp(cmd, "unset"))
 		return ((builtin) dummy);
 	else if (!ft_strcmp(cmd, "pwd"))

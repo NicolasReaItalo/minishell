@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/29 15:33:30 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/04 11:56:40 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,14 @@ int	main(int argc, char **argv, char **envp)
 	{
 		printf("tokenisation error: %s\n", ft_handle_token_errors(token_error));
 		kill_stack(&stack);
+		ft_free_shell(&shell);
 		return (1);
 	}
 	syntax_error = check_syntax(stack);
 	if (syntax_error)
 	{
 		kill_stack(&stack);
+		ft_free_shell(&shell);
 		return (2);
 	}
 	ft_redirections(&stack);
@@ -91,7 +93,8 @@ int	main(int argc, char **argv, char **envp)
 	if (tree_error || !shell.tree)
 	{
 		ft_handle_tree_error(tree_error);
-		ft_free_tree(shell.tree);
+		// ft_free_tree(shell.tree);
+		ft_free_shell(&shell);
 		return (3);
 	}
 	ft_exec_root(shell.tree, &shell);
