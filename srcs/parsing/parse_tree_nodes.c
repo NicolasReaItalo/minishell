@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 13:54:45 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/03 15:56:35 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/04 10:10:29 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	ft_dispatch_tokens(t_token *stack, t_token **redir, t_token **cmd)
 }
 
 /*create an exec node, the leaves of our tree*/
-t_node	*ft_create_exec_node(t_token **stack)
+t_node	*ft_create_exec_node(t_token **stack, int *error)
 {
 	t_node	*node;
 
@@ -112,6 +112,8 @@ t_node	*ft_create_exec_node(t_token **stack)
 	node = malloc(sizeof(t_node));
 	if (!node)
 	{
+		if (*error)
+			*error = 5;
 		kill_stack(stack);
 		return (NULL);
 	}

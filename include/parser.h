@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:43:49 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/03 15:56:01 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/04 10:08:52 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		ft_find_operator(int priority, t_token *stack);
 t_node	*ft_create_tree(t_token **stack, int *error, int priority);
 t_node	*ft_create_cond_node(t_token **stack, int op_rank, int *error);
 t_node	*ft_create_pipe_node(t_token **stack, int op_rank, int *error);
-t_node	*ft_create_exec_node(t_token **stack);
+t_node	*ft_create_exec_node(t_token **stack, int *error);
 void	ft_free_tree(t_node *tree);
 void	*ft_set_tree_error(int *error, int type, t_node *node);
 char	*ft_handle_tree_error(int error);
