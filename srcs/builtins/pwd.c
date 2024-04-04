@@ -6,13 +6,13 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 12:15:43 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/03 17:28:31 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/04 15:14:52 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-static int	get_directory(char *buffer, int buffer_size)
+static int	print_cur_dir(char *buffer, int buffer_size)
 {
 	buffer = malloc(buffer_size * sizeof(char));
 	if (buffer == NULL)
@@ -25,7 +25,7 @@ static int	get_directory(char *buffer, int buffer_size)
 	{
 		free(buffer);
 		if (errno == ERANGE && buffer_size <= 900)
-			return (get_directory(buffer, buffer_size * 2));
+			return (print_cur_dir(buffer, buffer_size * 2));
 		else
 		{
 			perror("pwd");
@@ -47,7 +47,7 @@ int	pwd(t_token *cmd, t_shell *shell)
 	(void) shell;
 	buffer = NULL;
 	buffer_size = 100;
-	if (get_directory(buffer, buffer_size) == 1)
+	if (print_cur_dir(buffer, buffer_size) == 1)
 		return (1);
 	return (0);
 }

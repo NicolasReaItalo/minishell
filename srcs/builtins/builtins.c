@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:19:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/04 13:56:28 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/04 15:39:13 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,24 @@ int	ft_is_builtin(t_node *node)
 }
 
 /*return a function pointer to the builtin*/
-builtin	ft_getbuiltin(char *cmd)
+t_builtin	ft_getbuiltin(char *cmd)
 {
 	if (!cmd)
 		return (NULL);
 	if (!ft_strcmp(cmd, "echo"))
-		return ((builtin) echo);
+		return ((t_builtin) echo);
 	else if (!ft_strcmp(cmd, "cd"))
-		return ((builtin) dummy);
+		return ((t_builtin) cd);
 	else if (!ft_strcmp(cmd, "export"))
-		return ((builtin) export);
+		return ((t_builtin) export);
 	else if (!ft_strcmp(cmd, "unset"))
-		return ((builtin) unset);
+		return ((t_builtin) unset);
 	else if (!ft_strcmp(cmd, "pwd"))
-		return ((builtin) pwd);
+		return ((t_builtin) pwd);
 	else if (!ft_strcmp(cmd, "env"))
-		return ((builtin) env);
+		return ((t_builtin) env);
 	else if (!ft_strcmp(cmd, "exit"))
-		return ((builtin) dummy);
+		return ((t_builtin) dummy);
 	else
 		return (NULL);
 }
@@ -81,8 +81,8 @@ need to restore the files descriptors afterwards.
  */
 int	ft_exec_builtin(t_node *node, int pipe_lvl, t_shell *shell)
 {
-	builtin	f;
-	int		exit_status;
+	t_builtin	f;
+	int			exit_status;
 
 	if (pipe_lvl != -1)
 	{
