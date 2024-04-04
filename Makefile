@@ -6,7 +6,7 @@
 #    By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/04/04 10:51:33 by nrea             ###   ########.fr        #
+#    Updated: 2024/04/04 13:44:52 by nrea             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,6 +62,7 @@ SRCS		= $(SRC_PATH)minishell.c \
 				$(SRC_PATH)builtins/echo.c\
 				$(SRC_PATH)builtins/env.c\
 				$(SRC_PATH)builtins/export.c\
+				srcs/builtins/unset.c\
 				test/utils/test_utils.c
 
 OBJS		= $(addprefix $(OBJ_PATH),$(notdir $(SRCS:.c=.o)))

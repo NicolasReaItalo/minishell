@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:32:18 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/04 10:48:28 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/04 13:45:27 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,6 @@ int			pwd(t_token *cmd, t_shell *shell);
 int			echo(t_token *cmd,  t_shell *shell);
 int			env(t_token *cmd,  t_shell *shell);
 int			export(t_token *cmd, t_shell *shell);
+int			unset(t_token *cmd, t_shell *shell);
 
 #endif
