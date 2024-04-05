@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/02 15:41:24y tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/04 17:09:19 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,14 @@ static int	match_pattern(char *pattern, char *str)
 		return (0);
 	if (*pattern == '*')
 	{
-		if(*(pattern + 1) == '*')
+		if (*(pattern + 1) == '*')
 			return (match_pattern(pattern + 1, str));
 		else if (*(pattern + 1) == '\0')
 			return (1);
 		else if (*(pattern + 1) == *str)
-			return (match_pattern(pattern + 1, str) || match_pattern(pattern, str + 1));
-		else 
+			return (match_pattern(pattern + 1, str)
+				|| match_pattern(pattern, str + 1));
+		else
 			return (match_pattern(pattern, str + 1));
 	}
 	else if (*pattern == *str)
@@ -104,34 +105,32 @@ void show_directory(char *pathname)
 
 int	count_valid_pathname(char *content)
 {
-	DIR	*dir;
+	DIR				*dir;
 	struct dirent	*file;
-	int	count;
+	int				count;
 
 	dir = opendir(".");
 	if (!dir)
 		return (-1);
 	count = 0;
-	while ((file = readdir(dir)) != NULL)
+	file = readdir(dir);
+	while (file != NULL)
 	{
 		if (match_pattern(content, file->d_name))
-		{	
 			count++;
-//			printf("%s\n", file->d_name);
-		}
+		file = readdir(dir);
 	}
 	closedir(dir);
-//	printf("\nnumber of valid files : %d\n\n", count);
 	return (count);
 }
 
-char **create_pathname_tab(t_token *token)
+char	**create_pathname_tab(t_token *token)
 {
-	DIR	*dir;
+	DIR				*dir;
 	struct dirent	*file;
-	int	count;
-	char	**words;
-	int		i;
+	int				count;
+	char			**words;
+	int				i;
 
 	i = 0;
 	count = count_valid_pathname(token->content) + 1;
@@ -141,20 +140,16 @@ char **create_pathname_tab(t_token *token)
 	dir = opendir(".");
 	if (!dir)
 		return (NULL);
-	while ((file = readdir(dir)) != NULL)
+	file = readdir(dir);
+	while (file != NULL)
 	{
 		if (match_pattern(token->content, file->d_name))
-		{	
-			words[i] = ft_strdup(file->d_name);
-//			printf("\"%s\" put in tab\n", file->d_name);
-			i++;
-		}
+			words[i++] = ft_strdup(file->d_name);
+		file = readdir(dir);
 	}
 	words[i] = NULL;
 	closedir(dir);
-//	printf("PRETEST : %s\n", words[0]);
 	return (words);
-
 }
 
 int	expand_pathname_cmd(t_token *token)
@@ -166,15 +161,16 @@ int	expand_pathname_cmd(t_token *token)
 	words = create_pathname_tab(token);
 	if (!words)
 		return (1);
+	if (!*words)
+		return (free(words), 0);
 	tmp = token->content;
-//	printf ("TEST : %s\n", *words);
 	token->content = ft_strdup(*words);
 	free (tmp);
 	ptr = token;
 	words_to_token(&ptr, words);
 	free_words_tab(&words);
 	return (0);
-
+}
 /*	DIR	*dir;
 	struct dirent	*file;
 	int	count;
@@ -201,31 +197,38 @@ int	expand_pathname_cmd(t_token *token)
 	words [i] = NULL;
 	closedir(dir);
 	return (0);*/
-}
-/*
+
+
 // Gestion de l'expansion du wildcard * pour la redirection
 // Return error code
 int expand_pathname_redir(t_token *token)
 {	
-	int	count;
-	char *tmp;
+	int				count;
+	char 			*tmp;
+	DIR				*dir;
+	struct dirent	*file;
 
-	count = count_valid_pathname(token->content);
 	if (token->type >= R_IN && token->type <= R_APPEND)
 	{
+		count = count_valid_pathname(token->content);
 		if (count > 1)
+			return (5);
 		// error msg: "%s: ambiguous redirect", token->content 
 		else if (count == 1)
 		{
+			dir = opendir(".");
+			if (!dir)
+				return (6);
+			file = readdir(dir);
 			tmp = token->content;
-			token->content = // Dois je utiliser un tableau, ou adapter la fonction count_valid_pathname
+			token->content = ft_strdup(file->d_name);
+			free (tmp);
+			// Dois je utiliser un tableau, ou adapter la fonction count_valid_pathname
 		}
 		// change node
-
 	}
-
-
-}*/
+	return (0);
+}
 /*
 //# include <stdio.h>
 int	main(int argc, char **argv)
