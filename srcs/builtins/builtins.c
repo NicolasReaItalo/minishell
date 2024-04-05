@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:19:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/04 16:15:34 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/05 11:29:10 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,20 @@ static int	ft_builtin_exit_err(int status, char *cmd)
 	return (status);
 }
 
+static	int	save_fds(t_node *node)
+{
+	if (!node || node->type != N_EXEC)
+		return (-1);
+	node->stdin = dup(STDIN_FILENO);
+	if (node->stdin == -1)
+		return(-1);
+	node->stdout = dup(STDOUT_FILENO);
+	if (node->stdout == -1)
+		return(-1);
+	return (1);
+}
+
+
 /*Execute a builtin command thus not using execve.
 When executed in the main ( pipe_level == -1 ) we
 need to restore the files descriptors afterwards.
@@ -79,7 +93,7 @@ int	ft_exec_builtin(t_node *node, int pipe_lvl, t_shell *shell)
 
 	if (pipe_lvl != -1)
 	{
-		if (!shell->p_ar.pipes || shell->p_ar.pipes == NULL)
+		if (!shell->p_ar.pipes || !shell->p_ar.pipes || save_fds(node) == -1)
 			ft_builtin_exit_err(1, NULL);
 		if (ft_apply_pipe_redir(node, pipe_lvl, shell) == -1)
 			return (1);
@@ -94,8 +108,8 @@ int	ft_exec_builtin(t_node *node, int pipe_lvl, t_shell *shell)
 	exit_status = f(node->cmd, shell);
 	if (pipe_lvl == -1)
 	{
-		dup2(0, STDIN_FILENO);
-		dup2(1, STDOUT_FILENO);
+		dup2(node->stdin, STDIN_FILENO);
+		dup2(node->stdout, STDOUT_FILENO);
 	}
 	return (exit_status);
 }
