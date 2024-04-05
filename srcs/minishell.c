@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/05 11:03:49 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/05 11:51:21 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,14 @@ int	main(int argc, char **argv, char **envp)
 			kill_stack(&stack);
 			continue ;
 		}
-		ft_redirections(&stack); // ajouter gestion erreur
+		if (ft_redirections(&stack) == -1)
+		if (syntax_error)
+		{
+			write(2, "Internal error during redirection\n", 35);
+			kill_stack(&stack);
+			continue ;
+		}
+
 		shell.tree = ft_create_tree(&stack, &tree_error, 2);
 		if (tree_error || !shell.tree)
 		{

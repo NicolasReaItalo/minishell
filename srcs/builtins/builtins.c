@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:19:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/05 11:33:35 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/05 11:41:11 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,12 @@ static	int	save_fds(t_node *node)
 		return (-1);
 	node->stdin = dup(STDIN_FILENO);
 	if (node->stdin == -1)
-		return(-1);
+		return (-1);
 	node->stdout = dup(STDOUT_FILENO);
 	if (node->stdout == -1)
-		return(-1);
+		return (-1);
 	return (1);
 }
-
 
 /*Execute a builtin command thus not using execve.
 When executed in the main ( pipe_level == -1 ) we

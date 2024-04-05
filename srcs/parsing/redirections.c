@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/08 13:31:28 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/05 11:51:51 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ void	ft_delete_token(t_token **token, t_token **stack)
 }
 
 /*destroys the words once their content is used by redirections*/
-void	ft_clean_words(t_token **stack)
+static int	ft_clean_words(t_token **stack)
 {
 	t_token	*tok;
 	t_token	*prev;
 
 	tok = ft_get_token(*stack, -1);
 	if (!tok)
-		return ;
+		return (-1);
 	while (tok)
 	{
 		if (tok->type >= 4 && tok->type <= 7)
@@ -51,6 +51,7 @@ void	ft_clean_words(t_token **stack)
 		}
 		tok = tok->prev;
 	}
+	return (0);
 }
 
 /*
@@ -75,16 +76,18 @@ int	ft_redirections(t_token **stack)
 		if (tok->type == R_HEREDOC)
 		{
 			prev_tok = tok->prev;
-			ft_capture_here_doc(tok, prev_tok->content);
+			if(ft_capture_here_doc(tok, prev_tok->content))
+				return (-1);
 		}
 		else if (tok->type >= 4 && tok->type <= 6)
 		{
 			free(tok->content);
 			prev_tok = tok->prev;
 			tok->content = ft_strdup(prev_tok->content);
+			if (!tok->content)
+				return (-1);
 		}
 		tok = tok->prev;
 	}
-	ft_clean_words(stack);
-	return (0);
+	return (ft_clean_words(stack));
 }
