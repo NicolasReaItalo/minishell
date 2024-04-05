@@ -6,7 +6,7 @@
 #    By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/04/04 16:13:08 by nrea             ###   ########.fr        #
+#    Updated: 2024/04/05 14:45:30 by nrea             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,9 @@ SRC_PATH	= ./srcs/
 OBJ_PATH	= ./objs/
 #SRCS		= $(wildcard $(SRC_PATH)*.c) $(wildcard $(SRC_PATH)parsing/*.c) $(wildcard $(SRC_PATH)execution/*.c) $(wildcard $(SRC_PATH)env_variables/*.c)  $(wildcard test/utils/*.c)
 #OBJS		= $(SRC:$(SRC_PATH)%.c=$(OBJ_PATH)%.o)
-SRCS		= $(SRC_PATH)minishell.c \
+SRCS		=	$(SRC_PATH)minishell.c \
+				$(SRC_PATH)minishell_utils.c\
+				$(SRC_PATH)minishell_repl.c\
 				$(SRC_PATH)parsing/token.c \
 				$(SRC_PATH)parsing/token_utils.c \
 				$(SRC_PATH)parsing/token_utils2.c \
@@ -56,7 +58,7 @@ SRCS		= $(SRC_PATH)minishell.c \
 				$(SRC_PATH)expansion/expansion.c \
 				$(SRC_PATH)expansion/field_splitting.c \
 				$(SRC_PATH)expansion/param_expansion.c \
-				srcs/expansion/pathname_expansion.c\
+				$(SRC_PATH)expansion/pathname_expansion.c\
 				$(SRC_PATH)builtins/builtins.c\
 				$(SRC_PATH)builtins/pwd.c\
 				$(SRC_PATH)builtins/echo.c\

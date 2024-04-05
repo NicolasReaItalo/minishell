@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/05 11:51:51 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/05 15:03:16 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	ft_redirections(t_token **stack)
 		if (tok->type == R_HEREDOC)
 		{
 			prev_tok = tok->prev;
-			if(ft_capture_here_doc(tok, prev_tok->content))
+			if (ft_capture_here_doc(tok, prev_tok->content))
 				return (-1);
 		}
 		else if (tok->type >= 4 && tok->type <= 6)

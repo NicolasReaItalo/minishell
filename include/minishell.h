@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:19:14 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/05 10:28:06 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/05 14:42:50 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,9 @@
 # include "execution.h"
 # include "word_expansion.h"
 
-char	*ft_handle_token_errors(int error);
+int		ft_init_shell(t_shell *shell, char **envp);
+char	*ft_handle_tok_err(int error);
+
+void	repl(t_shell *shell);
+
 #endif
