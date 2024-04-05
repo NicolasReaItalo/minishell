@@ -6,14 +6,15 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/04 16:40:22 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/05 11:03:49 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "tests.h"
 
-char	*ft_handle_token_errors(int error)
+
+char	*ft_handle_tok_err(int error)
 {
 	if (error == 1)
 		return ("Bad allocation");
@@ -28,6 +29,8 @@ void	ft_free_shell(t_shell *shell)
 {
 	ft_free_env_vars(shell->env_vars, &shell->shell_vars);
 	ft_free_tree(shell->tree);
+	rl_clear_history();
+
 }
 
 int	ft_init_shell(t_shell *shell, char **envp)
@@ -60,46 +63,51 @@ int	main(int argc, char **argv, char **envp)
 	int		token_error;
 	int		syntax_error;
 	int		tree_error;
-	int		exit_status;
+	char	*line;
 
-	exit_status = 0;
-	if (argc != 2)
-		return (1);
 	token_error = 0;
 	syntax_error = 0;
 	tree_error = 0;
 	stack = NULL;
 
+	(void) argc;
+	(void) argv;
+
 	if (!ft_init_shell(&shell, envp))
 		return(1);
-	// printf("\n =============== PARSING ===============\n");
-	token_error = tokenise(argv[1], &stack);
-	if (token_error)
+	while(1)
 	{
-		printf("tokenisation error: %s\n", ft_handle_token_errors(token_error));
-		kill_stack(&stack);
-		ft_free_shell(&shell);
-		return (1);
-	}
-	syntax_error = check_syntax(stack);
-	if (syntax_error)
+	line = readline( "minishell> " );
+	if (line && ft_strlen(line))
 	{
-		kill_stack(&stack);
-		ft_free_shell(&shell);
-		return (2);
+		add_history(line);
+		token_error = tokenise(line, &stack);
+		if (token_error)
+		{
+			ft_dprintf(2, "tokenisation error: %s\n", ft_handle_tok_err(token_error));
+			kill_stack(&stack);
+			free(line);
+			continue ;
+		}
+		free(line);
+		syntax_error = check_syntax(stack);
+		if (syntax_error)
+		{
+			kill_stack(&stack);
+			continue ;
+		}
+		ft_redirections(&stack); // ajouter gestion erreur
+		shell.tree = ft_create_tree(&stack, &tree_error, 2);
+		if (tree_error || !shell.tree)
+		{
+			ft_handle_tree_error(tree_error);
+			continue ;
+		}
+		ft_exec_root(shell.tree, &shell);
+		ft_free_tree(shell.tree);
+		stack = NULL;
 	}
-	ft_redirections(&stack);
-	shell.tree = ft_create_tree(&stack, &tree_error, 2);
-	if (tree_error || !shell.tree)
-	{
-		ft_handle_tree_error(tree_error);
-		// ft_free_tree(shell.tree);
-		ft_free_shell(&shell);
-		return (3);
 	}
-	ft_exec_root(shell.tree, &shell);
-	// printf("exit status [%d]\n", ft_get_exit_status(&shell.shell_vars)); /// Debug
-	exit_status = ft_get_exit_status(&shell.shell_vars);
 	ft_free_shell(&shell);
-	return (exit_status);
-}
+	return (0);
+	}
