@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/04 17:21:56 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/05 14:34:34 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	contains_ifs(t_token *token, t_shell *shell)
 int	word_expand(t_node *node, t_shell *shell)
 {
 	t_token	*token;
+	int		error;
 
 	if (!node)
 		return (4);
@@ -61,8 +62,11 @@ int	word_expand(t_node *node, t_shell *shell)
 		if (!token->content)
 			return (1);
 		if (ft_strchr(token->content, '*'))
-			if (expand_pathname_redir(token))
-				return (1);
+		{
+			error = expand_pathname_redir(token);
+			if (error)
+				return (error);
+		}
 		token = token->next;
 	}
 	return (0);
@@ -104,7 +108,7 @@ int	main(int argc, char **argv)
 	free (output);
 	return (0);
 }*/
-/*
+
 char	*ft_handle_token_errors(int error)
 {
 	if (error == 1)
@@ -149,7 +153,7 @@ int	main(int argc, char **argv, char **envp)
 	if (token_error)
 	{
 		ft_dprintf(2, "tokenisation error: %s\n",
-			ft_handle_token_errors(token_error));
+		ft_handle_token_errors(token_error));
 		kill_stack(&stack);
 		return (1);
 	}
@@ -173,8 +177,8 @@ int	main(int argc, char **argv, char **envp)
 	expand_error = word_expand(tree, &shell);
 	if (expand_error)
 	{
-		ft_dprintf(2, "expansion error: %s\n",
-			ft_handle_token_errors(expand_error));
+	//	ft_dprintf(2, "expansion error: %s\n",
+	//		ft_handle_token_errors(expand_error));
 		ft_free_tree(tree);
 		ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 		return (4);
@@ -183,7 +187,7 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_tree(tree);
 	ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 	return (0);
-}*/
+}
 
 //gcc -g3 srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c test/utils/*.c -I./include/ -I./libft/ -I./test -L./libft/ -lft -lreadline -o param_expansion
 

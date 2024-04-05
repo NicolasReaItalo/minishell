@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/04 17:09:19 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/05 17:47:17 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int	count_valid_pathname(char *content)
 	DIR				*dir;
 	struct dirent	*file;
 	int				count;
+	char			*str;
 
 	dir = opendir(".");
 	if (!dir)
@@ -116,10 +117,15 @@ int	count_valid_pathname(char *content)
 	file = readdir(dir);
 	while (file != NULL)
 	{
-		if (match_pattern(content, file->d_name))
+		if (content[0] == '.' && content[1] == '/')
+			str = content + 2;
+		else
+			str = content;
+		if (match_pattern(str, file->d_name))
 			count++;
 		file = readdir(dir);
 	}
+	printf ("number of files : %d\n", count);
 	closedir(dir);
 	return (count);
 }
@@ -143,8 +149,12 @@ char	**create_pathname_tab(t_token *token)
 	file = readdir(dir);
 	while (file != NULL)
 	{
-		if (match_pattern(token->content, file->d_name))
-			words[i++] = ft_strdup(file->d_name);
+		if (token->content[0] == '.' && token->content[1] == '/')
+			if (match_pattern(token->content + 2, file->d_name))
+				words[i++] = ft_strdup(file->d_name);
+		else
+			if (match_pattern(token->content, file->d_name))
+				words[i++] = ft_strdup(file->d_name);
 		file = readdir(dir);
 	}
 	words[i] = NULL;
@@ -212,7 +222,7 @@ int expand_pathname_redir(t_token *token)
 	{
 		count = count_valid_pathname(token->content);
 		if (count > 1)
-			return (5);
+			return (ft_dprintf(2, "minishell: %s: ambiguous redirect\n", token->content), 1);
 		// error msg: "%s: ambiguous redirect", token->content 
 		else if (count == 1)
 		{
