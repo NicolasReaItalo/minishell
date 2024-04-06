@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/06 14:48:37 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/06 15:52:48 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void show_directory(char *pathname)
 	closedir(dir);
 }*/
 
-int	count_valid_pathname(char *content)
+int	count_valid_pathname(char *content, t_token *token)
 {
 	DIR				*dir;
 	struct dirent	*file;
@@ -121,11 +121,20 @@ int	count_valid_pathname(char *content)
 			str = content + 2;
 		else
 			str = content;
+		//TODO: Pas sur de mon coup..., c'est bien content et pas file->d_name qui devrait m'indiquer si c'est un fichier cache
+		// Revoir le parcours  
+		token->hidden = (file->d_name[0] == '.');
+//		printf ("hidden value : %d\n", token->hidden);
+//		printf("file %d : %s \n", count, str);
+//		if (token->hidden)
+//			printf("%s\t This is a hidden file\n", file->d_name);
+//		else 
+//			printf("%s\t This is a normal file\n", file->d_name);
 		if (match_pattern(str, file->d_name))
 			count++;
 		file = readdir(dir);
 	}
-	printf ("number of files : %d\n", count);
+//	printf ("number of files : %d\n", count);
 	closedir(dir);
 	return (count);
 }
@@ -139,7 +148,7 @@ char	**create_pathname_tab(t_token *token)
 	int				i;
 
 	i = 0;
-	count = count_valid_pathname(token->content) + 1;
+	count = count_valid_pathname(token->content, token) + 1;
 	words = malloc(count * sizeof(char *));
 	if (!words)
 		return (NULL);
@@ -219,7 +228,7 @@ int expand_pathname_redir(t_token *token)
 
 	if (token->type >= R_IN && token->type <= R_APPEND)
 	{
-		count = count_valid_pathname(token->content);
+		count = count_valid_pathname(token->content, token);
 		if (count > 1)
 			return (ft_dprintf(2, "minishell: %s: ambiguous redirect\n", token->content), 1);
 		// error msg: "%s: ambiguous redirect", token->content 
