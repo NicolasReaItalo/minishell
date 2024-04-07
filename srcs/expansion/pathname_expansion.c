@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pathname_expansion.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/06 15:52:48 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/07 16:34:19 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 		while (*pathname == '*' && *word)
 		{
 			while (*(pathname +1) == '*')
-				pathname++; 
+				pathname++;
 			while (*word && *(pathname + 1) != *word)
 				word++;
 			if (!*word && !*(pathname + 1))
@@ -29,7 +29,7 @@
 			else if (!*word)
 				return (0);
 			pathname++;
-		}	
+		}
 		if (*pathname != *word)
 			return (0);
 		pathname++;
@@ -91,7 +91,7 @@ void show_directory(char *pathname)
 	DIR	*dir;
 	struct dirent	*file;
 	char **words;
-	
+
 	dir = opendir(".");
 	if (!dir)
 		return ;
@@ -122,16 +122,19 @@ int	count_valid_pathname(char *content, t_token *token)
 		else
 			str = content;
 		//TODO: Pas sur de mon coup..., c'est bien content et pas file->d_name qui devrait m'indiquer si c'est un fichier cache
-		// Revoir le parcours  
-		token->hidden = (file->d_name[0] == '.');
+		// Revoir le parcours
+		token->hidden = (str[0] == '.');
 //		printf ("hidden value : %d\n", token->hidden);
 //		printf("file %d : %s \n", count, str);
 //		if (token->hidden)
 //			printf("%s\t This is a hidden file\n", file->d_name);
-//		else 
+//		else
 //			printf("%s\t This is a normal file\n", file->d_name);
-		if (match_pattern(str, file->d_name))
-			count++;
+		if (token->hidden || file->d_name[0] !='.')
+		{
+			if (match_pattern(str, file->d_name))
+				count++;
+		}
 		file = readdir(dir);
 	}
 //	printf ("number of files : %d\n", count);
@@ -139,17 +142,18 @@ int	count_valid_pathname(char *content, t_token *token)
 	return (count);
 }
 
-char	**create_pathname_tab(t_token *token)
+char	**create_pathname_tab(t_token *token, int *count)
 {
 	DIR				*dir;
 	struct dirent	*file;
-	int				count;
+//	int				count;
 	char			**words;
 	int				i;
 
 	i = 0;
-	count = count_valid_pathname(token->content, token) + 1;
-	words = malloc(count * sizeof(char *));
+	*count = count_valid_pathname(token->content, token) + 1;
+	printf ("nb of value : %d\n", *count);
+	words = malloc(*count * sizeof(char *));
 	if (!words)
 		return (NULL);
 	dir = opendir(".");
@@ -158,11 +162,14 @@ char	**create_pathname_tab(t_token *token)
 	file = readdir(dir);
 	while (file != NULL)
 	{
-		if (token->content[0] == '.' && token->content[1] == '/'
-			&& match_pattern(token->content + 2, file->d_name))
-				words[i++] = ft_strjoin("./", file->d_name);
-		else if (match_pattern(token->content, file->d_name))
-				words[i++] = ft_strdup(file->d_name);
+		if (token->hidden || file->d_name[0] !='.')
+		{
+			if (token->content[0] == '.' && token->content[1] == '/'
+				&& match_pattern(token->content + 2, file->d_name))
+					words[i++] = ft_strjoin("./", file->d_name);
+			else if (match_pattern(token->content, file->d_name))
+					words[i++] = ft_strdup(file->d_name);
+		}
 		file = readdir(dir);
 	}
 	words[i] = NULL;
@@ -170,13 +177,13 @@ char	**create_pathname_tab(t_token *token)
 	return (words);
 }
 
-int	expand_pathname_cmd(t_token *token)
+int	expand_pathname_cmd(t_token *token, int *count)
 {
 	char	**words;
 	char	*tmp;
 	t_token	*ptr;
 
-	words = create_pathname_tab(token);
+	words = create_pathname_tab(token, count);
 	if (!words)
 		return (1);
 	if (!*words)
@@ -206,7 +213,7 @@ int	expand_pathname_cmd(t_token *token)
 	while ((file = readdir(dir)) != NULL)
 	{
 		if (match_pattern(token->content, file->d_name))
-		{	
+		{
 			words[i] = ft_strdup(file->d_name);
 			printf("\"%s\" put in tab\n", file->d_name);
 			i++;
@@ -220,7 +227,7 @@ int	expand_pathname_cmd(t_token *token)
 // Gestion de l'expansion du wildcard * pour la redirection
 // Return error code
 int expand_pathname_redir(t_token *token)
-{	
+{
 	int				count;
 	char 			*tmp;
 	DIR				*dir;
@@ -231,7 +238,7 @@ int expand_pathname_redir(t_token *token)
 		count = count_valid_pathname(token->content, token);
 		if (count > 1)
 			return (ft_dprintf(2, "minishell: %s: ambiguous redirect\n", token->content), 1);
-		// error msg: "%s: ambiguous redirect", token->content 
+		// error msg: "%s: ambiguous redirect", token->content
 		else if (count == 1)
 		{
 			dir = opendir(".");

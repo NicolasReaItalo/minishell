@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/05 14:34:34 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/07 22:22:08 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,20 @@ int	contains_ifs(t_token *token, t_shell *shell)
 	return (0);
 }
 
+// Si le nb tokens est superieur a 2 avancer le pointeurs en fonction
+t_token	*advance_token(t_token *token, int *nb_token)
+{
+	token = token->next;
+	*nb_token -= 2;
+	while (*nb_token > 0)
+	{
+		token = token->next;
+		(*nb_token)--;
+	}
+	*nb_token = 1;
+	return (token);
+}
+
 // Cycle d'expansions pour le node de type exec fournit en argument
 // pour chaques token :
 //   parameter_expansion -> IFS -> pathname_expansion -> quote removal
@@ -38,7 +52,9 @@ int	word_expand(t_node *node, t_shell *shell)
 {
 	t_token	*token;
 	int		error;
+	int		nb_token;
 
+	nb_token = 1;
 	if (!node)
 		return (4);
 	token = node->cmd;
@@ -51,9 +67,10 @@ int	word_expand(t_node *node, t_shell *shell)
 			if (field_splitting(token, shell))
 				return (1);
 		if (ft_strchr(token->content, '*'))
-			if (expand_pathname_cmd(token))
+			if (expand_pathname_cmd(token, &nb_token))
 				return (1);
-		token = token->next;
+//		token = token->next;
+		token = advance_token(token, &nb_token);
 	}
 	token = node->redir;
 	while (token)
