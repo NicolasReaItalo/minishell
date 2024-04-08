@@ -1,5 +1,7 @@
 - [X] **Cas de l'expansion des parametres ou le premier caractere est . (et exclusion sinon)**
-- [ ] !!! Ne prends pas en compte '.' Pourquoi?
+- [X] !!! Ne prends pas en compte '.' Pourquoi?
+- [X] Pourquoi si VAR='*' , il n'y a pas d'expansion
+
 
 - [ ] Creer un ifs pour redirection
 	- si nb_elem > 1 => `$VAR: ambiguous redirect `(attention a l'expansion de $VAR)
