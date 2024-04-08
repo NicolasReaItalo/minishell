@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/04 16:54:45 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/08 15:20:13 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	bt_exit(t_token *cmd, t_shell *shell)
 {
 	int	status;
 
-	write(1, "exit\n", 6);
+	write(1, "Exiting Minishell. See you soon!\n", 34);
 	if (!cmd)
 		return (1);
 	cmd = cmd->next;

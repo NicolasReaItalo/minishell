@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 14:14:48 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/05 14:47:07 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/08 14:39:52 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 void	ft_free_shell(t_shell *shell)
 {
 	ft_free_env_vars(shell->env_vars, &shell->shell_vars);
-	ft_free_tree(shell->tree);
+	if (shell->tree)
+		ft_free_tree(&shell->tree);
 	rl_clear_history();
 }
 

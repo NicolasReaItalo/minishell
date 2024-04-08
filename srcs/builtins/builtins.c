@@ -6,58 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:19:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/05 11:41:11 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/08 15:30:11 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-int	ft_is_builtin(t_node *node)
-{
-	char	*cmd;
-
-	if (!node || node->type != N_EXEC || !node->cmd || !node->cmd->content)
-		return (0);
-	cmd = node->cmd->content;
-	if (!ft_strcmp(cmd, "echo"))
-		return (1);
-	else if (!ft_strcmp(cmd, "cd"))
-		return (1);
-	else if (!ft_strcmp(cmd, "export"))
-		return (1);
-	else if (!ft_strcmp(cmd, "unset"))
-		return (1);
-	else if (!ft_strcmp(cmd, "pwd"))
-		return (1);
-	else if (!ft_strcmp(cmd, "env"))
-		return (1);
-	else if (!ft_strcmp(cmd, "exit"))
-		return (1);
-	return (0);
-}
-
-/*return a function pointer to the builtin*/
-t_builtin	ft_getbuiltin(char *cmd)
-{
-	if (!cmd)
-		return (NULL);
-	if (!ft_strcmp(cmd, "echo"))
-		return ((t_builtin) echo);
-	else if (!ft_strcmp(cmd, "cd"))
-		return ((t_builtin) cd);
-	else if (!ft_strcmp(cmd, "export"))
-		return ((t_builtin) export);
-	else if (!ft_strcmp(cmd, "unset"))
-		return ((t_builtin) unset);
-	else if (!ft_strcmp(cmd, "pwd"))
-		return ((t_builtin) pwd);
-	else if (!ft_strcmp(cmd, "env"))
-		return ((t_builtin) env);
-	else if (!ft_strcmp(cmd, "exit"))
-		return ((t_builtin) bt_exit);
-	else
-		return (NULL);
-}
 
 /*
 Displays error msg in case of internal error*/
@@ -78,6 +31,31 @@ static	int	save_fds(t_node *node)
 	node->stdout = dup(STDOUT_FILENO);
 	if (node->stdout == -1)
 		return (-1);
+	return (1);
+}
+
+static	int	restore_fds(t_node *node, int pipe_lvl)
+{
+	if (!node || node->type != N_EXEC)
+		return (-1);
+	if (pipe_lvl == -1)
+	{
+		if (dup2(node->stdin, STDIN_FILENO) == -1)
+		{
+			perror("dup2");
+			return (-1);
+		}
+		if (dup2(node->stdout, STDOUT_FILENO) == -1)
+		{
+			perror("dup2");
+			return (-1);
+		}
+	}
+	else
+	{
+		close(node->stdin);
+		close(node->stdout);
+	}
 	return (1);
 }
 
@@ -105,10 +83,7 @@ int	ft_exec_builtin(t_node *node, int pipe_lvl, t_shell *shell)
 	if (!f)
 		ft_builtin_exit_err(1, node->cmd->content);
 	exit_status = f(node->cmd, shell);
-	if (pipe_lvl == -1)
-	{
-		dup2(node->stdin, STDIN_FILENO);
-		dup2(node->stdout, STDOUT_FILENO);
-	}
+	if (restore_fds(node, pipe_lvl) == -1)
+		return (-1);
 	return (exit_status);
 }

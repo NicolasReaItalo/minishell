@@ -6,28 +6,30 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 13:06:14 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/04 10:12:50 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/08 14:42:54 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	ft_free_tree(t_node *tree)
+void	ft_free_tree(t_node **tree)
 {
 	if (!tree)
 		return ;
-	if (tree->type == 0)
+	if ((*tree)->type == 0)
 	{
-		kill_stack(&tree->redir);
-		kill_stack(&tree->cmd);
-		free(tree);
+		kill_stack(&(*tree)->redir);
+		kill_stack(&(*tree)->cmd);
+		free(*tree);
+		*tree = NULL;
 		return ;
 	}
 	else
 	{
-		ft_free_tree(tree->left);
-		ft_free_tree(tree->right);
-		free(tree);
+		ft_free_tree(&(*tree)->left);
+		ft_free_tree(&(*tree)->right);
+		free(*tree);
+		*tree = NULL;
 	}
 }
 
@@ -59,7 +61,7 @@ void	*ft_set_tree_error(int *error, int type, t_node *node)
 	if (!node)
 		return (NULL);
 	if (node->left)
-		ft_free_tree(node->left);
+		ft_free_tree(&node->left);
 	free(node);
 	return (NULL);
 }

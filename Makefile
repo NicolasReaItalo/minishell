@@ -6,7 +6,7 @@
 #    By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/04/05 14:45:30 by nrea             ###   ########.fr        #
+#    Updated: 2024/04/08 15:26:55 by nrea             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ SRCS		=	$(SRC_PATH)minishell.c \
 				$(SRC_PATH)expansion/param_expansion.c \
 				$(SRC_PATH)expansion/pathname_expansion.c\
 				$(SRC_PATH)builtins/builtins.c\
+				$(SRC_PATH)builtins/builtins_utils.c\
 				$(SRC_PATH)builtins/pwd.c\
 				$(SRC_PATH)builtins/echo.c\
 				$(SRC_PATH)builtins/env.c\

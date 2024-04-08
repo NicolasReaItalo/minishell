@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 14:39:35 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/05 15:02:56 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/08 14:39:46 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	apply_create_tree(t_token **stack, t_shell *shell)
 	{
 		ft_handle_tree_error(error_code);
 		kill_stack(stack);
-		ft_free_tree(shell->tree);
+		ft_free_tree(&shell->tree);
 		return (-1);
 	}
 	return (0);
@@ -100,7 +100,7 @@ void	repl(t_shell *shell)
 				continue ;
 			if (ft_exec_root(shell->tree, shell) == -1)
 				return ;
-			ft_free_tree(shell->tree);
+			ft_free_tree(&shell->tree);
 		}
 	}
 }
