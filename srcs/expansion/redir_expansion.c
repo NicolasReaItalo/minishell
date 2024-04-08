@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:10:58 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/08 18:16:09 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/09 00:17:20 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,55 @@ int	contains_ifs_redir(char *str, char *ifs)
 		str++;
 	}
 	return (0);
+}
+
+int	count_valid_redir(char *content, t_token *token)
+{
+	DIR				*dir;
+	struct dirent	*file;
+	int				count;
+	char			*str;
+
+	dir = opendir(".");
+	if (!dir)
+		return (-1);
+	count = 0;
+	file = readdir(dir);
+	while (file != NULL)
+	{
+		if (content[0] == '.' && content[1] == '/')
+			str = content + 2;
+		else
+			str = content;
+		//TODO: Pas sur de mon coup..., c'est bien content et pas file->d_name qui devrait m'indiquer si c'est un fichier cache
+		// Revoir le parcours
+		token->hidden = (str[0] == '.');
+//		printf ("hidden value : %d\n", token->hidden);
+//		printf("file %d : %s \n", count, str);
+//		if (token->hidden)
+//			printf("%s\t This is a hidden file\n", file->d_name);
+//		else
+//			printf("%s\t This is a normal file\n", file->d_name);
+		if (token->hidden || file->d_name[0] !='.')
+		{
+			if (match_pattern(str, file->d_name))
+			{
+				count++;
+				if (count == 1)
+				{
+					str = token->content;
+					token->content = ft_strdup(file->d_name);
+					free(str);
+				}
+			}
+		}
+		file = readdir(dir);
+	}
+//	printf ("number of files : %d\n", count);
+	closedir(dir);
+//	if (count == 1)
+//		token
+	return (count);
 }
 
 // expand the redir token
@@ -57,7 +106,7 @@ int	expand_redir(t_token *token, t_shell *shell)
 		return (5);
 	}
 	if (ft_strchr(str2, '*'))
-		if (count_valid_pathname(str2, token) >= 2)
+		if (count_valid_redir(str2, token) >= 2)
 		{
 			ft_dprintf(2, "%s: ambiguous redirect\n ",token->content);
 			return (5);

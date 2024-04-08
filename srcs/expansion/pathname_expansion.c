@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pathname_expansion.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/08 14:21:49 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/09 00:15:36 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	match_pattern(char *pattern, char *str)
 		return (0);
 }*/
 
-static int	match_pattern(char *pattern, char *str)
+int	match_pattern(char *pattern, char *str)
 {
 	if (*pattern == '\0' && *str == '\0')
 		return (1);
