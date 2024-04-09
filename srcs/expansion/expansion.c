@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/08 16:35:20 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/09 15:37:49 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,18 @@ int	word_expand(t_node *node, t_shell *shell)
 	token = node->redir;
 	while (token)
 	{
-		token->content = expand_param(token->content, shell);
-		if (!token->content)
+		if (expand_redir(token, shell))
 			return (1);
-		if (ft_strchr(token->content, '*'))
-		{
-			error = expand_pathname_redir(token);
-			if (error)
-				return (error);
-		}
+		// token->content = expand_param(token->content, shell);
+		// if (!token->content)
+		// 	return (1);
+		// if (ft_strchr(token->content, '*'))
+		// {
+		// 	error = expand_pathname_redir(token);
+		// 	if (error)
+		// 		return (error);
+		// }
+		
 		token = token->next;
 	}
 	return (0);
@@ -125,7 +128,7 @@ int	main(int argc, char **argv)
 	free (output);
 	return (0);
 }*/
-/*
+
 char	*ft_handle_token_errors(int error)
 {
 	if (error == 1)
@@ -204,7 +207,7 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_tree(tree);
 	ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 	return (0);
-}*/
+}
 
 //gcc -g3 srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c test/utils/*.c -I./include/ -I./libft/ -I./test -L./libft/ -lft -lreadline -o param_expansion
 

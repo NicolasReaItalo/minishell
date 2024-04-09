@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pathname_expansion.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/09 00:15:36 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/04/09 17:03:33 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,23 @@ static int	match_pattern(char *pattern, char *str)
 		return (0);
 }*/
 
+int only_stars(char *pattern)
+{
+	while (*pattern)
+	{
+		if (*pattern != '*')
+			return (0);
+		pattern++;
+	}
+	return (1);
+}
+
 int	match_pattern(char *pattern, char *str)
 {
-	if (*pattern == '\0' && *str == '\0')
+	if (only_stars(pattern) && *str == '\0')
 		return (1);
-	else if (*pattern == '\0' || (*str == '\0' && *pattern != '*'))
+//	else if (*pattern == '\0' || (*str == '\0' && *pattern != '*'))
+	else if (*pattern == '\0' || *str == '\0')
 		return (0);
 	if (*pattern == '*')
 	{
@@ -170,7 +182,7 @@ char	**create_pathname_tab(t_token *token, int *count)
 			else if (match_pattern(token->content, file->d_name))
 					words[i++] = ft_strdup(file->d_name);
 		}
-		printf("%s\n", file->d_name);
+//		printf("%s\n", file->d_name);
 		file = readdir(dir);
 	}
 	words[i] = NULL;
