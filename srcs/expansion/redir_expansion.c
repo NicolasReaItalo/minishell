@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:10:58 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/09 16:29:48 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/09 18:22:43 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,27 +50,20 @@ int	count_valid_redir(char *content, t_token *token)
 		{
 			if (match_pattern(str, file_name))
 			{
-				count++;
+				if (++count > 1)
+					return (free(tmp_name), free(file_name), closedir(dir), count);
 				tmp_name = ft_strdup(file_name);
 			}
 		}
 		free(file_name);
 		file = readdir(dir);
 	}
-//	printf ("number of files : %d\n", count);
 	closedir(dir);
+	free(token->content);
 	if (count == 1)
-	{
-		free(token->content);
 		token->content = tmp_name;
-//		free(str);
-	}
-	if (count == 0)
-	{
-		free(token->content);
+	else if (count == 0)
 		token->content = ft_strdup(content);
-	}
-	
 	return (count);
 }
 
@@ -93,23 +86,23 @@ int	expand_redir(t_token *token, t_shell *shell)
 		return (1);
 	ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
 	str2 = ft_strtrim(str, ifs);
+	free (str);
 	if (!str2[0])
 	{
 		ft_dprintf(2, "%s: ambiguous redirect\n ",token->content);
-		return (5);
+		return (free(str2), 5);
 	}
 	if (contains_ifs_redir(str2, ifs))
 	{
 		ft_dprintf(2, "%s: ambiguous redirect\n ",token->content);
-		return (5);
+		return (free(str2),5);
 	}
-//	if (ft_strchr(str2, '*'))
 		if (count_valid_redir(str2, token) >= 2)
 		{
 			ft_dprintf(2, "%s: ambiguous redirect\n ",token->content);
-			return (5);
+			return (free(str2), 5);
 		}
-//	ft_dprintf(2, "Value : %s", token->content);
+	free (str2);
 	return (0);
 }
 /*

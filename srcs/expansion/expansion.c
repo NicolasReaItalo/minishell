@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/09 15:37:49 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/09 17:43:33 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int	word_expand(t_node *node, t_shell *shell)
 		if (ft_strchr(token->content, '*'))
 			if (expand_pathname_cmd(token, &nb_token))
 				return (1);
-//		token = token->next;
 		token = advance_token(token, &nb_token);
 	}
 	token = node->redir;
@@ -77,16 +76,6 @@ int	word_expand(t_node *node, t_shell *shell)
 	{
 		if (expand_redir(token, shell))
 			return (1);
-		// token->content = expand_param(token->content, shell);
-		// if (!token->content)
-		// 	return (1);
-		// if (ft_strchr(token->content, '*'))
-		// {
-		// 	error = expand_pathname_redir(token);
-		// 	if (error)
-		// 		return (error);
-		// }
-		
 		token = token->next;
 	}
 	return (0);
