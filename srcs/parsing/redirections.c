@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/09 19:07:07 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 13:16:26 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	ft_redirections(t_token **stack)
 		{
 			prev_tok = tok->prev;
 			hd_return = ft_capture_here_doc(tok, prev_tok->content);
+			set_interactive_signals(); // a proteger
 			if (hd_return == 1)
 				return (-1);
 			else if (hd_return == 2)

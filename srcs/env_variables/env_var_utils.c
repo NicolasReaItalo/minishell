@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:35:44 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/19 13:56:55 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 13:18:58 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	ft_free_env_vars(t_evar *env_list[58], t_svars *shell_vars)
 	free(shell_vars->ifs);
 }
 
-void	*ft_free_splitted(char **splitted)
+int	ft_free_splitted(char **splitted)
 {
 	int	i;
 
@@ -79,7 +79,7 @@ void	*ft_free_splitted(char **splitted)
 		i++;
 	}
 	free(splitted);
-	return (NULL);
+	return (0);
 }
 
 /*Checks if the key  string is a valid key for an environement

@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:40:05 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/27 14:45:40 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 13:19:09 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		ft_fetch_env_vars(t_evar *vars[58], char **envp);
 int		ft_init_env_vars(t_evar	*vars[58], t_svars *shell_vars);
 void	*ft_free_var(t_evar *var);
 void	ft_free_env_vars(t_evar *env_list[58], t_svars *shell_vars);
-void	*ft_free_splitted(char **splitted);
+int		ft_free_splitted(char **splitted);
 int		ft_is_valid_key(char *key);
 
 int		ft_isshell_var(char *key);

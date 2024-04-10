@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/10 10:27:39 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 13:16:11 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,12 @@ void exit_gracefully(t_shell *shell, int exit_status)
 	exit (exit_status);
 }
 
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 
 
-	if (set_signals() == -1)
+	if (set_interactive_signals() == -1)
 		exit(1);
 
 

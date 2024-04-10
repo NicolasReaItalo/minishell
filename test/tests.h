@@ -12,5 +12,5 @@ void	ft_display_stack_forward(t_token *stack);
 void	show_tree(t_node *node, int i);
 void	ft_display_char_vars(char **envp);
 void	ft_display_vars(t_evar *vars[58]);
-void	*ft_free_splitted(char **splitted);
+// void	*ft_free_splitted(char **splitted);
 #endif
