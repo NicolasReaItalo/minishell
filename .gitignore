@@ -14,3 +14,5 @@ my_ls_link
 test_print.c
 dummy_echo.c
 dummy_echo
+test_infinite.c
+inf_loop

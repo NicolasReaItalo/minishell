@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 14:39:35 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 10:48:34 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 14:14:32 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,6 @@ void	repl(t_shell *shell)
 				return ;
 			ft_free_tree(&shell->tree);
 		}
-		if (ft_get_exit_status(&shell->shell_vars) == 130)
-			printf("\r");
-		if (ft_get_exit_status(&shell->shell_vars) == 131)
-			printf("\r^\\Quit\033[K\n");
 	}
 
 

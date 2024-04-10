@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:31:47 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/09 16:10:29 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 14:42:19 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ static int	ft_exec_in_fork(t_node *node, int pipe_nb, t_shell *shell)
 	int	exit_status;
 	int	pid;
 
+	if (set_exec_signals() == -1)
+	{
+		perror("signal");
+		return(-1);
+	}
 	exit_status = 0;
 	pid = fork();
 	if (pid == -1)
@@ -31,15 +36,32 @@ static int	ft_exec_in_fork(t_node *node, int pipe_nb, t_shell *shell)
 		if (g_sig == SIGINT)
 		{
 			g_sig = 0;
+			if (set_interactive_signals() == -1)
+			{
+				perror("signal");
+				return(-1);
+			}
 			return (130);
 		}
 		else if (g_sig == SIGQUIT)
 		{
 			g_sig = 0;
+			if (set_interactive_signals() == -1)
+			{
+				perror("signal");
+				return(-1);
+			}
 			return (131);
 		}
 		else
+		{
+			if (set_interactive_signals() == -1)
+			{
+				perror("signal");
+				return(-1);
+			}
 			return (WEXITSTATUS(exit_status));
+		}
 	}
 	return (exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 10:27:07 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 13:50:17 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 14:18:53 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,10 @@ int	set_interactive_signals(void)
 	return (1);
 }
 
-void sig_quit__exec_handler(int signum)
+void sig_quit_exec_handler(int signum)
 {
 	g_sig = signum;
+	printf("\n");
 }
 
 void sig_int_exec_handler(int signum)
@@ -68,7 +69,7 @@ int	set_exec_signals(void)
 		perror("signal");
 		return (-1);
 	}
-	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	if (signal(SIGQUIT, sig_quit_exec_handler) == SIG_ERR)
 	{
 		perror("signal");
 		return (-1);
@@ -77,13 +78,10 @@ int	set_exec_signals(void)
 }
 
 
-
-
-
 void sig_int_hd_handler(int signum)
 {
 	g_sig = signum;
-	rl_replace_line("", 0);
+	rl_replace_line("\n", 0);
 	rl_on_new_line();
 	rl_redisplay();
 	// printf("\n");
