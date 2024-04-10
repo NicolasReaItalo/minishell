@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 13:16:26 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 18:00:58 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ si >,stocke le content du token suivant comme fichier de redirection
 supprime le token word suivant
 si >>,stocke le content du token suivant comme fichier de redirection
 */
-int	ft_redirections(t_token **stack)
+int	ft_redirections(t_token **stack, t_shell *shell)
 {
 	t_token	*tok;
 	t_token	*prev_tok;
@@ -77,12 +77,13 @@ int	ft_redirections(t_token **stack)
 		if (tok->type == R_HEREDOC)
 		{
 			prev_tok = tok->prev;
-			hd_return = ft_capture_here_doc(tok, prev_tok->content);
+			hd_return = ft_capture_here_doc(tok, prev_tok->content, shell);
 			set_interactive_signals(); // a proteger
-			if (hd_return == 1)
-				return (-1);
-			else if (hd_return == 2)
-				return (2);
+			if (hd_return)
+			{
+				ft_clean_words(stack);
+				return (hd_return);
+			}
 		}
 		else if (tok->type >= 4 && tok->type <= 6)
 		{

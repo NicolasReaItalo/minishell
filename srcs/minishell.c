@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/10 13:16:11 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 17:42:38 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	main(int argc, char **argv, char **envp)
 	(void) argv;
 	if (!ft_init_shell(&shell, envp))
 		return (1);
-	shell.get_readline = 1; /////////A supprimer
 	repl(&shell);
 	exit_gracefully(&shell, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 10:27:07 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 14:18:53 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 17:26:37 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 volatile	sig_atomic_t	g_sig;
 
@@ -25,7 +26,6 @@ void sig_int_interactive_handler(int signum)
 	printf("\n");
 	rl_redisplay();
 }
-
 
 /*set the signals interception for the interactive mode*/
 int	set_interactive_signals(void)
@@ -46,17 +46,13 @@ int	set_interactive_signals(void)
 	return (1);
 }
 
-void sig_quit_exec_handler(int signum)
+void sig_exec_handler(int signum)
 {
 	g_sig = signum;
 	printf("\n");
 }
 
-void sig_int_exec_handler(int signum)
-{
-	g_sig = signum;
-	printf("\n");
-}
+
 
 /*Signals detection when a command process is running*/
 int	set_exec_signals(void)
@@ -64,12 +60,12 @@ int	set_exec_signals(void)
 	g_sig = 0;
 	// ajouter termios
 
-	if (signal(SIGINT, sig_int_exec_handler) == SIG_ERR)
+	if (signal(SIGINT, sig_exec_handler) == SIG_ERR)
 	{
 		perror("signal");
 		return (-1);
 	}
-	if (signal(SIGQUIT, sig_quit_exec_handler) == SIG_ERR)
+	if (signal(SIGQUIT, sig_exec_handler) == SIG_ERR)
 	{
 		perror("signal");
 		return (-1);
@@ -80,18 +76,33 @@ int	set_exec_signals(void)
 
 void sig_int_hd_handler(int signum)
 {
-	g_sig = signum;
-	rl_replace_line("\n", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	// printf("\n");
+	(void) signum;
+	exit(130);
 }
 
 
-/*set the signals interception for the heredoc  mode*/
-int	set_hd_signals(void)
+int	set_hd_parent_signals(void)
 {
 	g_sig = 0;
+	// ajouter termios
+
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+	{
+		perror("signal");
+		return (-1);
+	}
+	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	{
+		perror("signal");
+		return (-1);
+	}
+	return (1);
+}
+int	set_hd_child_signals(void)
+{
+	g_sig = 0;
+	// ajouter termios
+
 	if (signal(SIGINT, sig_int_hd_handler) == SIG_ERR)
 	{
 		perror("signal");
@@ -104,4 +115,3 @@ int	set_hd_signals(void)
 	}
 	return (1);
 }
-

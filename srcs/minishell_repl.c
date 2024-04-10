@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 14:39:35 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 14:14:32 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 18:00:17 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ static int	apply_redirections(t_token **stack, t_shell *shell)
 {
 	int ret;
 
-	ret = ft_redirections(stack);
-	if (ret == -1)
+	ret = ft_redirections(stack, shell);
+	if (ret == 1)
 	{
 		write(2, "Internal error during redirection\n", 35);
 		kill_stack(stack);
@@ -59,10 +59,11 @@ static int	apply_redirections(t_token **stack, t_shell *shell)
 		ft_set_exit_status(2, &shell->shell_vars);
 		return (-1);
 	}
-	else if (ret == 2)
+	else if (ret == 130)
 	{
 		kill_stack(stack);
 		*stack = NULL;
+		ft_set_exit_status(130, &shell->shell_vars);
 		return (-1);
 	}
 	return (0);
