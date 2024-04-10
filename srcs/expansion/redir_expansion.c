@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:10:58 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/10 13:33:00 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/10 16:49:39 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ int	count_valid_redir(char *content, t_token *token)
 			if (match_pattern(str, file_name))
 			{
 				count++;
-				tmp_name = ft_strdup(file_name);
+				if (count == 1)
+					tmp_name = ft_strdup(file_name);
 			}
 		}
 		free(file_name);
 		file = readdir(dir);
 	}
-//	printf ("number of files : %d\n", count);
 	closedir(dir);
 	if (count == 1)
 	{
@@ -67,12 +67,13 @@ int	count_valid_redir(char *content, t_token *token)
 		token->content = tmp_name;
 //		free(str);
 	}
-	if (count == 0)
+	else if (count == 0)
 	{
 		free(token->content);
 		token->content = ft_strdup(content);
 	}
-	
+	else
+		free(tmp_name);
 	return (count);
 }
 
@@ -84,6 +85,13 @@ int	count_valid_redir(char *content, t_token *token)
 //    	- count valid_pathnames si > 1 =>error
 //    	- expand
 // return an error code
+static int	ambiguous_redirect(char *content)
+{
+	ft_putstr_fd(content, 2);
+	ft_putstr_fd(": ambiguous redirect\n ", 2);
+	return (5);
+}
+
 int	expand_redir(t_token *token, t_shell *shell)
 {
 	char	*ifs;
@@ -100,27 +108,15 @@ int	expand_redir(t_token *token, t_shell *shell)
 		return (free(str), 1);
 	free (str);
 	if (!str2[0])
-	{
-		ft_dprintf(2, "%s: ambiguous redirect\n ",token->content);
-		return (free(str2), 5);
-	}
+		return (free(str2), ambiguous_redirect(token->content));
 	if (contains_ifs_redir(str2, ifs))
-	{
-		ft_dprintf(2, "%s: ambiguous redirect\n ",token->content);
-		return (free(str2), 5);
-	}
-//	if (ft_strchr(str2, '*'))
+		return (free(str2), ambiguous_redirect(token->content));
 	error = count_valid_redir(str2, token);
 	free(str2);
 	if (error == 6)
 		return (6);
 	else if (error >= 2)
-//		if (count_valid_redir(str2, token) >= 2)
-	{
-		ft_dprintf(2, "%s: ambiguous redirect\n ",token->content);
-		return (5);
-	}
-//	ft_dprintf(2, "Value : %s", token->content);
+		return (ambiguous_redirect(token->content));
 	return (0);
 }
 /*
