@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:55:49 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/26 12:59:20 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 13:19:30 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ static char	*ft_join_paths(char const *path, char const *cmd)
 	return (full_path);
 }
 
+
 /*Create the full path command by browsing the PATH variable
 Return 0 in case of success
 1 in case of malloc error
@@ -96,7 +97,7 @@ int	ft_get_full_cmd(char **full_cmd, char *content, t_shell *shell)
 		if (!full_cmd)
 			return (1);
 		if (access(*full_cmd, F_OK) == 0)
-			return (0);
+			return (ft_free_splitted(paths));
 		free(*full_cmd);
 		i++;
 	}
