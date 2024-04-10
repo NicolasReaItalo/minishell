@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/09 15:37:49 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/10 17:12:41 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ int	main(int argc, char **argv, char **envp)
 	if (syntax_error)
 	{
 		kill_stack(&stack);
+		ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 		return (2);
 	}
 	ft_redirections(&stack);

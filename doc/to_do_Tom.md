@@ -21,3 +21,7 @@
     - ex: `echo ./*` => `./doc ./h ...  `
 - [ ] Mettre les printf au format write (ft_putstr_fd())
 - [ ] Gerer le unquotting
+
+
+## A VOIR : Messages generant des erreurs ##
+valgrind --leak-check=full ./param_expansion 'hello | |'

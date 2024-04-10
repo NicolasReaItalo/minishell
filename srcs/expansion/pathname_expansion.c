@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/10 15:24:28 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/10 16:54:36 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ char	**create_pathname_tab(t_token *token, int *count)
 
 	i = 0;
 	*count = count_valid_pathname(token->content, token) + 1;
-//	printf ("nb of value : %d\n", *count);
 	words = malloc(*count * sizeof(char *));
 	if (!words)
 		return (NULL);
