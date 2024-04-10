@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:13:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/03 12:16:42 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/09 16:16:52 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,18 @@ static int	ft_close_pipes_and_wait(int pipe_lvl, t_shell *s, int pids[2])
 		while (wait(NULL) != -1)
 		{
 		}
-		ft_set_exit_status(WEXITSTATUS(exit_status), &s->shell_vars);
+		if (g_sig == SIGINT)
+		{
+			g_sig = 0;
+			ft_set_exit_status(130, &s->shell_vars);
+		}
+		else if (g_sig == SIGQUIT)
+		{
+			g_sig = 0;
+			ft_set_exit_status(131, &s->shell_vars);
+		}
+		else
+			ft_set_exit_status(WEXITSTATUS(exit_status), &s->shell_vars);
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:31:47 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/03 12:08:20 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/09 16:10:29 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	ft_exec_in_fork(t_node *node, int pipe_nb, t_shell *shell)
 	int	exit_status;
 	int	pid;
 
+	exit_status = 0;
 	pid = fork();
 	if (pid == -1)
 		return (-1);
@@ -26,11 +27,21 @@ static int	ft_exec_in_fork(t_node *node, int pipe_nb, t_shell *shell)
 		ft_exec_binary(node, pipe_nb, shell);
 	else
 	{
-		if (waitpid(pid, &exit_status, 0) == -1)
-			return (-1);
-		return (WEXITSTATUS(exit_status));
+		waitpid(pid, &exit_status, 0);
+		if (g_sig == SIGINT)
+		{
+			g_sig = 0;
+			return (130);
+		}
+		else if (g_sig == SIGQUIT)
+		{
+			g_sig = 0;
+			return (131);
+		}
+		else
+			return (WEXITSTATUS(exit_status));
 	}
-	return (0);
+	return (exit_status);
 }
 
 /*Execution of a  and/or node*/
@@ -68,6 +79,7 @@ static int	ft_n_exec(t_node *tree_root, t_shell *shell)
 	else
 	{
 		exit_status = ft_exec_in_fork(tree_root, -1, shell);
+
 		if (exit_status == -1)
 		{
 			write(2, "Internal Error\n", 16);

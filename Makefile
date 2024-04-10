@@ -6,7 +6,7 @@
 #    By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/04/08 15:26:55 by nrea             ###   ########.fr        #
+#    Updated: 2024/04/10 10:28:31 by nrea             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ OBJ_PATH	= ./objs/
 SRCS		=	$(SRC_PATH)minishell.c \
 				$(SRC_PATH)minishell_utils.c\
 				$(SRC_PATH)minishell_repl.c\
+				$(SRC_PATH)minishell_signals.c\
 				$(SRC_PATH)parsing/token.c \
 				$(SRC_PATH)parsing/token_utils.c \
 				$(SRC_PATH)parsing/token_utils2.c \

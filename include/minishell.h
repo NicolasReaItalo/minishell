@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:19:14 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/05 14:42:50 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 10:32:41 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@
 # include <string.h>
 # include <sys/types.h>
 # include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+# include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "parser.h"
 # include "token.h"
 # include "token_utils.h"
 # include "libft.h"
+# include "minishell_signals.h"
 # include "env_variables.h"
 # include "execution.h"
 # include "word_expansion.h"

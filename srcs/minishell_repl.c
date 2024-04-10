@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 14:39:35 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/08 14:39:46 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 10:48:34 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,21 @@ static int	apply_check_syntax(t_token **stack, t_shell *shell)
 
 static int	apply_redirections(t_token **stack, t_shell *shell)
 {
-	if (ft_redirections(stack) == -1)
+	int ret;
+
+	ret = ft_redirections(stack);
+	if (ret == -1)
 	{
 		write(2, "Internal error during redirection\n", 35);
 		kill_stack(stack);
 		*stack = NULL;
 		ft_set_exit_status(2, &shell->shell_vars);
+		return (-1);
+	}
+	else if (ret == 2)
+	{
+		kill_stack(stack);
+		*stack = NULL;
 		return (-1);
 	}
 	return (0);
@@ -81,12 +90,23 @@ void	repl(t_shell *shell)
 	t_token	*stack;
 	char	*line;
 
+	line = NULL;
 	while (1)
 	{
 		stack = NULL;
-		line = readline("minishell> ");
+		line = readline("minishell>");
+		if (g_sig)
+		{
+			if (g_sig == SIGINT)
+			{
+				ft_set_exit_status(g_sig + 128, &shell->shell_vars);
+				g_sig = 0;
+			}
+			else
+				g_sig = 0;
+		}
 		if (!line)
-			return ;
+			exit_gracefully(shell, 0);
 		if (ft_strlen(line))
 		{
 			add_history(line);
@@ -102,5 +122,11 @@ void	repl(t_shell *shell)
 				return ;
 			ft_free_tree(&shell->tree);
 		}
+		if (ft_get_exit_status(&shell->shell_vars) == 130)
+			printf("\r");
+		if (ft_get_exit_status(&shell->shell_vars) == 131)
+			printf("\r^\\Quit\033[K\n");
 	}
+
+
 }

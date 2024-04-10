@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:32:18 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/04 16:53:29 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 10:41:25 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <string.h>
 # include <sys/types.h>
 # include <unistd.h>
+# include <signal.h>
 # include "parser.h"
 # include "token.h"
 # include "token_utils.h"
@@ -45,7 +46,11 @@ typedef struct s_shell
 	t_svars	shell_vars;
 	t_pipes	p_ar;
 	t_node	*tree;
+	int		get_readline;
 }	t_shell;
+
+
+void			exit_gracefully(t_shell *shell, int exit_status);
 
 typedef int		(*t_builtin)(t_token *cmd, t_shell *shell);
 
@@ -87,4 +92,8 @@ int				export(t_token *cmd, t_shell *shell);
 int				unset(t_token *cmd, t_shell *shell);
 int				cd(t_token *cmd, t_shell *shell);
 int				bt_exit(t_token *cmd, t_shell *shell);
+
+
+
+int	debug_status(t_token *cmd, t_shell *shell); /////////fonction debug ==> A VIRER
 #endif

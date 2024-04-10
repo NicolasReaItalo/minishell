@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:43:49 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/08 14:39:25 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 10:37:25 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "libft.h"
 # include <stdlib.h>
 # include <stdio.h>
+# include <signal.h>
 
 # define N_EXEC 0
 # define N_PIPE 1

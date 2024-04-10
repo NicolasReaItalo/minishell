@@ -6,12 +6,13 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/05 15:03:16 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/09 19:07:07 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
+#include <readline/readline.h>
+#include <readline/history.h>
 /*Delete a token in double linked stack*/
 void	ft_delete_token(t_token **token, t_token **stack)
 {
@@ -67,7 +68,7 @@ int	ft_redirections(t_token **stack)
 {
 	t_token	*tok;
 	t_token	*prev_tok;
-
+	int	hd_return;
 	if (!*stack)
 		return (-1);
 	tok = ft_get_token(*stack, -1);
@@ -76,8 +77,11 @@ int	ft_redirections(t_token **stack)
 		if (tok->type == R_HEREDOC)
 		{
 			prev_tok = tok->prev;
-			if (ft_capture_here_doc(tok, prev_tok->content))
+			hd_return = ft_capture_here_doc(tok, prev_tok->content);
+			if (hd_return == 1)
 				return (-1);
+			else if (hd_return == 2)
+				return (2);
 		}
 		else if (tok->type >= 4 && tok->type <= 6)
 		{
