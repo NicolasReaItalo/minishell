@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:07:19 by tjoyeux           #+#    #+#             */
-/*   Updated: 2023/11/14 12:30:11 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/10 11:40:31 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ char	*ft_strtrim(char const *s1, char const *set)
 		bptr++;
 	if (*bptr == '\0')
 	{
-		new = malloc(1);
+		new = malloc(sizeof(char));
+		if (!new)
+			return (NULL);
 		new[0] = '\0';
 		return (new);
 	}

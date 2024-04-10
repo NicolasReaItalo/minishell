@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/09 17:03:33 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/10 12:13:30 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,9 +178,13 @@ char	**create_pathname_tab(t_token *token, int *count)
 		{
 			if (token->content[0] == '.' && token->content[1] == '/'
 				&& match_pattern(token->content + 2, file->d_name))
-					words[i++] = ft_strjoin("./", file->d_name);
+				words[i++] = ft_strjoin("./", file->d_name);
 			else if (match_pattern(token->content, file->d_name))
-					words[i++] = ft_strdup(file->d_name);
+			{
+				words[i] = ft_strdup(file->d_name);
+				if (!words[i++])
+					return (NULL);
+			}
 		}
 //		printf("%s\n", file->d_name);
 		file = readdir(dir);
@@ -205,7 +209,8 @@ int	expand_pathname_cmd(t_token *token, int *count)
 	token->content = ft_strdup(*words);
 	free (tmp);
 	ptr = token;
-	words_to_token(&ptr, words);
+	if (words_to_token(&ptr, words))
+		return (1);
 	free_words_tab(&words);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:10:58 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/09 16:29:48 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/10 12:13:58 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,9 @@ int	expand_redir(t_token *token, t_shell *shell)
 		return (1);
 	ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
 	str2 = ft_strtrim(str, ifs);
+	if (!str2)
+		return (free(str), 1);
+	free (str);
 	if (!str2[0])
 	{
 		ft_dprintf(2, "%s: ambiguous redirect\n ",token->content);

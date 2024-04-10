@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/08 17:51:25 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/10 11:38:05 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ static char	*ft_concat_3str(char *first, char *second, char *third)
 	if (!first_concat)
 		return (free(first), NULL);
 	output = ft_strjoin(first_concat, third);
+	if (!output)
+		return (NULL);
 	free (first);
 	if (!output)
 		return (free(first_concat), NULL);
@@ -87,6 +89,8 @@ char	*expand_param(char *str, t_shell *shell)
 		new = ft_get_var_value(key, shell->env_vars, shell->shell_vars);
 		free (key);
 		output = ft_concat_3str(output, new, next);
+		if (!output)
+			return (NULL);
 		key = find_next_param_expansion(output, &next);
 	}
 	return (output);
@@ -113,6 +117,8 @@ char	*expand_param_redir(char *str, t_shell *shell)
 		new = ft_get_var_value(key, shell->env_vars, shell->shell_vars);
 		free (key);
 		output = ft_concat_3str(output, new, next);
+		if (!output)
+			return (NULL);
 		key = find_next_param_expansion(output, &next);
 	}
 	return (output);
