@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/10 11:38:05 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/10 14:47:58 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static char	*find_next_param_expansion(char *str, char **next)
 	return (NULL);
 }
 
+//Concatene 3 chaines de caracteres
+// first alloue, second, third non alloue   
 static char	*ft_concat_3str(char *first, char *second, char *third)
 {
 	char	*output;
@@ -57,9 +59,9 @@ static char	*ft_concat_3str(char *first, char *second, char *third)
 	if (!first_concat)
 		return (free(first), NULL);
 	output = ft_strjoin(first_concat, third);
+	free (first);
 	if (!output)
 		return (NULL);
-	free (first);
 	if (!output)
 		return (free(first_concat), NULL);
 	return (free(first_concat), output);

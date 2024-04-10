@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:10:58 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/10 12:13:58 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/10 13:33:00 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	count_valid_redir(char *content, t_token *token)
 
 	dir = opendir(".");
 	if (!dir)
-		return (-1);
+		return (6);
 	count = 0;
 	file = readdir(dir);
 	if (content[0] == '.' && content[1] == '/')
@@ -45,6 +45,8 @@ int	count_valid_redir(char *content, t_token *token)
 	while (file != NULL && count < 2)
 	{
 		file_name = ft_strdup(file->d_name);
+		if (!file_name)
+			return (6);
 		token->hidden = (str[0] == '.');
 		if (token->hidden || file_name[0] !='.')
 		{
@@ -87,6 +89,7 @@ int	expand_redir(t_token *token, t_shell *shell)
 	char	*ifs;
 	char	*str;
 	char	*str2;
+	int		error;
 
 	str = expand_param_redir(token->content, shell);
 	if (!str)
@@ -99,19 +102,24 @@ int	expand_redir(t_token *token, t_shell *shell)
 	if (!str2[0])
 	{
 		ft_dprintf(2, "%s: ambiguous redirect\n ",token->content);
-		return (5);
+		return (free(str2), 5);
 	}
 	if (contains_ifs_redir(str2, ifs))
 	{
 		ft_dprintf(2, "%s: ambiguous redirect\n ",token->content);
-		return (5);
+		return (free(str2), 5);
 	}
 //	if (ft_strchr(str2, '*'))
-		if (count_valid_redir(str2, token) >= 2)
-		{
-			ft_dprintf(2, "%s: ambiguous redirect\n ",token->content);
-			return (5);
-		}
+	error = count_valid_redir(str2, token);
+	free(str2);
+	if (error == 6)
+		return (6);
+	else if (error >= 2)
+//		if (count_valid_redir(str2, token) >= 2)
+	{
+		ft_dprintf(2, "%s: ambiguous redirect\n ",token->content);
+		return (5);
+	}
 //	ft_dprintf(2, "Value : %s", token->content);
 	return (0);
 }
