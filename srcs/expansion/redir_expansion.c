@@ -6,75 +6,76 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:10:58 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/10 16:49:39 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/11 17:29:02 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "word_expansion.h"
 
-int	contains_ifs_redir(char *str, char *ifs)
+static int	find_valid_files(t_token *token, struct dirent *file
+	, char *content, char **tmp_name)
 {
-	while (*str)
+	char	*file_name;
+	char	*str;
+
+	if (content[0] == '.' && content[1] == '/')
+		str = content + 2;
+	else
+		str = content;
+	file_name = ft_strdup(file->d_name);
+	if (!file_name)
+		return (6);
+	token->hidden = (str[0] == '.');
+	if (token->hidden || file_name[0] != '.')
 	{
-		if (ft_strchr(ifs, *str))
-			return (1);
-		str++;
+		if (match_pattern(str, file_name))
+		{
+			if (token->nb_files == 0)
+				*tmp_name = ft_strdup(file_name);
+			(token->nb_files)++;
+		}
 	}
+	free(file_name);
 	return (0);
+}
+
+static void	files_found(t_token *token, char **tmp_name)
+{
+	if (token->nb_files == 1)
+	{
+		free(token->content);
+		token->content = *tmp_name;
+	}
+	else
+		free(*tmp_name);
 }
 
 int	count_valid_redir(char *content, t_token *token)
 {
 	DIR				*dir;
 	struct dirent	*file;
-	int				count;
-	char			*str;
-	char			*file_name;
 	char			*tmp_name;
-	
 
 	dir = opendir(".");
 	if (!dir)
 		return (6);
-	count = 0;
+	token->nb_files = 0;
 	file = readdir(dir);
-	if (content[0] == '.' && content[1] == '/')
-		str = content + 2;
-	else
-		str = content;
-	while (file != NULL && count < 2)
+	while (file != NULL && token->nb_files < 2)
 	{
-		file_name = ft_strdup(file->d_name);
-		if (!file_name)
-			return (6);
-		token->hidden = (str[0] == '.');
-		if (token->hidden || file_name[0] !='.')
-		{
-			if (match_pattern(str, file_name))
-			{
-				count++;
-				if (count == 1)
-					tmp_name = ft_strdup(file_name);
-			}
-		}
-		free(file_name);
+		if (find_valid_files(token, file, content, &tmp_name))
+			return (1);
 		file = readdir(dir);
 	}
 	closedir(dir);
-	if (count == 1)
-	{
-		free(token->content);
-		token->content = tmp_name;
-//		free(str);
-	}
-	else if (count == 0)
+	if (token->nb_files == 0)
 	{
 		free(token->content);
 		token->content = ft_strdup(content);
 	}
 	else
-		free(tmp_name);
-	return (count);
+		files_found(token, &tmp_name);
+	return (token->nb_files);
 }
 
 // expand the redir token

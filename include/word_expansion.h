@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/11 13:33:39 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/11 17:33:58 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,7 @@ int		only_stars(char *pattern);
 int		match_pattern(char *pattern, char *str);
 //char	*find_next_param_expansion(char *str, char **next);
 //char	*ft_concat_3str(char *first, char *second, char *third);
+//int		ambiguous_redirect(char *content);
+int		contains_ifs_redir(char *str, char *ifs);
 
 #endif

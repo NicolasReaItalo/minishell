@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:08:35 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/06 15:07:21 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/11 16:39:33 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_token
 {
 	int				type;
 	char			*content;
+	int				nb_files;
 	int				hidden;
 	struct s_token	*next;
 	struct s_token	*prev;
