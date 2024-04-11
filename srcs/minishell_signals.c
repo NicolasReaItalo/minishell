@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 10:27:07 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/11 18:20:11 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/11 19:08:40 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	sig_int_interactive_handler(int signum)
 	g_sig = signum;
 	rl_replace_line("", 0);
 	rl_on_new_line();
-	printf("\n");
+	write(1, "\n", 1);
 	rl_redisplay();
 }
 
