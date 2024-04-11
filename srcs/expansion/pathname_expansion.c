@@ -6,28 +6,16 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/10 16:54:36 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/11 13:30:18 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "word_expansion.h"
 
-int only_stars(char *pattern)
-{
-	while (*pattern)
-	{
-		if (*pattern != '*')
-			return (0);
-		pattern++;
-	}
-	return (1);
-}
-
 int	match_pattern(char *pattern, char *str)
 {
 	if (only_stars(pattern) && *str == '\0')
 		return (1);
-//	else if (*pattern == '\0' || (*str == '\0' && *pattern != '*'))
 	else if (*pattern == '\0' || *str == '\0')
 		return (0);
 	if (*pattern == '*')
@@ -67,15 +55,32 @@ int	count_valid_pathname(char *content, t_token *token)
 		else
 			str = content;
 		token->hidden = (str[0] == '.');
-		if (token->hidden || file->d_name[0] !='.')
+		if (token->hidden || file->d_name[0] != '.')
 		{
 			if (match_pattern(str, file->d_name))
 				count++;
 		}
 		file = readdir(dir);
 	}
-	closedir(dir);
-	return (count);
+	return (closedir(dir), count);
+}
+
+static int	find_valid_files(t_token *token, struct dirent *file
+	, char **words, int *i)
+{
+	if (token->hidden || file->d_name[0] != '.')
+	{
+		if (token->content[0] == '.' && token->content[1] == '/'
+			&& match_pattern(token->content + 2, file->d_name))
+			words[(*i)++] = ft_strjoin("./", file->d_name);
+		else if (match_pattern(token->content, file->d_name))
+		{
+			words[*i] = ft_strdup(file->d_name);
+			if (!words[(*i)++])
+				return (1);
+		}
+	}
+	return (0);
 }
 
 char	**create_pathname_tab(t_token *token, int *count)
@@ -96,18 +101,8 @@ char	**create_pathname_tab(t_token *token, int *count)
 	file = readdir(dir);
 	while (file != NULL)
 	{
-		if (token->hidden || file->d_name[0] !='.')
-		{
-			if (token->content[0] == '.' && token->content[1] == '/'
-				&& match_pattern(token->content + 2, file->d_name))
-				words[i++] = ft_strjoin("./", file->d_name);
-			else if (match_pattern(token->content, file->d_name))
-			{
-				words[i] = ft_strdup(file->d_name);
-				if (!words[i++])
-					return (NULL);
-			}
-		}
+		if (find_valid_files(token, file, words, &i))
+			return (NULL);
 		file = readdir(dir);
 	}
 	words[i] = NULL;

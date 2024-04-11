@@ -6,11 +6,23 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/11 11:47:23 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/11 13:31:01 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "word_expansion.h"
+
+// Check if there is only '*' in a string
+int	only_stars(char *pattern)
+{
+	while (*pattern)
+	{
+		if (*pattern != '*')
+			return (0);
+		pattern++;
+	}
+	return (1);
+}
 
 int	contains_ifs(t_token *token, t_shell *shell)
 {
