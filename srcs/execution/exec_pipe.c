@@ -6,36 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:13:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 15:24:52 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/11 18:03:48 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
-
-/*
-An error has occured: malloc, pipe, fork...
-we wait for all the child processes
-then close all the pipes and free the pipe array.
-*/
-static int	ft_abort_safe(int pipe_lvl, t_shell *s)
-{
-	write(2, "Internal Error\n", 16);
-	if (pipe_lvl == 0)
-	{
-		if (s->p_ar.pipes_nb != 0 && s->p_ar.pipes != NULL)
-		{
-			ft_close_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
-			ft_free_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
-			s->p_ar.pipes_nb = 0;
-		}
-		s->p_ar.pipes_nb = 0;
-		while (wait(NULL) != -1)
-		{
-		}
-		ft_set_exit_status(1, &s->shell_vars);
-	}
-	return (-1);
-}
+#include "parse_execute.h"
 
 static void	ft_exec_left(t_node *node, int pipe_lvl, t_shell *s)
 {
@@ -73,6 +48,22 @@ static void	ft_exec_right(t_node *node, int pipe_lvl, t_shell *s)
 		ft_exec_binary(node->right, pipe_lvl, s);
 }
 
+static void	set_sig_stat(t_shell *s, int exit_status)
+{
+	if (g_sig == SIGINT)
+	{
+		g_sig = 0;
+		ft_set_exit_status(130, &s->shell_vars);
+	}
+	else if (g_sig == SIGQUIT)
+	{
+		g_sig = 0;
+		ft_set_exit_status(131, &s->shell_vars);
+	}
+	else
+		ft_set_exit_status(WEXITSTATUS(exit_status), &s->shell_vars);
+}
+
 static int	ft_close_pipes_and_wait(int pipe_lvl, t_shell *s, int pids[2])
 {
 	int	exit_status;
@@ -90,23 +81,9 @@ static int	ft_close_pipes_and_wait(int pipe_lvl, t_shell *s, int pids[2])
 		while (wait(NULL) != -1)
 		{
 		}
-		if (g_sig == SIGINT)
-		{
-			g_sig = 0;
-			ft_set_exit_status(130, &s->shell_vars);
-		}
-		else if (g_sig == SIGQUIT)
-		{
-			g_sig = 0;
-			ft_set_exit_status(131, &s->shell_vars);
-		}
-		else
-			ft_set_exit_status(WEXITSTATUS(exit_status), &s->shell_vars);
+		set_sig_stat(s, exit_status);
 		if (set_interactive_signals() == -1)
-		{
-			perror("signal");
 			return (-1);
-		}
 	}
 	return (1);
 }
@@ -122,23 +99,18 @@ int	ft_exec_pipe(t_node *n, int pipe_lvl, t_shell *s)
 {
 	int	pids[2];
 
-	if (set_exec_signals() == -1)
-	{
-		perror("signal");
-		return (-1);
-	}
 	if (pipe_lvl == 0)
 	{
 		if (p_al(n, s) == -1)
-			return (ft_abort_safe(pipe_lvl, s));
+			return (ft_pipe_abort_safe(pipe_lvl, s));
 		if (init_p(s->p_ar.pipes, s->p_ar.pipes_nb) == -1)
-			return (ft_abort_safe(pipe_lvl, s));
+			return (ft_pipe_abort_safe(pipe_lvl, s));
 	}
 	if (n->left->type == N_EXEC)
 	{
 		pids[0] = fork();
 		if (pids[0] == -1)
-			ft_abort_safe(pipe_lvl, s);
+			ft_pipe_abort_safe(pipe_lvl, s);
 		if (pids[0] == 0)
 			ft_exec_left(n, pipe_lvl, s);
 	}
@@ -146,7 +118,7 @@ int	ft_exec_pipe(t_node *n, int pipe_lvl, t_shell *s)
 		ft_exec_left(n, pipe_lvl, s);
 	pids[1] = fork();
 	if (pids[1] == -1)
-		ft_abort_safe(pipe_lvl, s);
+		ft_pipe_abort_safe(pipe_lvl, s);
 	if (pids[1] == 0)
 		ft_exec_right(n, pipe_lvl, s);
 	return (ft_close_pipes_and_wait(pipe_lvl, s, pids));

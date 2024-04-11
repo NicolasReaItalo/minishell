@@ -8,7 +8,7 @@ srcs/parsing/check_syntax.c ./test/test_redirections.c
 -g -I./include -I./libft -I ./test    -L ./libft -lft -lreadline */
 
 
-#include "parser.h"
+#include "parse_execute.h"
 #include "tests.h"
 
 

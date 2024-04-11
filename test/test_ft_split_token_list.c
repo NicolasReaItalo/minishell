@@ -1,12 +1,12 @@
 
-#include "parser.h"
+#include "parse_execute.h"
 #include "tests.h"
 
-/// TEST DE ft_split_token_list
+/// TEST DE split_token_lst
 
 /*cc -g3  -Wall -Wextra -I./include -o test_split_token_list
  srcs/parsing/*.c test/utils/test_utils.c
- test/test_ft_split_token_list.c -I./libft  -L ./libft -lft -lreadline*/
+ test/test_split_token_lst.c -I./libft  -L ./libft -lft -lreadline*/
 int main()
 {
 
@@ -30,7 +30,7 @@ int main()
 printf("##########STACK INITIALE####################\n");
 	ft_display_stack_forward(stack);
 int retour;
-	retour = ft_split_token_list(4, &stack, &left, &right);
+	retour = split_token_lst(4, &stack, &left, &right);
 printf("Retour de split [%d]\n", retour);
 printf("##########APRES LE SPLIT####################\n");
 printf("#########left\n");

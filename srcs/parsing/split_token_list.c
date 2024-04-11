@@ -6,15 +6,15 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 15:42:02 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/11 14:17:17 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/11 18:52:12 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "parse_execute.h"
 
 /*Split the stack into two substacks l and r around the pivot token and
  destroys the pivot token*/
-int	ft_split_token_list(int rank, t_token **st, t_token **l, t_token **r)
+int	split_token_lst(int rank, t_token **st, t_token **l, t_token **r)
 {
 	t_token	*pivot;
 	t_token	*next_token;

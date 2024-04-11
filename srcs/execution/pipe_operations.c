@@ -6,11 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:04:09 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/03 12:23:59 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "parse_execute.h"
 
 //parcours node.left en comptant le nobre de pipes
 int	ft_count_pipes(t_node *node)

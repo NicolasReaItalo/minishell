@@ -6,11 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 13:54:45 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/04 10:10:29 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/11 18:52:12 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "parse_execute.h"
 
 /*returns the type && or || of the token given by rank*/
 int	ft_get_cond_type(t_token *stack, int rank)
@@ -42,7 +42,7 @@ t_node	*ft_create_cond_node(t_token **stack, int op_rank, int *error)
 	}
 	ft_memset(node, 0, sizeof(t_node));
 	node->type = ft_get_cond_type(*stack, op_rank);
-	ft_split_token_list(op_rank, stack, &left, &right);
+	split_token_lst(op_rank, stack, &left, &right);
 	node->left = ft_create_tree(&left, error, 2);
 	if (!node->left)
 		return (ft_set_tree_error(error, node->type, node));
@@ -70,7 +70,7 @@ t_node	*ft_create_pipe_node(t_token **stack, int op_rank, int *error)
 	}
 	ft_memset(node, 0, sizeof(t_node));
 	node->type = N_PIPE;
-	ft_split_token_list(op_rank, stack, &left, &right);
+	split_token_lst(op_rank, stack, &left, &right);
 	node->left = ft_create_tree(&left, error, 1);
 	if (!node->left)
 		return (ft_set_tree_error(error, node->type, node));

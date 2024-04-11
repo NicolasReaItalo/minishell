@@ -6,11 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:15:35 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/26 14:06:40 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "parse_execute.h"
 
 /*Apply the redirection of the outfile in TRUNC_MODE
 	return 0 in case of success or the error code to output 1 */

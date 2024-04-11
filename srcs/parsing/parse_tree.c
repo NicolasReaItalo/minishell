@@ -6,11 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 13:06:14 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/08 14:42:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 18:16:03 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "parse_execute.h"
 
 void	ft_free_tree(t_node **tree)
 {

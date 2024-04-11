@@ -6,11 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/08 15:20:13 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "parse_execute.h"
 
 static int	is_valid_status(char *content)
 {

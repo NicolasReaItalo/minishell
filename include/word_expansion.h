@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_expansion.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/04 17:13:52 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/11 18:41:17 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 # define WORD_EXPANSION_H
 # include <dirent.h>
 # include "libft.h"
-# include "parser.h"
+# include "parse_execute.h"
 # include "env_variables.h"
-# include "minishell.h"
 
 int		field_splitting(t_token *token, t_shell *shell);
 char	*expand_param(char *str, t_shell *shell);

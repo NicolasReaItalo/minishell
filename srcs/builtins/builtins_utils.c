@@ -6,11 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:24:39 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/09 16:34:59 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/11 18:31:50 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "parse_execute.h"
 
 /*Returns 1 if the exec node calls for a built-in command, 0 otherwise*/
 int	ft_is_builtin(t_node *node)
@@ -34,7 +34,7 @@ int	ft_is_builtin(t_node *node)
 		return (1);
 	else if (!ft_strcmp(cmd, "exit"))
 		return (1);
-	else if (!ft_strcmp(cmd, "debug")) ////////////debug
+	else if (!ft_strcmp(cmd, "debug")) ////////////debug A supprimer
 		return (1);
 	return (0);
 }
@@ -58,18 +58,17 @@ t_builtin	ft_getbuiltin(char *cmd)
 		return ((t_builtin) env);
 	else if (!ft_strcmp(cmd, "exit"))
 		return ((t_builtin) bt_exit);
-	else if (!ft_strcmp(cmd, "debug")) ////////debug
+	else if (!ft_strcmp(cmd, "debug")) ////////debug A supprimer
 		return ((t_builtin) debug_status);
 	else
 		return (NULL);
 }
 
-
-
 int	debug_status(t_token *cmd, t_shell *shell)
 {
+	//////////////////////fonction a supprimer pour le rendu !!!!!!!!!!!
 	(void) cmd;
-printf("\033[33m[DEBUG]EXIT STATUS [%d]\n\033[0m", ft_get_exit_status(&shell->shell_vars));
+	printf("\033[33m[DEBUG]EXIT STATUS [%d]\n\033[0m", ft_get_exit_status(&shell->shell_vars));
 return (0);
 }
 

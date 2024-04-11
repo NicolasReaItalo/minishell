@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_node.c                                        :+:      :+:    :+:   */
+/*   exec_binary.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:50:23 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/02 12:32:50 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "parse_execute.h"
 
 /*Exit safely the ft_exec function
 Displays eror msg in case of internal error*/

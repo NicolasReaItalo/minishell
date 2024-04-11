@@ -6,11 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/04 15:30:05 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "parse_execute.h"
 
 /*update PWD with newpwd and OLDPWD with the former value of PWD*/
 static int	update_pwd(char *new_pwd, t_shell *s)

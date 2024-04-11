@@ -6,11 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:55:49 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 13:19:30 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/11 18:03:56 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "parse_execute.h"
 
 /*convert the cmd list to an array** of char* with every token content
  initialise the cmd_array passed in parameter
@@ -73,7 +73,6 @@ static char	*ft_join_paths(char const *path, char const *cmd)
 	return (full_path);
 }
 
-
 /*Create the full path command by browsing the PATH variable
 Return 0 in case of success
 1 in case of malloc error
@@ -120,4 +119,29 @@ void	ft_display_error_msg(char *cmd, char *error)
 	else
 		write(2, "Internal Error\n", 16);
 	free(msg);
+}
+
+/*
+An error has occured: malloc, pipe, fork...
+we wait for all the child processes
+then close all the pipes and free the pipe array.
+*/
+int	ft_pipe_abort_safe(int pipe_lvl, t_shell *s)
+{
+	write(2, "Internal Error\n", 16);
+	if (pipe_lvl == 0)
+	{
+		if (s->p_ar.pipes_nb != 0 && s->p_ar.pipes != NULL)
+		{
+			ft_close_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
+			ft_free_p_ar(s->p_ar.pipes, s->p_ar.pipes_nb);
+			s->p_ar.pipes_nb = 0;
+		}
+		s->p_ar.pipes_nb = 0;
+		while (wait(NULL) != -1)
+		{
+		}
+		ft_set_exit_status(1, &s->shell_vars);
+	}
+	return (-1);
 }

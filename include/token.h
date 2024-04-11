@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:08:35 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/10 10:31:18 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/11 18:33:38 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@
 # define C_BRACKET 9 // ")"
 # define WORD 0 // Tout le reste
 # define INVALID -1 // ";" "&" "\"
-
-
 
 typedef struct s_token
 {

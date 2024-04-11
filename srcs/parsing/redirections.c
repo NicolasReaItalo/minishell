@@ -6,11 +6,11 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 18:00:58 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/11 18:51:28 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "parse_execute.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 /*Delete a token in double linked stack*/
@@ -55,6 +55,37 @@ static int	ft_clean_words(t_token **stack)
 	return (0);
 }
 
+static int	manage_heredoc(t_token	*tok, t_token **stack, t_shell *shell)
+{
+	int		ret;
+	t_token	*prev_tok;
+
+	prev_tok = tok->prev;
+	ret = get_hd(tok, prev_tok->content, shell, stack);
+	if (set_interactive_signals() == -1)
+		return (1);
+	if (ret != 0)
+	{
+		ft_clean_words(stack);
+		return (ret);
+	}
+	return (0);
+}
+
+/*for < > and >> copy the content of the word
+token containing the filename for redir*/
+static int	manage_classic_redir(t_token *tok)
+{
+	t_token	*prev_tok;
+
+	free(tok->content);
+	prev_tok = tok->prev;
+	tok->content = ft_strdup(prev_tok->content);
+	if (!tok->content)
+		return (-1);
+	return (0);
+}
+
 /*
 Parcours la satck de la fin au debut
 si <<, capture le heredoc et le EOF puis stocke le buffer dans token.content
@@ -67,8 +98,8 @@ si >>,stocke le content du token suivant comme fichier de redirection
 int	ft_redirections(t_token **stack, t_shell *shell)
 {
 	t_token	*tok;
-	t_token	*prev_tok;
-	int	hd_return;
+	int		ret;
+
 	if (!*stack)
 		return (-1);
 	tok = ft_get_token(*stack, -1);
@@ -76,22 +107,15 @@ int	ft_redirections(t_token **stack, t_shell *shell)
 	{
 		if (tok->type == R_HEREDOC)
 		{
-			prev_tok = tok->prev;
-			hd_return = ft_capture_here_doc(tok, prev_tok->content, shell);
-			set_interactive_signals(); // a proteger
-			if (hd_return)
-			{
-				ft_clean_words(stack);
-				return (hd_return);
-			}
+			ret = manage_heredoc(tok, stack, shell);
+			if (ret)
+				return (ret);
 		}
-		else if (tok->type >= 4 && tok->type <= 6)
+		else if (tok->type >= R_IN && tok->type <= R_APPEND)
 		{
-			free(tok->content);
-			prev_tok = tok->prev;
-			tok->content = ft_strdup(prev_tok->content);
-			if (!tok->content)
-				return (-1);
+			ret = manage_classic_redir(tok);
+			if (ret)
+				return (ret);
 		}
 		tok = tok->prev;
 	}

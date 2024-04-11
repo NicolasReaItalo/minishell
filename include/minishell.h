@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:19:14 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/10 10:32:41 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/11 18:45:28 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,21 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "parser.h"
 # include "token.h"
 # include "token_utils.h"
 # include "libft.h"
 # include "minishell_signals.h"
 # include "env_variables.h"
-# include "execution.h"
+# include "parse_execute.h"
 # include "word_expansion.h"
+
+# define OK_PROMPT "\033[0;96mminishell> \033[0m"
+# define ERR_PROMPT "\033[0;96mminishell\033[1;91m(x)\033[0;96m> \033[0m"
+# define D_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 int		ft_init_shell(t_shell *shell, char **envp);
 char	*ft_handle_tok_err(int error);
-
+int		evaluate(char *line, t_token **stack, t_shell *shell);
 void	repl(t_shell *shell);
 
 #endif

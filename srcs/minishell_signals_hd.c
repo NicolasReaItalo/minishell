@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_signals.c                                :+:      :+:    :+:   */
+/*   minishell_signals_hd.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/10 10:27:07 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/11 18:20:11 by nrea             ###   ########.fr       */
+/*   Created: 2024/04/11 15:22:26 by nrea              #+#    #+#             */
+/*   Updated: 2024/04/11 15:29:56 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_sig;
-
-void	sig_int_interactive_handler(int signum)
+void	sig_int_hd_handler(int signum)
 {
 	g_sig = signum;
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	printf("\n");
-	rl_redisplay();
+	close(4);
+	close(5);
+	exit(130);
 }
 
-/*set the signals interception for the interactive mode*/
-int	set_interactive_signals(void)
+int	set_hd_parent_signals(void)
 {
 	g_sig = 0;
-	if (signal(SIGINT, sig_int_interactive_handler) == SIG_ERR)
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 	{
 		perror("signal");
 		return (-1);
@@ -40,22 +36,15 @@ int	set_interactive_signals(void)
 	return (1);
 }
 
-void	sig_exec_handler(int signum)
-{
-	g_sig = signum;
-	printf("\n");
-}
-
-/*Signals detection when a command process is running*/
-int	set_exec_signals(void)
+int	set_hd_child_signals(void)
 {
 	g_sig = 0;
-	if (signal(SIGINT, sig_exec_handler) == SIG_ERR)
+	if (signal(SIGINT, sig_int_hd_handler) == SIG_ERR)
 	{
 		perror("signal");
 		return (-1);
 	}
-	if (signal(SIGQUIT, sig_exec_handler) == SIG_ERR)
+	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 	{
 		perror("signal");
 		return (-1);
