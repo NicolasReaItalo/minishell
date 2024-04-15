@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:19:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/15 11:57:09 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/15 15:42:40 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	ft_exec_builtin(t_node *node, int pipe_lvl, t_shell *shell)
 	f = ft_getbuiltin(node->cmd->content);
 	if (!f)
 		ft_builtin_exit_err(1, node->cmd->content);
-	exit_status = f(node->cmd, shell);
+	exit_status = f(node->cmd, node, shell);
 	if (restore_fds(node, pipe_lvl) == -1)
 		return (-1);
 	return (exit_status);

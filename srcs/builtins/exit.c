@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/15 15:39:13 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,16 @@ static int	wrong_status(char *content)
 	return (2);
 }
 
-int	bt_exit(t_token *cmd, t_shell *shell)
+int	bt_exit(t_token *cmd, t_node *node, t_shell *shell)
 {
 	int	status;
 
-	write(1, "Exiting Minishell. See you soon!\n", 34);
+	write(1, "\033[3;243mExiting Minishell... See you soon!\n\033[0m", 48);
 	if (!cmd)
 		return (1);
 	cmd = cmd->next;
+	close(node->stdin);
+	close(node->stdout);
 	if (!cmd)
 	{
 		ft_free_shell(shell);

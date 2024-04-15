@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 10:26:04 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/15 15:43:43 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,11 @@ static int	set(char *content, char *sep, t_shell *shell)
 	return (0);
 }
 
-int	export(t_token *cmd, t_shell *shell)
+int	export(t_token *cmd, t_node *node, t_shell *shell)
 {
 	char	*sep;
 
+	(void) node;
 	sep = NULL;
 	cmd = cmd->next;
 	if (cmd == NULL)

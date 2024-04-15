@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/15 15:36:59 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ static int	exit_echo(int trailing_nl)
 	return (0);
 }
 
-int	echo(t_token *cmd, t_shell *shell)
+int	echo(t_token *cmd, t_node *node, t_shell *shell)
 {
 	int	trailing_nl;
 
+	(void) node;
 	(void) shell;
 	if (!cmd)
 		return (1);

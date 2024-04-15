@@ -6,17 +6,18 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/15 15:37:39 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_execute.h"
 
-int	env(t_token *cmd, t_shell *shell)
+int	env(t_token *cmd, t_node *node, t_shell *shell)
 {
 	char	**vars;
 	int		i;
 
+	(void) node;
 	if (cmd->next)
 	{
 		write(2, "env: No option or argument must be provided\n", 45);

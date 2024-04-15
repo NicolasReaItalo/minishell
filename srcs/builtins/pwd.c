@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 12:15:43 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/15 15:41:34 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,14 @@ static int	print_cur_dir(char *buffer, int buffer_size)
 }
 
 /*Builtin: print name of current/working directory*/
-int	pwd(t_token *cmd, t_shell *shell)
+int	pwd(t_token *cmd, t_node *node, t_shell *shell)
 {
 	char		*buffer;
 	int			buffer_size;
 
 	(void) cmd;
 	(void) shell;
+	(void) node;
 	buffer = NULL;
 	buffer_size = 100;
 	if (print_cur_dir(buffer, buffer_size) == 1)

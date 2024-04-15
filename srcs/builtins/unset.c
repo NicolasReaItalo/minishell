@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/15 15:40:00 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ VARIABLE=
 is  not  equivalent to an unset of VARIABLE; in the example,
 VARIABLE is set to "".
 */
-int	unset(t_token *cmd, t_shell *shell)
+int	unset(t_token *cmd, t_node *node,  t_shell *shell)
 {
+	(void) node;
 	cmd = cmd->next;
 	while (cmd)
 	{

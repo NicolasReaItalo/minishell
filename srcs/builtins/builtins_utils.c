@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:24:39 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/11 18:31:50 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/15 15:42:04 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,11 @@ t_builtin	ft_getbuiltin(char *cmd)
 		return (NULL);
 }
 
-int	debug_status(t_token *cmd, t_shell *shell)
+int	debug_status(t_token *cmd, t_node *node, t_shell *shell)
 {
 	//////////////////////fonction a supprimer pour le rendu !!!!!!!!!!!
 	(void) cmd;
+	(void) node;
 	printf("\033[33m[DEBUG]EXIT STATUS [%d]\n\033[0m", ft_get_exit_status(&shell->shell_vars));
 return (0);
 }
