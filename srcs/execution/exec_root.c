@@ -6,11 +6,12 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:31:47 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/11 18:29:23 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/15 13:37:44 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_execute.h"
+#include "word_expansion.h"
 
 static int	status_set(int exit_status)
 {
@@ -76,7 +77,12 @@ static int	ft_n_exec(t_node *tree_root, t_shell *shell)
 {
 	int	exit_status;
 
-	//expansions du node a ajouter
+	exit_status = word_expand(tree_root, shell);
+	if (exit_status) // voir codes d'erreur pour quitter si pb malloc
+	{
+		ft_set_exit_status(exit_status, &shell->shell_vars);
+		return (1);
+	}
 	if (ft_is_builtin(tree_root))
 	{
 		exit_status = ft_exec_builtin(tree_root, -1, shell);

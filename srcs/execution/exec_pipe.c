@@ -6,11 +6,12 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:13:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/11 18:03:48 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/15 13:36:49 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_execute.h"
+#include "word_expansion.h"
 
 static void	ft_exec_left(t_node *node, int pipe_lvl, t_shell *s)
 {
@@ -20,7 +21,12 @@ static void	ft_exec_left(t_node *node, int pipe_lvl, t_shell *s)
 		ft_exec_pipe(node->left, pipe_lvl + 1, s);
 	else if (node->left->type == N_EXEC)
 	{
-		///////Ajouter l'expansion
+		exit_status = word_expand(node->left, s);
+		if (exit_status) // voir codes d'erreur pour quitter si pb malloc
+		{
+			ft_set_exit_status(exit_status, &s->shell_vars);
+			exit (exit_status);
+		}
 		node->left->side = left;
 		if (ft_is_builtin(node->left))
 		{
@@ -36,7 +42,13 @@ static void	ft_exec_left(t_node *node, int pipe_lvl, t_shell *s)
 static void	ft_exec_right(t_node *node, int pipe_lvl, t_shell *s)
 {
 	int	exit_status;
-	///////Ajouter l'expansion
+
+	exit_status = word_expand(node->right, s);
+	if (exit_status) // voir codes d'erreur pour quitter si pb malloc
+	{
+		ft_set_exit_status(exit_status, &s->shell_vars);
+		exit (exit_status);
+	}
 	node->right->side = right;
 	if (ft_is_builtin(node->right))
 	{

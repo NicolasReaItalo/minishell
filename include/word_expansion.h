@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/15 09:22:42 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/15 12:04:11 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "libft.h"
 # include "parse_execute.h"
 # include "env_variables.h"
+
+int		word_expand(t_node *node, t_shell *shell);
 
 //int		field_splitting(t_token *token, t_shell *shell);
 char	*expand_param(char *str, t_shell *shell);
