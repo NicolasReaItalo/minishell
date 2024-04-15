@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:40 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/02 16:05:49 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/10 13:36:58 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int	field_splitting(t_token *token, t_shell *shell)
 	words = ft_split_multiple(token->content, ifs);
 	if (!words)
 		return (1);
+	if (!words[0])
+		return (free(words), 0);
 	tmp = token->content;
 	token->content = ft_strdup(*words);
 	free (tmp);

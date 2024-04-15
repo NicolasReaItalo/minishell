@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/04 17:21:56 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/14 00:53:16 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "word_expansion.h"
+
+// Check if there is only '*' in a string
+int	only_stars(char *pattern)
+{
+	while (*pattern)
+	{
+		if (*pattern != '*')
+			return (0);
+		pattern++;
+	}
+	return (1);
+}
 
 int	contains_ifs(t_token *token, t_shell *shell)
 {
@@ -30,6 +42,36 @@ int	contains_ifs(t_token *token, t_shell *shell)
 	return (0);
 }
 
+// Si le nb tokens est superieur a 2 avancer le pointeurs en fonction
+t_token	*advance_token(t_token *token, int *nb_token)
+{
+	token = token->next;
+	*nb_token -= 2;
+	while (*nb_token > 0)
+	{
+		token = token->next;
+		(*nb_token)--;
+	}
+	*nb_token = 1;
+	return (token);
+}
+
+static int	expand_cmd(t_token *token, t_shell *shell, int *nb_token)
+{
+	*nb_token = 1;
+	token->content = expand_param(token->content, shell);
+	if (!token->content)
+		return (1);
+	if (contains_ifs(token, shell))
+		if (field_splitting(token, shell))
+			return (1);
+	if (!pathname_in_quotes(token->content) && ft_strchr(token->content, '*'))
+		if (expand_pathname_cmd(token, nb_token))
+			return (1);
+	token = advance_token(token, nb_token);
+	return (0);
+}
+
 // Cycle d'expansions pour le node de type exec fournit en argument
 // pour chaques token :
 //   parameter_expansion -> IFS -> pathname_expansion -> quote removal
@@ -37,32 +79,22 @@ int	contains_ifs(t_token *token, t_shell *shell)
 int	word_expand(t_node *node, t_shell *shell)
 {
 	t_token	*token;
+	int		nb_token;
 
 	if (!node)
 		return (4);
 	token = node->cmd;
 	while (token)
 	{
-		token->content = expand_param(token->content, shell);
-		if (!token->content)
+		if (expand_cmd(token, shell, &nb_token))
 			return (1);
-		if (contains_ifs(token, shell))
-			if (field_splitting(token, shell))
-				return (1);
-		if (ft_strchr(token->content, '*'))
-			if (expand_pathname_cmd(token))
-				return (1);
-		token = token->next;
+		token = advance_token(token, &nb_token);
 	}
 	token = node->redir;
 	while (token)
 	{
-		token->content = expand_param(token->content, shell);
-		if (!token->content)
+		if (expand_redir(token, shell))
 			return (1);
-		if (ft_strchr(token->content, '*'))
-			if (expand_pathname_redir(token))
-				return (1);
 		token = token->next;
 	}
 	return (0);
@@ -104,6 +136,7 @@ int	main(int argc, char **argv)
 	free (output);
 	return (0);
 }*/
+
 /*
 char	*ft_handle_token_errors(int error)
 {
@@ -149,7 +182,7 @@ int	main(int argc, char **argv, char **envp)
 	if (token_error)
 	{
 		ft_dprintf(2, "tokenisation error: %s\n",
-			ft_handle_token_errors(token_error));
+		ft_handle_token_errors(token_error));
 		kill_stack(&stack);
 		return (1);
 	}
@@ -157,6 +190,7 @@ int	main(int argc, char **argv, char **envp)
 	if (syntax_error)
 	{
 		kill_stack(&stack);
+		ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 		return (2);
 	}
 	ft_redirections(&stack);
@@ -173,8 +207,8 @@ int	main(int argc, char **argv, char **envp)
 	expand_error = word_expand(tree, &shell);
 	if (expand_error)
 	{
-		ft_dprintf(2, "expansion error: %s\n",
-			ft_handle_token_errors(expand_error));
+	//	ft_dprintf(2, "expansion error: %s\n",
+	//		ft_handle_token_errors(expand_error));
 		ft_free_tree(tree);
 		ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 		return (4);
@@ -183,7 +217,8 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_tree(tree);
 	ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 	return (0);
-}*/
+}
+*/
 
 //gcc -g3 srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c test/utils/*.c -I./include/ -I./libft/ -I./test -L./libft/ -lft -lreadline -o param_expansion
 

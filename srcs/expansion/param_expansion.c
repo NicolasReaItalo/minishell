@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/27 15:24:04 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/10 14:47:58 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static char	*find_next_param_expansion(char *str, char **next)
 	return (NULL);
 }
 
+//Concatene 3 chaines de caracteres
+// first alloue, second, third non alloue   
 static char	*ft_concat_3str(char *first, char *second, char *third)
 {
 	char	*output;
@@ -58,6 +60,8 @@ static char	*ft_concat_3str(char *first, char *second, char *third)
 		return (free(first), NULL);
 	output = ft_strjoin(first_concat, third);
 	free (first);
+	if (!output)
+		return (NULL);
 	if (!output)
 		return (free(first_concat), NULL);
 	return (free(first_concat), output);
@@ -87,6 +91,36 @@ char	*expand_param(char *str, t_shell *shell)
 		new = ft_get_var_value(key, shell->env_vars, shell->shell_vars);
 		free (key);
 		output = ft_concat_3str(output, new, next);
+		if (!output)
+			return (NULL);
+		key = find_next_param_expansion(output, &next);
+	}
+	return (output);
+}
+
+char	*expand_param_redir(char *str, t_shell *shell)
+{
+	char	*key;
+	char	*new;
+	char	*next;
+	char	*output;
+
+	if (!str)
+		return (NULL);
+	next = NULL;
+	output = ft_strdup(str);
+	if (!output)
+		return (NULL);
+	key = find_next_param_expansion(output, &next);
+	if (!key)
+		return (output);
+	while (key)
+	{
+		new = ft_get_var_value(key, shell->env_vars, shell->shell_vars);
+		free (key);
+		output = ft_concat_3str(output, new, next);
+		if (!output)
+			return (NULL);
 		key = find_next_param_expansion(output, &next);
 	}
 	return (output);
