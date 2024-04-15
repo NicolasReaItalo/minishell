@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/15 15:27:41 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/15 15:54:52 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	if (!ft_strlen(ft_get_var_value("PATH", shell.env_vars, shell.shell_vars)))
 	{
-		ft_dprintf(2, "\033[3;243mThe PATH variable has not been inherited from parent\n");
-		ft_dprintf(2, "Setting PATH to default value...\n\033[0m");
+		ft_dprintf(2, "%s", PATH_MSG);
 		if (ft_set_var("PATH", D_PATH, shell.env_vars, &shell.shell_vars) != 1)
 		{
 			ft_dprintf(2, "PATH init Error\n");
