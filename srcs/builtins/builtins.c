@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:19:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/15 11:57:09 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,11 @@ int	ft_exec_builtin(t_node *node, int pipe_lvl, t_shell *shell)
 	t_builtin	f;
 	int			exit_status;
 
+	if (save_fds(node) == -1)
+		ft_builtin_exit_err(1, NULL);
 	if (pipe_lvl != -1)
 	{
-		if (!shell->p_ar.pipes || !shell->p_ar.pipes || save_fds(node) == -1)
+		if (!shell->p_ar.pipes || !shell->p_ar.pipes)
 			ft_builtin_exit_err(1, NULL);
 		if (ft_apply_pipe_redir(node, pipe_lvl, shell) == -1)
 			return (1);
