@@ -6,7 +6,7 @@
 #    By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/04/11 15:24:38 by nrea             ###   ########.fr        #
+#    Updated: 2024/04/15 09:30:31 by nrea             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,6 +62,9 @@ SRCS		=	$(SRC_PATH)minishell.c \
 				$(SRC_PATH)expansion/field_splitting.c \
 				$(SRC_PATH)expansion/param_expansion.c \
 				$(SRC_PATH)expansion/pathname_expansion.c\
+				$(SRC_PATH)expansion/redir_expansion.c\
+				$(SRC_PATH)expansion/redir_expansion_tools.c\
+				$(SRC_PATH)expansion/unquotting.c\
 				$(SRC_PATH)builtins/builtins.c\
 				$(SRC_PATH)builtins/builtins_utils.c\
 				$(SRC_PATH)builtins/pwd.c\

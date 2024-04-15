@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unquotting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 14:08:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/14 00:49:03 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/04/15 09:29:41 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 // first alloue, second, third non alloue
 static char	*ft_concat_3str(char *first, char *second, char *third, int len)
 {
-	char	*output;
-	char	*first_concat;
+	// char	*output;  // commente pour ne pas avoir d'ereeur de compilation
+	// char	*first_concat; // commente pour ne pas avoir d'ereeur de compilation
 
 	ft_strlcat(first, second, len);
 	ft_strlcat(first, third, len);
