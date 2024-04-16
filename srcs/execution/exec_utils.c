@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:55:49 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/11 18:03:56 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/16 13:24:20 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,14 @@ Return 0 in case of success
 1 in case of malloc error
 127 : the path does not exist
 */
-int	ft_get_full_cmd(char **full_cmd, char *content, t_shell *shell)
+int	ft_get_full_cmd(char **full_cmd, char *cont, t_shell *shell)
 {
 	char	**paths;
 	int		i;
 	char	*var_path;
 
+	if (!ft_strlen(cont) || !ft_strcmp(".", cont) || !ft_strcmp("..", cont))
+		return (127);
 	var_path = ft_get_var_value("PATH", shell->env_vars, shell->shell_vars);
 	paths = ft_split(var_path, ':');
 	if (!paths)
@@ -92,7 +94,7 @@ int	ft_get_full_cmd(char **full_cmd, char *content, t_shell *shell)
 	while (paths[i])
 	{
 		*full_cmd = NULL;
-		*full_cmd = ft_join_paths(paths[i], content);
+		*full_cmd = ft_join_paths(paths[i], cont);
 		if (!full_cmd)
 			return (1);
 		if (access(*full_cmd, F_OK) == 0)
