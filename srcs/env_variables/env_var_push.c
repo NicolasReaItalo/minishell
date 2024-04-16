@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:41:59 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/04 12:13:20 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/16 17:57:01 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static int	ft_count_var(t_evar **vars)
 		var = vars[i];
 		while (var)
 		{
-			nb++;
+			if (var->value)
+				nb++;
 			var = var->next;
 		}
 		i++;
@@ -69,10 +70,13 @@ static int	ft_populate(t_evar **vars, char	***envp)
 		cur = vars[i];
 		while (cur)
 		{
-			(*envp)[j] = ft_concatenate(cur);
-			if ((*envp)[j] == NULL)
-				return (0);
-			j++;
+			if (cur->value)
+			{
+				(*envp)[j] = ft_concatenate(cur);
+				if ((*envp)[j] == NULL)
+					return (0);
+				j++;
+			}
 			cur = cur->next;
 		}
 		i++;

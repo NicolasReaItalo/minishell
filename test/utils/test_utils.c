@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 13:50:32 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 18:16:03 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/16 17:45:00 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,29 +178,29 @@ void	show_tree(t_node *node, int i)
 	show_tree(node->left, i + 1);
 }
 
-/*Dislay all env variables in the env_vars array*/
-void	ft_display_vars(t_evar *vars[58])
-{
-	int		i;
-	t_evar	*v;
+// /*Dislay all env variables in the env_vars array*/
+// void	ft_display_vars(t_evar *vars[58])
+// {
+// 	int		i;
+// 	t_evar	*v;
 
-	v = NULL;
-	i = 0;
-	while (i < 58)
-	{
-		if (vars[i])
-		{
-			v = vars[i];
-			while (v)
-			{
-				printf("%s=%s\n", v->key, v->value);
-				v = v->next;
-			}
-			v = NULL;
-		}
-		i++;
-	}
-}
+// 	v = NULL;
+// 	i = 0;
+// 	while (i < 58)
+// 	{
+// 		if (vars[i])
+// 		{
+// 			v = vars[i];
+// 			while (v)
+// 			{
+// 				printf("%s=%s\n", v->key, v->value);
+// 				v = v->next;
+// 			}
+// 			v = NULL;
+// 		}
+// 		i++;
+// 	}
+// }
 
 /*Dislay all env variables in the **envp char array*/
 void	ft_display_char_vars(char **envp)
