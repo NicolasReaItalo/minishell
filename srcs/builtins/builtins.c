@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:19:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/16 10:59:28 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/16 14:36:25 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	ft_exec_builtin(t_node *node, int pipe_lvl, t_shell *shell)
 		if (ft_apply_pipe_redir(node, pipe_lvl, shell) == -1)
 			return (1);
 	}
+	else
+		node->side = center;
 	if (ft_apply_redir(node) == -1)
 		return (1);
 	if (node->cmd == NULL)
