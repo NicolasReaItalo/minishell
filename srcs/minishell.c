@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/15 15:54:52 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/16 11:03:21 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,6 @@ int	main(int argc, char **argv, char **envp)
 
 	if (set_interactive_signals() == -1)
 		exit(1);
-	//TODO ajouter istty pour verifier qu'on est dans un shell interactif
-	//TODO voir la gestion des arguments
-	//TODO virer la fonction debug des builtins
-	//TODO Expansion : pb de segfault sur l'unquoting avec espaces
-	// echo "1 2"
-	//TODO IFS : il faut que lIFS ne soit applique que si la variable expanse
-	// fais partie du premier token de cmd
-	//TODO : expansion voir si traitement separe dans le cas d'une erreur
-	// de malloc pour word_expand, Quel code et quel comportement adopter ?
-
 	(void) argc;
 	(void) argv;
 	if (!ft_init_shell(&shell, envp))

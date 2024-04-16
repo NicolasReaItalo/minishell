@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:32:18 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/15 15:55:59 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/16 11:07:28 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ int			ft_token_to_array(t_token **cmd_list, char	***cmd_array);
 int			ft_apply_redir(t_node *node);
 int			ft_apply_pipe_redir(t_node *node, int p_lvl, t_shell *s);
 
-t_builtin	ft_getbuiltin(char *cmd); // A modifier pour virer debug
-int			ft_is_builtin(t_node *node); // A modifier pour virer debug
+t_builtin	ft_getbuiltin(char *cmd);
+int			ft_is_builtin(t_node *node);
 int			ft_exec_builtin(t_node *node, int pipe_lvl, t_shell *shell);
 
 int			pwd(t_token *cmd, t_node *node, t_shell *shell);
@@ -140,6 +140,4 @@ int			export(t_token *cmd, t_node *node, t_shell *shell);
 int			unset(t_token *cmd, t_node *node, t_shell *shell);
 int			cd(t_token *cmd, t_node *node, t_shell *shell);
 int			bt_exit(t_token *cmd, t_node *node, t_shell *shell);
-
-int			debug_status(t_token *cmd, t_node *node, t_shell *shell); /////////fonction debug ==> A VIRER
 #endif

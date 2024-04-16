@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:19:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/15 16:43:10 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/16 10:59:28 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ static	int	restore_fds(t_node *node, int pipe_lvl)
 			return (-1);
 		}
 	}
-		close(node->stdin);
-		close(node->stdout);
+	close(node->stdin);
+	close(node->stdout);
 	return (1);
 }
 
