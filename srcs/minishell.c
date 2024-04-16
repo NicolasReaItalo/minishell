@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/16 11:03:21 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/16 14:28:58 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	exit_sadly(t_shell *shell, int exit_status)
 
 void	exit_gracefully(t_shell *shell, int exit_status)
 {
-	ft_dprintf(2, "\033[3;243mExiting Minishell... See you soon!\n\033[0m");
+	write(1, "exit\n", 6);
 	ft_free_shell(shell);
 	exit (exit_status);
 }

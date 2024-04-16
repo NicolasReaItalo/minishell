@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:32:18 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/16 11:07:28 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/16 14:35:40 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@
 typedef enum e_side
 {
 	left,
-	right
+	right,
+	center
 }			t_side;
 
 typedef struct s_node
