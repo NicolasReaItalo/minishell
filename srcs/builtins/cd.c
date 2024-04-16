@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/15 15:36:18 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/16 11:44:10 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,42 @@ static int	get_cur_dir(char **buffer, int buffer_size)
 	return (0);
 }
 
+static int	count_args(t_token *cmd)
+{
+	int	count;
+
+	count = 0;
+	if (!cmd)
+		return (-1);
+	else
+		cmd = cmd->next;
+	while (cmd)
+	{
+		count++;
+		cmd = cmd->next;
+	}
+	if (count > 1)
+	{
+		write(2, "cd: too many arguments\n", 24);
+		return (-1);
+	}
+	return (1);
+}
+
 int	cd(t_token *cmd, t_node *node, t_shell *shell)
 {
 	char	*cur_dir;
+	int		status;
 
 	(void) node;
-	if (!cmd || !shell)
+	if (count_args(cmd) == -1)
 		return (1);
 	cur_dir = NULL;
 	cmd = cmd->next;
 	if (!cmd)
 		return (cd_home(shell));
+	if (ft_strlen(cmd->content) == 0)
+		return (0);
 	if (chdir(cmd->content) == -1)
 	{
 		perror(cmd->content);
@@ -92,11 +117,7 @@ int	cd(t_token *cmd, t_node *node, t_shell *shell)
 	}
 	if (get_cur_dir(&cur_dir, 100) == 1)
 		return (1);
-	if (update_pwd(cur_dir, shell) == 1)
-	{
-		free(cur_dir);
-		return (1);
-	}
+	status = update_pwd(cur_dir, shell);
 	free(cur_dir);
-	return (0);
+	return (status);
 }
