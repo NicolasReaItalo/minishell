@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:19:14 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/23 10:29:53 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/23 14:04:29 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 \001\033[3;96m\002> \001\033[0m\002"
 # define D_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # define PATH_MSG "\001\033[3;243m\002The PATH variable has not been inherited\
-from parent\nSetting PATH to default value...\n\001\033[0m\002"
+ from parent\nSetting PATH to default value...\n\001\033[0m\002"
 
 int		ft_init_shell(t_shell *shell, char **envp);
 char	*ft_handle_tok_err(int error);
