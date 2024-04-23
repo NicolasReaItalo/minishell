@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 10:27:07 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/11 19:08:40 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/23 11:40:02 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ int	set_interactive_signals(void)
 		return (-1);
 	}
 	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	{
+		perror("signal");
+		return (-1);
+	}
+	if (signal(SIGTSTP, SIG_IGN) == SIG_ERR)
 	{
 		perror("signal");
 		return (-1);
