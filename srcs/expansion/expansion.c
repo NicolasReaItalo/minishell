@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/14 00:53:16 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/04/23 13:22:17 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int	main(int argc, char **argv)
 	return (0);
 }*/
 
-/*
+
 char	*ft_handle_token_errors(int error)
 {
 	if (error == 1)
@@ -193,12 +193,12 @@ int	main(int argc, char **argv, char **envp)
 		ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 		return (2);
 	}
-	ft_redirections(&stack);
+	ft_redirections(&stack, &shell);
 	tree = ft_create_tree(&stack, &tree_error, 2);
 	if (tree_error)
 	{
 		ft_handle_tree_error(tree_error);
-		ft_free_tree(tree);
+		ft_free_tree(&tree);
 		return (3);
 	}
 	ft_dprintf(1, "--------------------\n");
@@ -209,19 +209,21 @@ int	main(int argc, char **argv, char **envp)
 	{
 	//	ft_dprintf(2, "expansion error: %s\n",
 	//		ft_handle_token_errors(expand_error));
-		ft_free_tree(tree);
+		ft_free_tree(&tree);
 		ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 		return (4);
 	}
 	show_tree(tree, 0);
-	ft_free_tree(tree);
+	ft_free_tree(&tree);
 	ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 	return (0);
 }
-*/
+
 
 //gcc -g3 srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c test/utils/*.c -I./include/ -I./libft/ -I./test -L./libft/ -lft -lreadline -o param_expansion
 
 //valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes
 //   --trace-children=yes --suppressions=valgrind.txt
 //   ./param_expansion '<$SHLVL <<eof echo$SHELL $?-l la$? >file'
+
+// gcc -g3 srcs/*.c srcs/execution/*.c srcs/builtins/*.c srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c test/utils/*.c -I./include/ -I./libft/ -I./test -L./libft/ -lft -lreadline -o param_expansion

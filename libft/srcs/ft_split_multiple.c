@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:55:45 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/27 11:52:38 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/23 15:25:19 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,26 @@ int	ft_is_separator(char c, char *charset)
 
 int	ft_count_words(char *str, char *charset)
 {
-	int	word_nb;
-	int	new_word;
+	int		word_nb;
+	int		new_word;
+	char	*in_quotes;
 
 	word_nb = 0;
 	new_word = 1;
+	in_quotes = NULL;
 	while (*str)
 	{
-		if (ft_is_separator(*str, charset))
+		if (*str == '\'' || *str == '\"')
 		{
-			new_word = 1;
+			in_quotes = str;
+			str++;
+			while (*str && *str != *in_quotes)
+				str++;
+			if (*str == *in_quotes)
+				str++;
 		}
+		if (ft_is_separator(*str, charset))
+			new_word = 1;
 		else if (new_word)
 		{
 			word_nb++;
@@ -79,19 +88,31 @@ char	**ft_split_multiple(char *str, char *charset)
 	char	**split;
 	int		size;
 	int		i;
+	char	*in_quotes;
+	char	*original_str;
 
 	i = 0;
 	size = ft_count_words(str, charset) + 1;
 	split = malloc(size * sizeof(char *));
 	if (!split)
 		return (NULL);
-	while (i < size - 1)
+	while (*str)
 	{		
+		original_str = str;
+		if (*str == '\'' || *str == '\"')
+		{
+			in_quotes = str;
+			str++;
+			while (*str && *str != *in_quotes)
+				str++;
+			if (*str == *in_quotes)
+				str++;
+		}
 		if (ft_is_separator(*str, charset))
 			str++;
 		else
 		{
-			split[i] = ft_add_word(str, ft_get_word_size(str, charset));
+			split[i] = ft_add_word(original_str, ft_get_word_size(str, charset));
 			if (!split[i])
 				return (NULL);
 			while (!ft_is_separator(*str, charset) && *str)
