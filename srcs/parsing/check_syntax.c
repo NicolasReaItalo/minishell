@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:21:18 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/10 17:06:48 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/24 16:33:06 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static char	*check_syntax_node(t_token *ptr)
 		return (NULL);
 	if (ptr->type == -1)
 		return (ptr->content);
-	if (!ptr->next || !ptr->prev)
+//	if (!ptr->next || !ptr->prev)
+	if (!ptr->prev)
 		return (check_start_and_end(ptr));
 	prev_type = ptr->prev->type;
 	if ((ptr->type == 2 || ptr->type == 3 || ptr->type == 8)
