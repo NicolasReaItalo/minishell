@@ -16,3 +16,5 @@ dummy_echo.c
 dummy_echo
 test_infinite.c
 inf_loop
+unquote
+test_unquote.c

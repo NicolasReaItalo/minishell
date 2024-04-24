@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/15 12:04:11 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/24 14:28:05 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ int		match_pattern(char *pattern, char *str);
 //int		ambiguous_redirect(char *content);
 int		contains_ifs_redir(char *str, char *ifs);
 int		pathname_in_quotes(char *content);
-
+void	unquote_content(char *content);
 #endif
