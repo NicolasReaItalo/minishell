@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_expansion.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/24 15:05:24 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/24 15:33:34 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,4 @@ int		match_pattern(char *pattern, char *str);
 int		contains_ifs_redir(char *str, char *ifs);
 int		pathname_in_quotes(char *content);
 void	unquote_content(char *content);
-
-
 #endif

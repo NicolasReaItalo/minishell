@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/24 13:35:38 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/24 15:19:47 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	exit_gracefully(t_shell *shell, int exit_status)
 	ft_free_shell(shell);
 	exit (exit_status);
 }
-/*
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
@@ -52,4 +52,3 @@ int	main(int argc, char **argv, char **envp)
 	repl(&shell);
 	exit_gracefully(&shell, 0);
 }
-*/
