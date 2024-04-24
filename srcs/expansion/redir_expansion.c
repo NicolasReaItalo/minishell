@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:10:58 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/11 17:29:02 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/24 15:12:50 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ int	expand_redir(t_token *token, t_shell *shell)
 		return (6);
 	else if (error >= 2)
 		return (ambiguous_redirect(token->content));
+	unquote_content(token->content);
 	return (0);
 }
 /*
