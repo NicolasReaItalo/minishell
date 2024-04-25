@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/24 15:43:04 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/25 09:40:24 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ static int	expand_cmd(t_token *token, t_shell *shell, int *nb_token)
 	token->content = expand_param(token->content, shell);
 	if (!token->content)
 		return (1);
-	if (contains_ifs(token, shell))
-		if (field_splitting(token, shell))
-			return (1);
+//	if (contains_ifs(token, shell))
+//		if (field_splitting(token, shell))
+//			return (1);
 	if (!pathname_in_quotes(token->content) && ft_strchr(token->content, '*'))
 		if (expand_pathname_cmd(token, nb_token))
 			return (1);
