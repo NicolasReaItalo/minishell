@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:41:59 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/16 17:44:58 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/25 16:18:35 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*next_token_word(char *str, t_token **new, int *error_code)
 			while (*(str + i + j) && *(str + i + j) != *(str + i))
 				j++;
 			i += j;
-			j = 0;
+			j = 1;
 			if (!*(str + i))
 				return (*error_code = 2, NULL);
 		}
