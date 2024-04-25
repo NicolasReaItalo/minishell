@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/10 14:47:58 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/25 14:15:21 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static char	*ft_concat_3str(char *first, char *second, char *third)
 
 //Fonction qui gere l'expansion des parametres ($VAR) 
 //return une chaine de caractere allouee
-char	*expand_param(char *str, t_shell *shell)
+char	*expand_param(char *str, t_shell *shell, t_token *token)
 {
 	char	*key;
 	char	*new;
@@ -82,15 +82,25 @@ char	*expand_param(char *str, t_shell *shell)
 	output = ft_strdup(str);
 	if (!output)
 		return (NULL);
-	free (str);
+	free (str);  // <---------------------
 	key = find_next_param_expansion(output, &next);
 	if (!key)
 		return (output);
 	while (key)
 	{
+		printf("\tkey : [%s]\n", key);
 		new = ft_get_var_value(key, shell->env_vars, shell->shell_vars);
-		free (key);
-		output = ft_concat_3str(output, new, next);
+		printf("\tnew : [%s]\n", new);
+//		free (key);
+		if (contains_ifs(token, shell, new))
+		{
+			if (field_splitting(token, shell, new))
+				return (NULL);
+			else
+				new = token->content;
+		}
+		output = ft_concat_3str(output, new, next); //C'est sur new que je dois appliquer l'IFS
+		printf("[%s]\n", output);
 		if (!output)
 			return (NULL);
 		key = find_next_param_expansion(output, &next);

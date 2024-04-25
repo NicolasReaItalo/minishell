@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/25 09:40:24 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/25 10:47:18 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,16 @@ int	only_stars(char *pattern)
 	return (1);
 }
 
-int	contains_ifs(t_token *token, t_shell *shell)
+int	contains_ifs(t_token *token, t_shell *shell, char *str)
 {
 	char	*ifs;
-	char	*str;
+//	char	*str;
 
+	(void)token;
 	ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
 	if (!ifs)
 		return (0);
-	str = token->content;
+//	str = token->content;
 	while (*str)
 	{
 		if (ft_strchr(ifs, *str))
@@ -59,7 +60,7 @@ t_token	*advance_token(t_token *token, int *nb_token)
 static int	expand_cmd(t_token *token, t_shell *shell, int *nb_token)
 {
 	*nb_token = 1;
-	token->content = expand_param(token->content, shell);
+	token->content = expand_param(token->content, shell, token);
 	if (!token->content)
 		return (1);
 //	if (contains_ifs(token, shell))

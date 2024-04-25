@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_expansion.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/24 15:33:34 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/25 13:38:49 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@
 int		word_expand(t_node *node, t_shell *shell);
 
 //int		field_splitting(t_token *token, t_shell *shell);
-char	*expand_param(char *str, t_shell *shell);
+char	*expand_param(char *str, t_shell *shell, t_token *token);
 char	*expand_param_redir(char *str, t_shell *shell);
 int		words_to_token(t_token **ptr, char **words);
-int		field_splitting(t_token *token, t_shell *shell);
-//int		contains_ifs(t_token *token, t_shell *shell);
+int		field_splitting(t_token *token, t_shell *shell, char *new);
+int		contains_ifs(t_token *token, t_shell *shell, char *str);
 void	free_words_tab(char ***words);
 int		expand_pathname_cmd(t_token *token, int *count);
 //int 	expand_pathname_redir(t_token *token);

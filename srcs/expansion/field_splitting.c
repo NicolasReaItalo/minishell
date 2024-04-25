@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:40 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/10 13:36:58 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/25 13:40:38 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	free_words_tab(char ***words)
 
 // Gestion de l'IFS apres l'expansion des parametres
 // Return 0 ou code erreur
-int	field_splitting(t_token *token, t_shell *shell)
+int	field_splitting(t_token *token, t_shell *shell, char *new)
 {
 	char	*ifs;
 	char	**words;
@@ -60,7 +60,7 @@ int	field_splitting(t_token *token, t_shell *shell)
 	char	*tmp;
 
 	ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
-	words = ft_split_multiple(token->content, ifs);
+	words = ft_split_multiple(new, ifs);
 	if (!words)
 		return (1);
 	if (!words[0])
