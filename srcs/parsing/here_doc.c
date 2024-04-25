@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 11:58:13 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/11 18:51:28 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/25 10:55:03 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ int	ft_append(char **content, char *line)
 
 static void	treat_line(int fd[2], char *end, char *line)
 {
-	if (!ft_strncmp(line, end, ft_strlen(line)))
+	int	len;
+
+	len = ft_strlen(line);
+	if (len && !ft_strncmp(line, end, len))
 	{
 		free(line);
 		close(fd[1]);
@@ -48,10 +51,10 @@ static void	treat_line(int fd[2], char *end, char *line)
 void	child_hd(char *eof, int fd[2], t_shell *shell, t_token **stack)
 {
 	char	*line;
-	char	end[1000];
+	char	end[10000];
 
 	close(fd[0]);
-	ft_memset(end, 0, 1000);
+	ft_memset(end, 0, 10000);
 	if (ft_strcpy(end, eof) == NULL)
 	{
 		close(fd[1]);
