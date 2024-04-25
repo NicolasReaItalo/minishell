@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/25 14:15:21 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/25 15:04:53 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,9 @@ char	*expand_param(char *str, t_shell *shell, t_token *token)
 			else
 				new = token->content;
 		}
+		printf("AVANT OUTPUT\noutput : %s\tnew : %s\ttoken->content : %s\tnext : %s\n\n", output, new, token->content, next);
 		output = ft_concat_3str(output, new, next); //C'est sur new que je dois appliquer l'IFS
-		printf("[%s]\n", output);
+		printf("\nAPRES\n\toutput : [%s]\n", output);
 		if (!output)
 			return (NULL);
 		key = find_next_param_expansion(output, &next);

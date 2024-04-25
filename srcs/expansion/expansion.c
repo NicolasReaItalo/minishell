@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/25 14:25:16 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/25 15:46:16 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,19 @@ static int	expand_cmd(t_token *token, t_shell *shell, int *nb_token)
 //	if (contains_ifs(token, shell))
 //		if (field_splitting(token, shell))
 //			return (1);
-	if (!pathname_in_quotes(token->content) && ft_strchr(token->content, '*'))
+	if (ft_strchr(token->content, '*') && !pathname_in_quotes(token->content))
+	{
 		if (expand_pathname_cmd(token, nb_token))
 			return (1);
+	}
+	else 
+	{
+
+		printf("unquotting: %s\n", token->content);
+		unquote_content(token->content);
+		printf("after unquotting: %s\n", token->content);
+	}
+		
 	token = advance_token(token, nb_token);
 	return (0);
 }
