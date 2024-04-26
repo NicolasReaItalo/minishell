@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/25 15:04:53 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/26 13:02:13 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,20 @@ static int	is_valid_param_char(char c)
 
 // Fonction qui prend en entree une chaine de caractere et renvoie 
 // une chaine ayant les criteres d'une key
-static char	*find_next_param_expansion(char *str, char **next)
+static char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
 {
 	int		len;
 
-	len = 0;
+	len = 0; 
+	*in_quotes = 0;
 	while (*str)
 	{
-		if (*str == '\'')
+		if (*str == '\"')
+		{
+			*in_quotes = 1;
+			str++;
+		}
+		if (!*in_quotes && *str == '\'')
 		{
 			str++;
 			while (*str && *str != '\'')
@@ -75,6 +81,7 @@ char	*expand_param(char *str, t_shell *shell, t_token *token)
 	char	*new;
 	char	*next;
 	char	*output;
+	int		in_quotes;
 
 	if (!str)
 		return (NULL);
@@ -83,7 +90,7 @@ char	*expand_param(char *str, t_shell *shell, t_token *token)
 	if (!output)
 		return (NULL);
 	free (str);  // <---------------------
-	key = find_next_param_expansion(output, &next);
+	key = find_next_param_expansion(output, &next, &in_quotes);
 	if (!key)
 		return (output);
 	while (key)
@@ -92,7 +99,7 @@ char	*expand_param(char *str, t_shell *shell, t_token *token)
 		new = ft_get_var_value(key, shell->env_vars, shell->shell_vars);
 		printf("\tnew : [%s]\n", new);
 //		free (key);
-		if (contains_ifs(token, shell, new))
+		if (contains_ifs(token, shell, new) && !in_quotes)
 		{
 			if (field_splitting(token, shell, new))
 				return (NULL);
@@ -104,7 +111,7 @@ char	*expand_param(char *str, t_shell *shell, t_token *token)
 		printf("\nAPRES\n\toutput : [%s]\n", output);
 		if (!output)
 			return (NULL);
-		key = find_next_param_expansion(output, &next);
+		key = find_next_param_expansion(output, &next, &in_quotes);
 	}
 	return (output);
 }
@@ -115,6 +122,7 @@ char	*expand_param_redir(char *str, t_shell *shell)
 	char	*new;
 	char	*next;
 	char	*output;
+	int		in_quotes;
 
 	if (!str)
 		return (NULL);
@@ -122,7 +130,7 @@ char	*expand_param_redir(char *str, t_shell *shell)
 	output = ft_strdup(str);
 	if (!output)
 		return (NULL);
-	key = find_next_param_expansion(output, &next);
+	key = find_next_param_expansion(output, &next, &in_quotes);
 	if (!key)
 		return (output);
 	while (key)
@@ -132,7 +140,7 @@ char	*expand_param_redir(char *str, t_shell *shell)
 		output = ft_concat_3str(output, new, next);
 		if (!output)
 			return (NULL);
-		key = find_next_param_expansion(output, &next);
+		key = find_next_param_expansion(output, &next, &in_quotes);
 	}
 	return (output);
 }
