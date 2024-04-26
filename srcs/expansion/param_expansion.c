@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/26 13:02:13 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/26 16:54:13 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,12 @@ static char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
 	{
 		if (*str == '\"')
 		{
-			*in_quotes = 1;
+			if (!*in_quotes)
+				*in_quotes = 1;
+			else 
+				*in_quotes = 0;
 			str++;
+			continue ;
 		}
 		if (!*in_quotes && *str == '\'')
 		{
@@ -75,46 +79,98 @@ static char	*ft_concat_3str(char *first, char *second, char *third)
 
 //Fonction qui gere l'expansion des parametres ($VAR) 
 //return une chaine de caractere allouee
-char	*expand_param(char *str, t_shell *shell, t_token *token)
+// char	*expand_param(char *str, t_shell *shell, t_token *token)
+// {
+// 	char	*key;
+// 	char	*new;
+// 	char	*next;
+// 	char	*output;
+// 	int		in_quotes;
+
+// 	if (!str)
+// 		return (NULL);
+// 	next = NULL;
+// 	output = ft_strdup(str);
+// 	if (!output)
+// 		return (NULL);
+// 	free (str);  // <---------------------
+// 	key = find_next_param_expansion(output, &next, &in_quotes);
+// 	if (!key)
+// 		return (output);
+// 	while (key)
+// 	{
+// 		new = ft_get_var_value(key, shell->env_vars, shell->shell_vars);
+
+// 		if (contains_ifs(token, shell, new) && !in_quotes)
+// 		{
+// 			if (field_splitting(token, shell, new, output, next))
+// 				return (NULL);
+// 			printf("[DEBUG]token.content[%s]\n", token->content);
+// 			printf("[DEBUG]output[%s]\n", output);
+// 		}
+// 		else
+// 		{
+// 			output = ft_concat_3str(output, new, next); //C'est sur new que je dois appliquer l'IFS
+// 			if (!output)
+// 				return (NULL);
+// 		}
+// 		free(key);
+// 		key = find_next_param_expansion(output, &next, &in_quotes);
+// 	}
+// 	return(output);
+// }
+
+
+//Fonction qui gere l'expansion des parametres ($VAR) 
+//return une chaine de caractere allouee
+char	*expand_param(t_shell *shell, t_token *token)
 {
 	char	*key;
 	char	*new;
 	char	*next;
-	char	*output;
+	// char	*output;
 	int		in_quotes;
-
-	if (!str)
+	char 	*expanded;
+	printf("[DEBUG] on commence l'expansion[%s]\n", token->content);
+	if (!token->content)
 		return (NULL);
 	next = NULL;
-	output = ft_strdup(str);
-	if (!output)
-		return (NULL);
-	free (str);  // <---------------------
-	key = find_next_param_expansion(output, &next, &in_quotes);
+	// output = ft_strdup(token->content);
+	// if (!output)
+	// 	return (NULL);
+	// free (token->content);  // <---------------------
+	key = find_next_param_expansion(token->content, &next, &in_quotes);
 	if (!key)
-		return (output);
+	{
+		// token->content = output;
+		return NULL;
+	}
 	while (key)
 	{
-		printf("\tkey : [%s]\n", key);
 		new = ft_get_var_value(key, shell->env_vars, shell->shell_vars);
-		printf("\tnew : [%s]\n", new);
-//		free (key);
+
 		if (contains_ifs(token, shell, new) && !in_quotes)
 		{
-			if (field_splitting(token, shell, new))
+			if (field_splitting(token, shell, new, token->content, next))
 				return (NULL);
-			else
-				new = token->content;
 		}
-		printf("AVANT OUTPUT\noutput : %s\tnew : %s\ttoken->content : %s\tnext : %s\n\n", output, new, token->content, next);
-		output = ft_concat_3str(output, new, next); //C'est sur new que je dois appliquer l'IFS
-		printf("\nAPRES\n\toutput : [%s]\n", output);
-		if (!output)
-			return (NULL);
-		key = find_next_param_expansion(output, &next, &in_quotes);
+		else
+		{
+			expanded = ft_concat_3str(token->content, new, next); //C'est sur new que je dois appliquer l'IFS
+			if (!expanded)
+				return (NULL);
+			token->content = expanded;
+		}
+		free(key);
+		key = find_next_param_expansion(token->content, &next, &in_quotes);
 	}
-	return (output);
+	return(NULL);
 }
+
+
+
+
+
 
 char	*expand_param_redir(char *str, t_shell *shell)
 {

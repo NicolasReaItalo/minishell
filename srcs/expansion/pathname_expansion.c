@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/11 13:30:18 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/26 14:34:37 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int	expand_pathname_cmd(t_token *token, int *count)
 	token->content = ft_strdup(*words);
 	free (tmp);
 	ptr = token;
-	if (words_to_token(&ptr, words))
+	if (words_to_token(ptr, words))
 		return (1);
 	free_words_tab(&words);
 	return (0);

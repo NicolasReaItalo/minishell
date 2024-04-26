@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/25 17:43:02 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/26 15:53:09 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,8 @@ t_token	*advance_token(t_token *token, int *nb_token)
 static int	expand_cmd(t_token *token, t_shell *shell, int *nb_token)
 {
 	*nb_token = 1;
-	token->content = expand_param(token->content, shell, token);
-	if (!token->content)
-		return (1);
+	expand_param(shell, token);
+	printf("[DEBUG] apres expansion[%s]\n", token->content);
 //	if (contains_ifs(token, shell))
 //		if (field_splitting(token, shell))
 //			return (1);
@@ -99,6 +98,7 @@ int	word_expand(t_node *node, t_shell *shell)
 			return (1);
 		token = advance_token(token, &nb_token);
 	}
+	printf("[DEBUG] node->cmdcontent = [%s]\n", node->cmd->content);
 	token = node->redir;
 	while (token)
 	{
