@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unquotting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 14:08:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/25 13:59:25 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/26 10:07:49 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,12 @@ void	unquote_content(char *content)
 		if (*ptr1 == '\'' || *ptr1 == '\"')
 		{
 			ptr2 = ptr1 + 1;
-			while (*ptr2 && *ptr2 != *ptr1)
+			while (*ptr2 != *ptr1)
+			{
+				if (!*ptr2)
+					return ;
 				ptr2++;
+			}
 			*ptr1 = '\0';
 			*ptr2 = '\0';
 			content = ft_concat_3str(content, ptr1 + 1, ptr2 + 1, size);
