@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/26 15:53:09 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/26 18:05:08 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,24 @@ t_token	*advance_token(t_token *token, int *nb_token)
 	return (token);
 }
 
+int	is_only_whitespaces(char *str)
+{
+	while (*str)
+	{
+		if (!is_wspace(*str))
+			return (0);
+		str++;
+	}
+	return (1);	
+}
+
 static int	expand_cmd(t_token *token, t_shell *shell, int *nb_token)
 {
 	*nb_token = 1;
 	expand_param(shell, token);
+	if (is_only_whitespaces(token->content))
+		return (2);
 	printf("[DEBUG] apres expansion[%s]\n", token->content);
-//	if (contains_ifs(token, shell))
-//		if (field_splitting(token, shell))
-//			return (1);
 	if (ft_strchr(token->content, '*') && !pathname_in_quotes(token->content))
 	{
 		if (expand_pathname_cmd(token, nb_token))
@@ -88,13 +98,34 @@ int	word_expand(t_node *node, t_shell *shell)
 {
 	t_token	*token;
 	int		nb_token;
-
+	int		error;
+	t_token	*to_delete;
+	
 	if (!node)
 		return (4);
 	token = node->cmd;
 	while (token)
 	{
-		if (expand_cmd(token, shell, &nb_token))
+		error = expand_cmd(token, shell, &nb_token);
+		if (error == 2)
+		{
+			//supprimer le token
+			if (token->prev)
+			{
+				printf("[prev[%s]]\n", token->prev->content);
+				token->prev->next =token->next;					
+			}
+			
+			else
+			{
+				node->cmd = token->next;
+			}	
+			to_delete = token;
+			token = token->next;
+				ft_free_token(&to_delete);
+		}		
+//		if (expand_cmd(token, shell, &nb_token))
+		if (error == 1)
 			return (1);
 		token = advance_token(token, &nb_token);
 	}
