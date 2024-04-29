@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   field_splitting.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:40 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/29 10:55:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/29 15:54:47 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	words_to_token(t_token *ptr, char **words)
 		if (!new)
 			return (1);
 		ft_memset(new, 0, sizeof(t_token));
+		new->param_expanded = 1;
 		new->content = ft_strdup(*words);
 		new->next = ptr->next;
 		ptr->next = new;

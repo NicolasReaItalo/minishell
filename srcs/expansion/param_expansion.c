@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/26 16:54:13 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/29 15:56:21 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,13 +128,13 @@ char	*expand_param(t_shell *shell, t_token *token)
 	char	*key;
 	char	*new;
 	char	*next;
-	// char	*output;
 	int		in_quotes;
 	char 	*expanded;
 	printf("[DEBUG] on commence l'expansion[%s]\n", token->content);
 	if (!token->content)
 		return (NULL);
 	next = NULL;
+	token->param_expanded = 1;
 	// output = ft_strdup(token->content);
 	// if (!output)
 	// 	return (NULL);
