@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/29 15:56:21 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/30 00:50:23 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ static int	is_valid_param_char(char c)
 	return (ft_isalpha(c) || ft_isdigit(c) || c == '_');
 }
 
-// Fonction qui prend en entree une chaine de caractere et renvoie 
+// Fonction qui prend en entree une chaine de caractere et renvoie
 // une chaine ayant les criteres d'une key
 static char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
 {
 	int		len;
 
-	len = 0; 
+	len = 0;
 	*in_quotes = 0;
 	while (*str)
 	{
@@ -31,7 +31,7 @@ static char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
 		{
 			if (!*in_quotes)
 				*in_quotes = 1;
-			else 
+			else
 				*in_quotes = 0;
 			str++;
 			continue ;
@@ -52,14 +52,14 @@ static char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
 				len++;
 			*next = str + len;
 			return (ft_substr(str, 0, len));
-		}						
+		}
 		str++;
 	}
 	return (NULL);
 }
 
 //Concatene 3 chaines de caracteres
-// first alloue, second, third non alloue   
+// first alloue, second, third non alloue
 static char	*ft_concat_3str(char *first, char *second, char *third)
 {
 	char	*output;
@@ -77,7 +77,7 @@ static char	*ft_concat_3str(char *first, char *second, char *third)
 	return (free(first_concat), output);
 }
 
-//Fonction qui gere l'expansion des parametres ($VAR) 
+//Fonction qui gere l'expansion des parametres ($VAR)
 //return une chaine de caractere allouee
 // char	*expand_param(char *str, t_shell *shell, t_token *token)
 // {
@@ -121,9 +121,9 @@ static char	*ft_concat_3str(char *first, char *second, char *third)
 // }
 
 
-//Fonction qui gere l'expansion des parametres ($VAR) 
+//Fonction qui gere l'expansion des parametres ($VAR)
 //return une chaine de caractere allouee
-char	*expand_param(t_shell *shell, t_token *token)
+/*char	*expand_param(t_shell *shell, t_token *token)
 {
 	char	*key;
 	char	*new;
@@ -135,16 +135,9 @@ char	*expand_param(t_shell *shell, t_token *token)
 		return (NULL);
 	next = NULL;
 	token->param_expanded = 1;
-	// output = ft_strdup(token->content);
-	// if (!output)
-	// 	return (NULL);
-	// free (token->content);  // <---------------------
 	key = find_next_param_expansion(token->content, &next, &in_quotes);
 	if (!key)
-	{
-		// token->content = output;
 		return NULL;
-	}
 	while (key)
 	{
 		new = ft_get_var_value(key, shell->env_vars, shell->shell_vars);
@@ -165,9 +158,47 @@ char	*expand_param(t_shell *shell, t_token *token)
 		key = find_next_param_expansion(token->content, &next, &in_quotes);
 	}
 	return(NULL);
+}*/
+
+int	expand_param(t_shell *shell, t_token *token)
+{
+	char	*key;
+	int		in_quotes;
+	char	*next;
+	char	*new;
+	char	*ifs;
+	char	*to_delete;
+
+	if (!token->content)
+		return (2);
+	ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
+	if (!ifs)
+		return (1);
+	next =NULL;
+	token->param_expanded = 1;
+	key = find_next_param_expansion(token->content, &next, &in_quotes);
+	while (key)
+	{
+		new = ft_get_var_value(key, shell->env_vars, shell->shell_vars);
+		while (*new)
+		{
+			if (ft_strchr(ifs, *new))
+				*new = -1;
+			new++;
+		}
+		to_delete = token->content;
+		token->content = ft_strjoin(new, next);
+		free (to_delete);
+		free (key);
+		key = find_next_param_expansion(token->content, &next, &in_quotes);
+	}
+	if (ft_strchr(token->content, -1))
+	{
+		if (field_splitting(token, new, token->content, next))
+			return (1);
+	}
+	return (0);
 }
-
-
 
 
 

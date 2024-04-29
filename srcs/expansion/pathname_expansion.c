@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pathname_expansion.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/26 14:34:37 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/30 00:35:03 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +83,17 @@ static int	find_valid_files(t_token *token, struct dirent *file
 	return (0);
 }
 
-char	**create_pathname_tab(t_token *token, int *count)
+char	**create_pathname_tab(t_token *token)
 {
 	DIR				*dir;
 	struct dirent	*file;
 	char			**words;
 	int				i;
+	int				count;
 
 	i = 0;
-	*count = count_valid_pathname(token->content, token) + 1;
-	words = malloc(*count * sizeof(char *));
+	count = count_valid_pathname(token->content, token) + 1;
+	words = malloc(count * sizeof(char *));
 	if (!words)
 		return (NULL);
 	dir = opendir(".");
@@ -110,13 +111,13 @@ char	**create_pathname_tab(t_token *token, int *count)
 	return (words);
 }
 
-int	expand_pathname_cmd(t_token *token, int *count)
+int	expand_pathname_cmd(t_token *token)
 {
 	char	**words;
 	char	*tmp;
 	t_token	*ptr;
 
-	words = create_pathname_tab(token, count);
+	words = create_pathname_tab(token);
 	if (!words)
 		return (1);
 	if (!*words)
