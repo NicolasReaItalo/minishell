@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 16:59:56 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/30 17:04:24 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,13 @@ char	**create_pathname_tab(t_token *token)
 }
 
 //Ajouter *** et tolower()
-void	sort_pathname_tab(char **tab)
+char	**sort_pathname_tab(char **tab)
 {
 	char *temp;
 	int	sorted;
 	int		i;
+
+
 	sorted = 0;
 	while(!sorted)
 	{
@@ -134,6 +136,7 @@ void	sort_pathname_tab(char **tab)
 			i++;
 		}
 	}
+	return(tab);
 }
 
 int	expand_pathname_cmd(t_token *token)
@@ -147,7 +150,7 @@ int	expand_pathname_cmd(t_token *token)
 		return (1);
 	if (!*words)
 		return (free(words), 0);
-	sort_pathname_tab(words);
+	words = sort_pathname_tab(words);
 	tmp = token->content;
 	token->content = ft_strdup(*words);
 	free (tmp);
