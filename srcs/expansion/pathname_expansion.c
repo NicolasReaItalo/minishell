@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 16:56:37 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/30 16:59:56 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ char	**create_pathname_tab(t_token *token)
 	return (words);
 }
 
+//Ajouter *** et tolower()
 void	sort_pathname_tab(char **tab)
 {
 	char *temp;
