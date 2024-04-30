@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 11:58:13 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/25 10:55:03 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/30 10:34:01 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ static void	treat_line(int fd[2], char *end, char *line)
 {
 	int	len;
 
+	if (!line)
+	{
+		close(fd[1]);
+		exit(0);
+	}
 	len = ft_strlen(line);
 	if (len && !ft_strncmp(line, end, len))
 	{
