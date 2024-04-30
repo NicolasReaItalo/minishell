@@ -6,7 +6,7 @@
 /*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 01:10:30 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/04/30 09:01:07 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ static int	expand_param_cmd(t_token *token, t_shell *shell)
 
 static int	expand_pathname_(t_token *token)
 {
+	token->path_expanded = 1;
 	if (ft_strchr(token->content, '*') && !pathname_in_quotes(token->content))
 	{
 		if (expand_pathname_cmd(token))
@@ -151,7 +152,7 @@ int	word_expand(t_node *node, t_shell *shell)
 	if (token)
 		printf ("Apres expansion des params de content : %s/n", token->content);
 	else
-		printf ("Sur le token vide/n");
+		printf ("Sur le token vide\n");
 	// Faire l'expansion du pathname (*) et l'unquotting
 	token = node->cmd;
 	while (token)

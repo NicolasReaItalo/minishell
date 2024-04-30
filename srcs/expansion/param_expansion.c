@@ -6,7 +6,7 @@
 /*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 00:50:23 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/04/30 11:14:13 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,8 @@ int	expand_param(t_shell *shell, t_token *token)
 	char	*next;
 	char	*new;
 	char	*ifs;
-	char	*to_delete;
+//	char	*to_delete;
+	int		i;
 
 	if (!token->content)
 		return (2);
@@ -180,21 +181,25 @@ int	expand_param(t_shell *shell, t_token *token)
 	while (key)
 	{
 		new = ft_get_var_value(key, shell->env_vars, shell->shell_vars);
-		while (*new)
+		i = 0;
+		while (new[i])
 		{
-			if (ft_strchr(ifs, *new))
-				*new = -1;
-			new++;
+			if (ft_strchr(ifs, new[i]))
+				new[i] = -1;
+			i++;
 		}
-		to_delete = token->content;
-		token->content = ft_strjoin(new, next);
-		free (to_delete);
+//		to_delete = token->content;
+	//	token->content = ft_strjoin(new, next);
+		token->content = ft_concat_3str(token->content, new, next);
+		if (!token->content)
+			return (1);
+//		free (to_delete);
 		free (key);
 		key = find_next_param_expansion(token->content, &next, &in_quotes);
 	}
 	if (ft_strchr(token->content, -1))
 	{
-		if (field_splitting(token, new, token->content, next))
+		if (field_splitting(token, token->content, next))
 			return (1);
 	}
 	return (0);

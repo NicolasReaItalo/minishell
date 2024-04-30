@@ -6,7 +6,7 @@
 /*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:40 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 00:44:34 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/04/30 11:14:05 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,21 @@ int	get_last_word(char **words)
 }
 // Gestion de l'IFS apres l'expansion des parametres
 // Return 0 ou code erreur
-int	field_splitting(t_token *token, char *new, char *start, char *end)
+int	field_splitting(t_token *token, char *start, char *end)
 {
 //	char	*ifs;
 	char	**words;
 	t_token	*ptr;
-	int		last;
-	char	*tmp;
+//	int		last;
+//	char	*tmp;
 	char	*tmp2;
 
 //	ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
-	words = ft_split(new, -1);
+	words = ft_split(token->content, -1);
 	ptr = token;
 	if (words == NULL)
 		return (1);
-	if (words[0])
+/*	if (words[0])
 	{
 		last = get_last_word(words);
 		if (last == -1)
@@ -87,8 +87,10 @@ int	field_splitting(t_token *token, char *new, char *start, char *end)
 		tmp = ft_strjoin(words[last], end); // a proteger
 		free (words[last]);
 		words[last] = tmp;
-	}
-	else
+	}*/
+//	else
+	// Cas ou il n'y a que des caracteres ifs
+	if (!words[0])
 	{
 		free_words_tab(&words);
 		words = malloc(3 * sizeof(char*)); // a proteger
@@ -97,6 +99,8 @@ int	field_splitting(t_token *token, char *new, char *start, char *end)
 		words[1] = ft_strdup(end);
 		words[2] = NULL;
 	}
+	else
+		tmp2 = ft_strdup(words[0]);
 	words_to_token(ptr, words); // a proteger
 	free_words_tab(&words);
 	free(token->content);
