@@ -6,7 +6,7 @@
 /*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 21:52:59 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/04/30 23:17:25 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,30 @@ char	**create_pathname_tab(t_token *token)
 	return (words);
 }
 
+int	ft_strcmp_no_case(char *s1, char *s2)
+{
+	char	*str1;
+	char	*str2;
+	int		i;
+
+	str1 = ft_strdup(s1);
+	str2 = ft_strdup(s2);
+	i = 0;
+	while (str1[i])
+	{
+		str1[i] = ft_tolower(str1[i]);
+		i++;
+	}
+	i = 0;
+	while (str2[i])
+	{
+		str2[i] = ft_tolower(str2[i]);
+		i++;
+	}
+	i = ft_strcmp(str1, str2);
+	return (free(str1), free(str2), i);
+}
+
 //Ajouter *** et tolower()
 char	**sort_pathname_tab(char **tab)
 {
@@ -123,10 +147,10 @@ char	**sort_pathname_tab(char **tab)
 	while(!sorted)
 	{
 		i = 0;
+		sorted = 1;
 		while (tab[i+1])
 		{
-			sorted = 1;
-			if( ft_strcmp(tab[i], tab[i+1]) > 0)
+			if( ft_strcmp_no_case(tab[i], tab[i+1]) > 0)
 			{
 				temp = tab[i];
 				tab[i] = tab[i + 1];
@@ -150,7 +174,7 @@ int	expand_pathname_cmd(t_token *token)
 		return (1);
 	if (!*words)
 		return (free(words), 0);
-//	words = sort_pathname_tab(words);
+	words = sort_pathname_tab(words);
 	tmp = token->content;
 	token->content = ft_strdup(*words);
 	free (tmp);
