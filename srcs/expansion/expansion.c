@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 09:01:07 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/04/30 14:12:22 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ int	word_expand(t_node *node, t_shell *shell)
 			return (1);
 		token = advance_token(token, 2);
 	}
-	printf("[DEBUG] node->cmdcontent = [%s]\n", node->cmd->content);
+	// printf("[DEBUG] node->cmdcontent = [%s]\n", node->cmd->content);
 	// Faire l'expansion des redirections
 	token = node->redir;
 	while (token)

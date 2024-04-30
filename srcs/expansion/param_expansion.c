@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 11:14:13 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/04/30 16:11:24 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
 		{
 			*str = '\0';
 			str++;
-			while (is_valid_param_char(*(str + len)))
+			while ( *(str + len) && is_valid_param_char(*(str + len)))
 				len++;
 			*next = str + len;
 			return (ft_substr(str, 0, len));
@@ -169,7 +169,9 @@ int	expand_param(t_shell *shell, t_token *token)
 	char	*ifs;
 //	char	*to_delete;
 	int		i;
+	int		index;
 
+	index =  0;
 	if (!token->content)
 		return (2);
 	ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
@@ -188,14 +190,27 @@ int	expand_param(t_shell *shell, t_token *token)
 				new[i] = -1;
 			i++;
 		}
-//		to_delete = token->content;
-	//	token->content = ft_strjoin(new, next);
-		token->content = ft_concat_3str(token->content, new, next);
+		index = ft_strlen(token->content)  + ft_strlen(new);
+		if ( new[0])
+			token->content = ft_concat_3str(token->content, new, next);
+		else
+		{
+			char *p;
+			if (token->content[0]  || next[0])
+				p = ft_strjoin(token->content, next);
+			else
+			{
+				p = ft_strdup("");
+			}
+			free(token->content);
+			token->content = p;
+		}
 		if (!token->content)
 			return (1);
-//		free (to_delete);
 		free (key);
-		key = find_next_param_expansion(token->content, &next, &in_quotes);
+		key = NULL;
+		if (ft_strlen(token->content))
+			key = find_next_param_expansion(token->content + index, &next, &in_quotes);
 	}
 	if (ft_strchr(token->content, -1))
 	{
@@ -204,6 +219,19 @@ int	expand_param(t_shell *shell, t_token *token)
 	}
 	return (0);
 }
+
+/*
+
+TANT QUE CLE
+	$VAR -> $PATH
+
+
+	$PATH$PATH
+
+
+
+*/
+
 
 
 
