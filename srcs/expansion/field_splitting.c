@@ -6,7 +6,7 @@
 /*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:40 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 11:14:05 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/04/30 21:52:48 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // Create and add new tokens in a linked list
 // Add content from a tab of char*
 // Return 1 if error
-int	words_to_token(t_token *ptr, char **words)
+int	words_to_token(t_token *ptr, char **words, int i)
 {
 	t_token	*new;
 
@@ -26,7 +26,10 @@ int	words_to_token(t_token *ptr, char **words)
 		if (!new)
 			return (1);
 		ft_memset(new, 0, sizeof(t_token));
-		new->param_expanded = 1;
+		if (i == 1)
+			new->param_expanded = 1;
+		else if (i == 2)
+			new->path_expanded = 1;
 		new->content = ft_strdup(*words);
 		new->next = ptr->next;
 		ptr->next = new;
@@ -101,7 +104,7 @@ int	field_splitting(t_token *token, char *start, char *end)
 	}
 	else
 		tmp2 = ft_strdup(words[0]);
-	words_to_token(ptr, words); // a proteger
+	words_to_token(ptr, words, 1); // a proteger
 	free_words_tab(&words);
 	free(token->content);
 	token->content = tmp2;

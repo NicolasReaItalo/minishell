@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pathname_expansion.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 17:04:24 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/30 21:52:59 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,12 +150,12 @@ int	expand_pathname_cmd(t_token *token)
 		return (1);
 	if (!*words)
 		return (free(words), 0);
-	words = sort_pathname_tab(words);
+//	words = sort_pathname_tab(words);
 	tmp = token->content;
 	token->content = ft_strdup(*words);
 	free (tmp);
 	ptr = token;
-	if (words_to_token(ptr, words))
+	if (words_to_token(ptr, words, 2))
 		return (1);
 	free_words_tab(&words);
 	return (0);

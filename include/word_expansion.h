@@ -6,7 +6,7 @@
 /*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 11:14:30 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/04/30 21:53:14 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		word_expand(t_node *node, t_shell *shell);
 //int		field_splitting(t_token *token, t_shell *shell);
 int		expand_param(t_shell *shell, t_token *token);
 char	*expand_param_redir(char *str, t_shell *shell);
-int		words_to_token(t_token *ptr, char **words);
+int		words_to_token(t_token *ptr, char **words, int i);
 //int		field_splitting(t_token *token, t_shell *shell, char *new);
 int		field_splitting(t_token *token, char *start, char *end);
 int		contains_ifs(t_token *token, t_shell *shell, char *str);
