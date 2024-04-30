@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pathname_expansion.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 00:35:03 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/04/30 16:56:37 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,30 @@ char	**create_pathname_tab(t_token *token)
 	return (words);
 }
 
+void	sort_pathname_tab(char **tab)
+{
+	char *temp;
+	int	sorted;
+	int		i;
+	sorted = 0;
+	while(!sorted)
+	{
+		i = 0;
+		while (tab[i+1])
+		{
+			sorted = 1;
+			if( ft_strcmp(tab[i], tab[i+1]) > 0)
+			{
+				temp = tab[i];
+				tab[i] = tab[i + 1];
+				tab[i + 1] = temp;
+				sorted = 0;
+			}
+			i++;
+		}
+	}
+}
+
 int	expand_pathname_cmd(t_token *token)
 {
 	char	**words;
@@ -122,6 +146,7 @@ int	expand_pathname_cmd(t_token *token)
 		return (1);
 	if (!*words)
 		return (free(words), 0);
+	sort_pathname_tab(words);
 	tmp = token->content;
 	token->content = ft_strdup(*words);
 	free (tmp);
