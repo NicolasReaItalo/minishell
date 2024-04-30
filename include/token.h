@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:08:35 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/15 09:22:46 by nrea             ###   ########.fr       */
+/*   Updated: 2024/04/29 13:14:28 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct s_token
 	char			*content;
 	int				nb_files;
 	int				hidden;
+	int				param_expanded;
+	int				path_expanded;
 	struct s_token	*next;
 	struct s_token	*prev;
 }				t_token;

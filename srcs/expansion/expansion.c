@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/26 18:05:08 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/04/30 14:12:22 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	contains_ifs(t_token *token, t_shell *shell, char *str)
 }
 
 // Si le nb tokens est superieur a 2 avancer le pointeurs en fonction
-t_token	*advance_token(t_token *token, int *nb_token)
+/*t_token	*advance_token(t_token *token, int *nb_token)
 {
 	token = token->next;
 	*nb_token -= 2;
@@ -54,6 +54,21 @@ t_token	*advance_token(t_token *token, int *nb_token)
 		(*nb_token)--;
 	}
 	*nb_token = 1;
+	return (token);
+}*/
+
+t_token	*advance_token(t_token *token, int type)
+{
+	if (type == 1)
+	{
+		while (token && token->param_expanded)
+			token = token->next;
+	}
+	else if (type == 2)
+	{
+		while (token && token->path_expanded)
+			token = token->next;
+	}
 	return (token);
 }
 
@@ -65,31 +80,35 @@ int	is_only_whitespaces(char *str)
 			return (0);
 		str++;
 	}
-	return (1);	
+	return (1);
 }
 
-static int	expand_cmd(t_token *token, t_shell *shell, int *nb_token)
+static int	expand_param_cmd(t_token *token, t_shell *shell)
 {
-	*nb_token = 1;
 	expand_param(shell, token);
 	if (is_only_whitespaces(token->content))
 		return (2);
 	printf("[DEBUG] apres expansion[%s]\n", token->content);
+	return (0);
+}
+
+static int	expand_pathname_(t_token *token)
+{
+	token->path_expanded = 1;
 	if (ft_strchr(token->content, '*') && !pathname_in_quotes(token->content))
 	{
-		if (expand_pathname_cmd(token, nb_token))
+		if (expand_pathname_cmd(token))
 			return (1);
 	}
 	else
 	{
-//		printf("unquotting: %s\n", token->content);
 		unquote_content(token->content);
-//		printf("after unquotting: %s\n", token->content);
-	}	
-	token = advance_token(token, nb_token);
-	return (0);
-}
+	}
+//	token = advance_token(token, nb_token);
 
+	return (0);
+
+}
 // Cycle d'expansions pour le node de type exec fournit en argument
 // pour chaques token :
 //   parameter_expansion -> IFS -> pathname_expansion -> quote removal
@@ -97,39 +116,54 @@ static int	expand_cmd(t_token *token, t_shell *shell, int *nb_token)
 int	word_expand(t_node *node, t_shell *shell)
 {
 	t_token	*token;
-	int		nb_token;
+//	int		nb_token;
 	int		error;
 	t_token	*to_delete;
-	
+
 	if (!node)
 		return (4);
+	// Faire l'expansion des params ($VAR) et l'IFS de cmd
 	token = node->cmd;
 	while (token)
 	{
-		error = expand_cmd(token, shell, &nb_token);
-		if (error == 2)
+		error = expand_param_cmd(token, shell);
+		if (error == 2)//Si il ný a que des whitespaces
 		{
 			//supprimer le token
 			if (token->prev)
 			{
 				printf("[prev[%s]]\n", token->prev->content);
-				token->prev->next =token->next;					
+				token->prev->next =token->next;
 			}
-			
 			else
-			{
 				node->cmd = token->next;
-			}	
+			if (token->next)
+				token->next->prev = token->prev;
 			to_delete = token;
 			token = token->next;
-				ft_free_token(&to_delete);
-		}		
+			ft_free_token(&to_delete);
+		}
 //		if (expand_cmd(token, shell, &nb_token))
-		if (error == 1)
+		else if (error == 1)
 			return (1);
-		token = advance_token(token, &nb_token);
+		else
+			token = advance_token(token, 1);
 	}
-	printf("[DEBUG] node->cmdcontent = [%s]\n", node->cmd->content);
+	if (token)
+		printf ("Apres expansion des params de content : %s/n", token->content);
+	else
+		printf ("Sur le token vide\n");
+	// Faire l'expansion du pathname (*) et l'unquotting
+	token = node->cmd;
+	while (token)
+	{
+		error = expand_pathname_(token);
+		if (error)
+			return (1);
+		token = advance_token(token, 2);
+	}
+	// printf("[DEBUG] node->cmdcontent = [%s]\n", node->cmd->content);
+	// Faire l'expansion des redirections
 	token = node->redir;
 	while (token)
 	{
