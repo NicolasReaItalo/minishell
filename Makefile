@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+         #
+#    By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/04/15 09:30:31 by nrea             ###   ########.fr        #
+#    Updated: 2024/05/01 18:46:08 by joyeux           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,8 +59,10 @@ SRCS		=	$(SRC_PATH)minishell.c \
 				$(SRC_PATH)execution/exec_pipe.c\
 				$(SRC_PATH)execution/exec_utils.c\
 				$(SRC_PATH)expansion/expansion.c \
+				$(SRC_PATH)expansion/expansion_common_functions.c \
 				$(SRC_PATH)expansion/field_splitting.c \
 				$(SRC_PATH)expansion/param_expansion.c \
+				$(SRC_PATH)expansion/param_expansion_utils.c \
 				$(SRC_PATH)expansion/pathname_expansion.c\
 				$(SRC_PATH)expansion/redir_expansion.c\
 				$(SRC_PATH)expansion/redir_expansion_tools.c\

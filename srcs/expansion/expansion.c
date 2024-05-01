@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/01 13:36:26 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/01 21:09:44 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,20 +115,17 @@ static int	expand_pathname_(t_token *token)
 int	word_expand(t_node *node, t_shell *shell)
 {
 	t_token	*token;
-//	int		nb_token;
 	int		error;
 	t_token	*to_delete;
 
 	if (!node)
 		return (4);
-	// Faire l'expansion des params ($VAR) et l'IFS de cmd
 	token = node->cmd;
 	while (token)
 	{
 		error = expand_param_cmd(token, shell);
-		if (error == 2)//Si il ný a que des whitespaces
+		if (error == 2)
 		{
-			//supprimer le token
 			if (token->prev)
 			{
 				token->prev->next =token->next;
@@ -141,13 +138,11 @@ int	word_expand(t_node *node, t_shell *shell)
 			token = token->next;
 			ft_free_token(&to_delete);
 		}
-//		if (expand_cmd(token, shell, &nb_token))
 		else if (error == 1)
 			return (1);
 		else
 			token = advance_token(token, 1);
 	}
-	// Faire l'expansion du pathname (*) et l'unquotting
 	token = node->cmd;
 	while (token)
 	{
@@ -156,8 +151,6 @@ int	word_expand(t_node *node, t_shell *shell)
 			return (1);
 		token = advance_token(token, 2);
 	}
-	// printf("[DEBUG] node->cmdcontent = [%s]\n", node->cmd->content);
-	// Faire l'expansion des redirections
 	token = node->redir;
 	while (token)
 	{

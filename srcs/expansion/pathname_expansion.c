@@ -6,35 +6,11 @@
 /*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 23:17:25 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/05/01 18:57:15 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "word_expansion.h"
-
-int	match_pattern(char *pattern, char *str)
-{
-	if (only_stars(pattern) && *str == '\0')
-		return (1);
-	else if (*pattern == '\0' || *str == '\0')
-		return (0);
-	if (*pattern == '*')
-	{
-		if (*(pattern + 1) == '*')
-			return (match_pattern(pattern + 1, str));
-		else if (*(pattern + 1) == '\0')
-			return (1);
-		else if (*(pattern + 1) == *str)
-			return (match_pattern(pattern + 1, str)
-				|| match_pattern(pattern, str + 1));
-		else
-			return (match_pattern(pattern, str + 1));
-	}
-	else if (*pattern == *str)
-		return (match_pattern(pattern + 1, str + 1));
-	else
-		return (0);
-}
 
 int	count_valid_pathname(char *content, t_token *token)
 {

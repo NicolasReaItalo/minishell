@@ -3,41 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   field_splitting.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:40 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/01 11:07:25 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/01 19:02:45 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "word_expansion.h"
-
-// Create and add new tokens in a linked list
-// Add content from a tab of char*
-// Return 1 if error
-int	words_to_token(t_token *ptr, char **words, int i)
-{
-	t_token	*new;
-
-	words++;
-	while (*words)
-	{
-		new = malloc(sizeof(t_token));
-		if (!new)
-			return (1);
-		ft_memset(new, 0, sizeof(t_token));
-		if (i == 1)
-			new->param_expanded = 1;
-		else if (i == 2)
-			new->path_expanded = 1;
-		new->content = ft_strdup(*words);
-		new->next = ptr->next;
-		ptr->next = new;
-		ptr = ptr->next;
-		words++;
-	}
-	return (0);
-}
 
 int	get_last_word(char **words)
 {
