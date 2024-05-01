@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 14:12:22 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/01 10:56:41 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ static int	expand_param_cmd(t_token *token, t_shell *shell)
 	expand_param(shell, token);
 	if (is_only_whitespaces(token->content))
 		return (2);
-	printf("[DEBUG] apres expansion[%s]\n", token->content);
 	return (0);
 }
 
