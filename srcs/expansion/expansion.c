@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/01 10:57:57 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/01 13:36:26 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ int	word_expand(t_node *node, t_shell *shell)
 			//supprimer le token
 			if (token->prev)
 			{
-				printf("[prev[%s]]\n", token->prev->content);
 				token->prev->next =token->next;
 			}
 			else

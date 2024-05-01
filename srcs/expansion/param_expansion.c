@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/01 11:43:50 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/01 14:06:12 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
 		}
 		else if (*str == '$' && *(str + 1) == '?')
 			return (*str = '\0', *next = str + 2, ft_substr(str + 1, 0, 1));
-		else if (*str == '$' && is_valid_first_param_char(*(str + 1)))
+		else if (*str == '$' && (is_valid_first_param_char(*(str + 1))))
 		{
 			*str = '\0';
 			str++;
@@ -58,14 +58,20 @@ static char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
 			*next = str + len;
 			return (ft_substr(str, 0, len));
 		}
-		else if (*str == '$' && (*(str + 1) == '\'' || *(str + 1) == '\"' ))
+		else if (*str == '$' && (*(str + 1) == '\'' || *(str + 1) == '\"') )
 		{
 			*str = '\0';
 			str++;
 			*next = str;
 			return ( ft_strdup(str));
 		}
-
+		else if (*str == '$' && (ft_isdigit(*(str + 1)) || *(str + 1) == '*'))
+		{
+			*str = '\0';
+			str++;
+			*next = str + 1;
+			return (ft_substr(str, 0, 1));
+		}
 		str++;
 	}
 	return (NULL);
