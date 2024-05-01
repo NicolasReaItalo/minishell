@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/16 15:45:42 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/01 15:21:21 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,9 @@ int	bt_exit(t_token *cmd, t_node *node, t_shell *shell)
 	close(node->stdout);
 	if (!cmd)
 	{
+		status = ft_get_exit_status(&shell->shell_vars);
 		ft_free_shell(shell);
-		exit (0);
+		exit (status);
 	}
 	if (!is_valid_status(cmd->content))
 	{
