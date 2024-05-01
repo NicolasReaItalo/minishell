@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/01 14:06:12 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/01 14:54:04 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,25 @@ static int	is_valid_param_char(char c)
 static int	is_valid_first_param_char(char c)
 {
 	return (ft_isalpha(c) || c == '_');
+}
+
+static int	unimplemented_special_var (char c)
+{
+	if (ft_isdigit(c))
+		return (1);
+	if (c == '-')
+		return (1);
+	if (c == '*')
+		return (1);
+	if (c == '!')
+		return (1);
+	if (c == '$')
+		return (1);
+	if (c == '#')
+		return (1);
+	if (c == '@')
+		return (1);
+	return (0);
 }
 
 // Fonction qui prend en entree une chaine de caractere et renvoie
@@ -65,7 +84,7 @@ static char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
 			*next = str;
 			return ( ft_strdup(str));
 		}
-		else if (*str == '$' && (ft_isdigit(*(str + 1)) || *(str + 1) == '*'))
+		else if (*str == '$' && unimplemented_special_var(*(str + 1)))
 		{
 			*str = '\0';
 			str++;
