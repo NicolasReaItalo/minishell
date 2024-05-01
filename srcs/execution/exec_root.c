@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:31:47 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/15 13:37:44 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/01 16:02:06 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,10 @@ static int	ft_n_exec(t_node *tree_root, t_shell *shell)
 	int	exit_status;
 
 	exit_status = word_expand(tree_root, shell);
-	if (exit_status) // voir codes d'erreur pour quitter si pb malloc
+	if (exit_status)
 	{
 		ft_set_exit_status(exit_status, &shell->shell_vars);
-		return (1);
+		return (exit_status);
 	}
 	if (ft_is_builtin(tree_root))
 	{
