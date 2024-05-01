@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_expansion.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 21:53:14 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/05/01 11:11:37 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,18 @@
 # include "parse_execute.h"
 # include "env_variables.h"
 
+// Common expansion functions
+char	*find_next_param_expansion(char *str, char **next, int *in_quotes);
+void	free_words_tab(char ***words);
+
+// Expansion of parameters
+
+// Expansion of pathname
+
+// Redir expansion
+
+
+
 int		word_expand(t_node *node, t_shell *shell);
 
 //int		field_splitting(t_token *token, t_shell *shell);
@@ -26,7 +38,6 @@ int		words_to_token(t_token *ptr, char **words, int i);
 //int		field_splitting(t_token *token, t_shell *shell, char *new);
 int		field_splitting(t_token *token, char *start, char *end);
 int		contains_ifs(t_token *token, t_shell *shell, char *str);
-void	free_words_tab(char ***words);
 int		expand_pathname_cmd(t_token *token);
 //int 	expand_pathname_redir(t_token *token);
 int		expand_redir(t_token *token, t_shell *shell);

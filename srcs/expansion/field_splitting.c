@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   field_splitting.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:40 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 21:52:48 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/05/01 11:07:25 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,6 @@ int	words_to_token(t_token *ptr, char **words, int i)
 		words++;
 	}
 	return (0);
-}
-
-void	free_words_tab(char ***words)
-{
-	char	**original_words;
-
-	original_words = *words;
-	while (**words)
-	{
-		free(**words);
-		**words = NULL;
-		(*words)++;
-	}
-	free(original_words);
-	original_words = NULL;
 }
 
 int	get_last_word(char **words)
