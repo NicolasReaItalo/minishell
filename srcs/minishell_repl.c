@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 14:39:35 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/23 10:47:43 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/01 15:13:55 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	repl(t_shell *shell)
 		prompt(&line, shell);
 		sig_set_status(shell);
 		if (!line)
-			exit_gracefully(shell, 0);
+			exit_gracefully(shell, ft_get_exit_status(&shell->shell_vars));
 		if (ft_strlen(line))
 		{
 			add_history(line);

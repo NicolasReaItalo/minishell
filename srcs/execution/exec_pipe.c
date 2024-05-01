@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:13:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/15 13:36:49 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/01 16:05:20 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	ft_exec_left(t_node *node, int pipe_lvl, t_shell *s)
 	else if (node->left->type == N_EXEC)
 	{
 		exit_status = word_expand(node->left, s);
-		if (exit_status) // voir codes d'erreur pour quitter si pb malloc
+		if (exit_status)
 		{
 			ft_set_exit_status(exit_status, &s->shell_vars);
 			exit (exit_status);
@@ -44,7 +44,7 @@ static void	ft_exec_right(t_node *node, int pipe_lvl, t_shell *s)
 	int	exit_status;
 
 	exit_status = word_expand(node->right, s);
-	if (exit_status) // voir codes d'erreur pour quitter si pb malloc
+	if (exit_status)
 	{
 		ft_set_exit_status(exit_status, &s->shell_vars);
 		exit (exit_status);

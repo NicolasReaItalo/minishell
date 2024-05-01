@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/24 15:19:47 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/01 15:32:56 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,5 @@ int	main(int argc, char **argv, char **envp)
 		}
 	}
 	repl(&shell);
-	exit_gracefully(&shell, 0);
+	exit_gracefully(&shell, ft_get_exit_status(&shell.shell_vars));
 }
