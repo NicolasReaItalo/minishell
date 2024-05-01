@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/01 10:56:41 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/01 10:57:57 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,10 +148,6 @@ int	word_expand(t_node *node, t_shell *shell)
 		else
 			token = advance_token(token, 1);
 	}
-	if (token)
-		printf ("Apres expansion des params de content : %s/n", token->content);
-	else
-		printf ("Sur le token vide\n");
 	// Faire l'expansion du pathname (*) et l'unquotting
 	token = node->cmd;
 	while (token)
