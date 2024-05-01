@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/30 16:11:24 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/01 11:43:50 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 static int	is_valid_param_char(char c)
 {
 	return (ft_isalpha(c) || ft_isdigit(c) || c == '_');
+}
+
+static int	is_valid_first_param_char(char c)
+{
+	return (ft_isalpha(c) || c == '_');
 }
 
 // Fonction qui prend en entree une chaine de caractere et renvoie
@@ -44,7 +49,7 @@ static char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
 		}
 		else if (*str == '$' && *(str + 1) == '?')
 			return (*str = '\0', *next = str + 2, ft_substr(str + 1, 0, 1));
-		else if (*str == '$' && is_valid_param_char(*(str + 1)))
+		else if (*str == '$' && is_valid_first_param_char(*(str + 1)))
 		{
 			*str = '\0';
 			str++;
@@ -53,6 +58,14 @@ static char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
 			*next = str + len;
 			return (ft_substr(str, 0, len));
 		}
+		else if (*str == '$' && (*(str + 1) == '\'' || *(str + 1) == '\"' ))
+		{
+			*str = '\0';
+			str++;
+			*next = str;
+			return ( ft_strdup(str));
+		}
+
 		str++;
 	}
 	return (NULL);
