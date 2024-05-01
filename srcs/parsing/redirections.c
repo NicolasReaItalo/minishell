@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/24 13:55:04 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/01 16:27:35 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	manage_heredoc(t_token	*tok, t_token **stack, t_shell *shell)
 	t_token	*prev_tok;
 
 	prev_tok = tok->prev;
-	unquote_content(prev_tok->content);// securite a ajouter
+	unquote_content(prev_tok->content);
 	ret = get_hd(tok, prev_tok->content, shell, stack);
 	if (set_interactive_signals() == -1)
 		return (1);
