@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/01 21:09:44 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/05/02 13:30:27 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	only_stars(char *pattern)
 	return (1);
 }
 
+/*
 int	contains_ifs(t_token *token, t_shell *shell, char *str)
 {
 	char	*ifs;
@@ -41,7 +42,7 @@ int	contains_ifs(t_token *token, t_shell *shell, char *str)
 		str++;
 	}
 	return (0);
-}
+}*/
 
 // Si le nb tokens est superieur a 2 avancer le pointeurs en fonction
 /*t_token	*advance_token(t_token *token, int *nb_token)
