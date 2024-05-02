@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 10:26:04 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/16 18:17:02 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/02 15:29:12 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,30 @@ static int	msg_invalid_id(char *content)
 /*Displays the env var each var preceded by a prefix*/
 int	ft_display_vars(char *prefix, t_shell *shell)
 {
-	char	**vars;
+	t_evar	*var;
 	int		i;
 
-	vars = NULL;
-	if (ft_push_env_vars(shell->env_vars, &vars) == 0)
-	{
-		write(2, "An error has occured during the variables retrieval\n", 53);
-		return (1);
-	}
+	var = NULL;
 	i = 0;
-	while (vars[i])
+	while (i < 58)
 	{
-		if (prefix)
+		var = shell->env_vars[i];
+		while (var)
+		{
 			write(1, prefix, ft_strlen(prefix));
-		write(1, vars[i], ft_strlen(vars[i]));
-		write(1, "\n", 1);
+			write(1, " ", 1);
+			write(1, var->key, ft_strlen(var->key));
+			if (var->value)
+			{
+				write(1, "=\"", 2);
+				write(1, var->value, ft_strlen(var->value));
+				write(1, "\"", 1);
+			}
+			write(1, "\n", 1);
+			var = var->next;
+		}
 		i++;
 	}
-	ft_free_splitted(vars);
 	return (0);
 }
 
@@ -78,7 +83,7 @@ static int	set_append(char *content, char *sep, t_shell *shell)
 	sep[0] = '\0';
 	val = sep + 2;
 	key = content;
-	if (!ft_is_valid_key(key) || ft_isshell_var(key))
+	if (!ft_is_valid_key(key) || !ft_strcmp(key, "?"))
 		return (msg_invalid_id(or_content));
 	free(or_content);
 	if (ft_append_var(key, val, shell->env_vars, &shell->shell_vars) != 1)
@@ -108,7 +113,7 @@ static int	set(char *content, char *sep, t_shell *shell)
 	}
 	else
 		val = NULL;
-	if (!ft_is_valid_key(key) || ft_isshell_var(key))
+	if (!ft_is_valid_key(key) || !ft_strcmp(key, "?"))
 		return (msg_invalid_id(or_content));
 	free(or_content);
 	if (ft_set_var(key, val, shell->env_vars, &shell->shell_vars) != 1)
