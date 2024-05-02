@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:33:31 by joyeux            #+#    #+#             */
-/*   Updated: 2024/05/01 19:14:57 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/05/02 11:40:23 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
 	int		len;
 
 	len = 0;
-	*in_quotes = 0;
 	while (*str)
 	{
 		if (*str == '\"')

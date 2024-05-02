@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/01 23:34:21 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/05/02 11:57:12 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	expand_param(t_shell *shell, t_token *token)
 	char	*ifs;
 	int		index;
 
+	in_quotes = 0;
 	index = 0;
 	if (!token->content)
 		return (2);
@@ -108,6 +109,7 @@ char	*expand_param_redir(char *str, t_shell *shell)
 
 	if (!str)
 		return (NULL);
+	in_quotes = 0;
 	next = NULL;
 	output = ft_strdup(str);
 	if (!output)
