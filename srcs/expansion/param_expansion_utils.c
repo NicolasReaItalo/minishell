@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:33:31 by joyeux            #+#    #+#             */
-/*   Updated: 2024/05/02 15:19:38 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/02 23:20:06 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	is_valid_first_param_char(char c)
 	return (ft_isalpha(c) || c == '_');
 }
 
-static int	unimplemented_special_var (char c)
+static int	unimplemented_special_var(char c)
 {
 	if (ft_isdigit(c))
 		return (1);
@@ -48,7 +48,6 @@ static char	*find_next_param_exp_oper(char *str, char **next, int *in_quotes)
 
 }
 */
-
 
 // Fonction qui prend en entree une chaine de caractere et renvoie
 // une chaine ayant les criteres d'une key
@@ -80,17 +79,17 @@ char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
 		{
 			*str = '\0';
 			str++;
-			while ( *(str + len) && is_valid_param_char(*(str + len)))
+			while (*(str + len) && is_valid_param_char(*(str + len)))
 				len++;
 			*next = str + len;
 			return (ft_substr(str, 0, len));
 		}
-		else if (*str == '$' && (*(str + 1) == '\'' || *(str + 1) == '\"') )
+		else if (*str == '$' && (*(str + 1) == '\'' || *(str + 1) == '\"'))
 		{
 			*str = '\0';
 			str++;
 			*next = str;
-			return ( ft_strdup(str));
+			return (ft_strdup(str));
 		}
 		else if (*str == '$' && unimplemented_special_var(*(str + 1)))
 		{

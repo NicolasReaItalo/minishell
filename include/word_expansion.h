@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_expansion.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/02 16:05:43 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/02 23:15:54 by joyeux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_expvar
 	int		index;
 	char	*next;
 	int		in_quotes;
+	char	*new;
 }				t_expvar;
 
 // Common expansion functions
@@ -35,6 +36,8 @@ void	unquote_content(char *content);
 int		words_to_token(t_token *ptr, char **words, int i);
 
 // Expansion of parameters
+int	expanse_param(t_shell *shell, t_token *token, char *next, t_expvar *vars);
+int	expanse_param_redir(t_expvar *vars, t_shell *shell, char **output, char **next);
 
 // Expansion of pathname
 

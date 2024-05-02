@@ -6,7 +6,7 @@
 #    By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/05/01 18:46:08 by joyeux           ###   ########.fr        #
+#    Updated: 2024/05/02 23:16:48 by joyeux           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,7 @@ SRCS		=	$(SRC_PATH)minishell.c \
 				$(SRC_PATH)expansion/field_splitting.c \
 				$(SRC_PATH)expansion/param_expansion.c \
 				$(SRC_PATH)expansion/param_expansion_utils.c \
+				$(SRC_PATH)expansion/param_expansion_operations.c \
 				$(SRC_PATH)expansion/pathname_expansion.c\
 				$(SRC_PATH)expansion/redir_expansion.c\
 				$(SRC_PATH)expansion/redir_expansion_tools.c\
