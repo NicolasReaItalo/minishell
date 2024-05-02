@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/02 16:50:11 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/02 18:43:06 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int	expanse_param(t_shell *shell, t_token *token, char *next, t_expvar *vars)
 	int		i;
 	char	*new;
 
-	new = ft_strdup(ft_get_var_value(vars->key, shell->env_vars, shell->shell_vars));
+	new = ft_strdup(ft_get_var_value(vars->key, shell->env_vars,
+				shell->shell_vars));
 	if (!new)
 		return (1);
 	i = 0;
@@ -70,32 +71,41 @@ int	expanse_param(t_shell *shell, t_token *token, char *next, t_expvar *vars)
 	return (free(new), 0);
 }
 
+static int	init_vars_p(t_expvar **vars, t_token *token, t_shell *shell)
+{
+	*vars = malloc(sizeof(t_expvar));
+	if (!*vars)
+		return (1);
+	(*vars)->in_quotes = 0;
+	(*vars)->index = 0;
+	if (!token->content)
+		return (free(*vars), 2);
+	(*vars)->ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
+	if (!(*vars)->ifs)
+		return (free(*vars), 1);
+	return (0);
+}
+
 int	expand_param(t_shell *shell, t_token *token)
 {
 	char		*next;
 	t_expvar	*vars;
+	int			error;
 
-	vars = malloc(sizeof(t_expvar));
-	if (!vars)
-		return (1);
-	vars->in_quotes = 0;
-	vars->index = 0;
-	if (!token->content)
-		return (2);
-	vars->ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
-	if (!(vars->ifs))
-		return (1);
+	error = init_vars_p(&vars, token, shell);
+	if (error)
+		return (error);
 	next = NULL;
 	token->param_expanded = 1;
-	vars->key = find_next_param_expansion(token->content, &next
-		, &(vars->in_quotes));
+	vars->key = find_next_param_expansion(token->content, &next,
+			&(vars->in_quotes));
 	while (vars->key)
 	{
 		if (expanse_param(shell, token, next, vars))
 			return (1);
 		if (ft_strlen(token->content))
 			vars->key = find_next_param_expansion(token->content
-				+ vars->index, &next, &(vars->in_quotes));
+					+ vars->index, &next, &(vars->in_quotes));
 	}
 	if (ft_strchr(token->content, -1))
 		if (field_splitting(token, token->content, next))
@@ -105,9 +115,9 @@ int	expand_param(t_shell *shell, t_token *token)
 
 char	*expand_param_redir(char *str, t_shell *shell)
 {
-	char	*new;
-	char	*next;
-	char	*output;
+	char		*new;
+	char		*next;
+	char		*output;
 	t_expvar	*vars;
 
 	if (!str)
@@ -130,7 +140,8 @@ char	*expand_param_redir(char *str, t_shell *shell)
 		output = ft_concat_3str(output, new, next);
 		if (!output)
 			return (free(vars), NULL);
-		vars->key = find_next_param_expansion(output, &next, &(vars->in_quotes));
+		vars->key = find_next_param_expansion(output, &next,
+				&(vars->in_quotes));
 	}
 	return (free(vars), output);
 }
