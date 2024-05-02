@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/02 11:57:12 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/02 13:38:42 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ static void	case_empty_tab(t_token *token, char *next)
 	token->content = p;
 }
 
-int	expanse_param(t_shell *shell, t_token *token, char **key, char *ifs, int *index, char *next)
+int	expanse_param(t_shell *shell, t_token *token, char **key, char *ifs, int *index, char *next, int in_quotes)
 {
 	int		i;
 	char	*new;
 
 	new = ft_get_var_value(*key, shell->env_vars, shell->shell_vars);
 	i = 0;
-	while (new[i])
+	while (new[i] && !in_quotes && ft_strcmp(*key, "IFS") != 0)
 	{
 		if (ft_strchr(ifs, new[i]))
 			new[i] = -1;
@@ -88,7 +88,7 @@ int	expand_param(t_shell *shell, t_token *token)
 	key = find_next_param_expansion(token->content, &next, &in_quotes);
 	while (key)
 	{
-		if (expanse_param(shell, token, &key, ifs, &index, next))
+		if (expanse_param(shell, token, &key, ifs, &index, next, in_quotes))
 			return (1);
 		if (ft_strlen(token->content))
 			key = find_next_param_expansion(token->content + index, &next, &in_quotes);
