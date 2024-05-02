@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_expansion.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/01 19:13:17 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/05/02 16:05:43 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@
 # include "libft.h"
 # include "parse_execute.h"
 # include "env_variables.h"
+
+typedef struct s_expvar
+{
+	char	*key;
+	char	*ifs;
+	int		index;
+	char	*next;
+	int		in_quotes;
+}				t_expvar;
 
 // Common expansion functions
 char	*find_next_param_expansion(char *str, char **next, int *in_quotes);

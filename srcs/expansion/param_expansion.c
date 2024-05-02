@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/02 13:38:42 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/02 16:50:11 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,55 +43,59 @@ static void	case_empty_tab(t_token *token, char *next)
 	token->content = p;
 }
 
-int	expanse_param(t_shell *shell, t_token *token, char **key, char *ifs, int *index, char *next, int in_quotes)
+int	expanse_param(t_shell *shell, t_token *token, char *next, t_expvar *vars)
 {
 	int		i;
 	char	*new;
 
-	new = ft_get_var_value(*key, shell->env_vars, shell->shell_vars);
+	new = ft_strdup(ft_get_var_value(vars->key, shell->env_vars, shell->shell_vars));
+	if (!new)
+		return (1);
 	i = 0;
-	while (new[i] && !in_quotes && ft_strcmp(*key, "IFS") != 0)
+	while (new[i] && !vars->in_quotes && ft_strcmp(vars->key, "IFS") != 0)
 	{
-		if (ft_strchr(ifs, new[i]))
+		if (ft_strchr(vars->ifs, new[i]))
 			new[i] = -1;
 		i++;
 	}
-	*index = ft_strlen(token->content) + ft_strlen(new);
+	vars->index = ft_strlen(token->content) + ft_strlen(new);
 	if (new[0])
 		token->content = ft_concat_3str(token->content, new, next);
 	else
 		case_empty_tab(token, next);
 	if (!token->content)
-		return (1);
-	free (*key);
-	*key = NULL;
-	return (0);
+		return (free(new), 1);
+	free (vars->key);
+	vars->key = NULL;
+	return (free(new), 0);
 }
 
 int	expand_param(t_shell *shell, t_token *token)
 {
-	char	*key;
-	int		in_quotes;
-	char	*next;
-	char	*ifs;
-	int		index;
+	char		*next;
+	t_expvar	*vars;
 
-	in_quotes = 0;
-	index = 0;
+	vars = malloc(sizeof(t_expvar));
+	if (!vars)
+		return (1);
+	vars->in_quotes = 0;
+	vars->index = 0;
 	if (!token->content)
 		return (2);
-	ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
-	if (!ifs)
+	vars->ifs = ft_get_var_value("IFS", shell->env_vars, shell->shell_vars);
+	if (!(vars->ifs))
 		return (1);
 	next = NULL;
 	token->param_expanded = 1;
-	key = find_next_param_expansion(token->content, &next, &in_quotes);
-	while (key)
+	vars->key = find_next_param_expansion(token->content, &next
+		, &(vars->in_quotes));
+	while (vars->key)
 	{
-		if (expanse_param(shell, token, &key, ifs, &index, next, in_quotes))
+		if (expanse_param(shell, token, next, vars))
 			return (1);
 		if (ft_strlen(token->content))
-			key = find_next_param_expansion(token->content + index, &next, &in_quotes);
+			vars->key = find_next_param_expansion(token->content
+				+ vars->index, &next, &(vars->in_quotes));
 	}
 	if (ft_strchr(token->content, -1))
 		if (field_splitting(token, token->content, next))
@@ -101,30 +105,32 @@ int	expand_param(t_shell *shell, t_token *token)
 
 char	*expand_param_redir(char *str, t_shell *shell)
 {
-	char	*key;
 	char	*new;
 	char	*next;
 	char	*output;
-	int		in_quotes;
+	t_expvar	*vars;
 
 	if (!str)
 		return (NULL);
-	in_quotes = 0;
+	vars = malloc(sizeof(t_expvar));
+	if (!vars)
+		return (NULL);
+	vars->in_quotes = 0;
 	next = NULL;
 	output = ft_strdup(str);
 	if (!output)
-		return (NULL);
-	key = find_next_param_expansion(output, &next, &in_quotes);
-	if (!key)
+		return (free(vars), NULL);
+	vars->key = find_next_param_expansion(output, &next, &(vars->in_quotes));
+	if (!(vars->key))
 		return (output);
-	while (key)
+	while (vars->key)
 	{
-		new = ft_get_var_value(key, shell->env_vars, shell->shell_vars);
-		free (key);
+		new = ft_get_var_value(vars->key, shell->env_vars, shell->shell_vars);
+		free (vars->key);
 		output = ft_concat_3str(output, new, next);
 		if (!output)
-			return (NULL);
-		key = find_next_param_expansion(output, &next, &in_quotes);
+			return (free(vars), NULL);
+		vars->key = find_next_param_expansion(output, &next, &(vars->in_quotes));
 	}
-	return (output);
+	return (free(vars), output);
 }
