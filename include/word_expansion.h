@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/03 14:30:13 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/03 16:03:10 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int		words_to_token(t_token *ptr, char **words, int i);
 // Expansion of parameters
 int	expanse_param(t_shell *shell, t_token *token, char *next, t_expvar *vars);
 int	expanse_param_redir(t_expvar *vars, t_shell *shell, char **output, char **next);
+char	*dollar_sign(char **str, char **next, int *len);
 
 // Expansion of pathname
 int		expand_pathname_cmd(t_token *token);

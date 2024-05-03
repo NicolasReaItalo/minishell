@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/02 23:13:43 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/05/03 16:08:19 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,47 @@ int	expand_param(t_shell *shell, t_token *token)
 		if (field_splitting(token, token->content, next))
 			return (1);
 	return (0);
+}
+
+static char	*quotes_gestion(char *str, int *in_quotes)
+{
+	while (*str == '\"')
+	{
+		if (!*in_quotes)
+			*in_quotes = 1;
+		else
+			*in_quotes = 0;
+		str++;
+	}
+	if (!*in_quotes && *str == '\'')
+	{
+		str++;
+		while (*str && *str != '\'')
+			str++;
+	}
+	return (str);
+}
+
+// Fonction qui prend en entree une chaine de caractere et renvoie
+// une chaine ayant les criteres d'une key
+char	*find_next_param_expansion(char *str, char **next, int *in_quotes)
+{
+	int		len;
+	char	*ret;
+
+	len = 0;
+	while (*str)
+	{
+		str = quotes_gestion(str, in_quotes);
+		if (*str == '$')
+		{
+			ret = dollar_sign(&str, next, &len);
+			if (ret)
+				return (ret);
+		}
+		str++;
+	}
+	return (NULL);
 }
 
 char	*expand_param_redir(char *str, t_shell *shell)
