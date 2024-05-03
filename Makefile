@@ -6,7 +6,7 @@
 #    By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/05/03 14:24:15 by tjoyeux          ###   ########.fr        #
+#    Updated: 2024/05/03 16:13:53 by tjoyeux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ SRCS		=	$(SRC_PATH)minishell.c \
 				$(SRC_PATH)expansion/param_expansion_utils.c \
 				$(SRC_PATH)expansion/param_expansion_operations.c \
 				$(SRC_PATH)expansion/pathname_expansion.c\
+				$(SRC_PATH)expansion/pathname_expansion_utils.c\
 				$(SRC_PATH)expansion/redir_expansion.c\
 				$(SRC_PATH)expansion/redir_expansion_tools.c\
 				$(SRC_PATH)expansion/sorting_operations.c\
