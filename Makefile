@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+         #
+#    By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/05/02 23:16:48 by joyeux           ###   ########.fr        #
+#    Updated: 2024/05/03 14:24:15 by tjoyeux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,6 +67,7 @@ SRCS		=	$(SRC_PATH)minishell.c \
 				$(SRC_PATH)expansion/pathname_expansion.c\
 				$(SRC_PATH)expansion/redir_expansion.c\
 				$(SRC_PATH)expansion/redir_expansion_tools.c\
+				$(SRC_PATH)expansion/sorting_operations.c\
 				$(SRC_PATH)expansion/unquotting.c\
 				$(SRC_PATH)builtins/builtins.c\
 				$(SRC_PATH)builtins/builtins_utils.c\

@@ -6,13 +6,13 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/03 14:06:10 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/03 14:22:53 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "word_expansion.h"
 
-int	count_valid_pathname(char *content, t_token *token)
+static int	count_valid_pathname(char *content, t_token *token)
 {
 	DIR				*dir;
 	struct dirent	*file;
@@ -59,7 +59,7 @@ static int	find_valid_files(t_token *token, struct dirent *file
 	return (0);
 }
 
-char	**create_pathname_tab(t_token *token)
+static char	**create_pathname_tab(t_token *token)
 {
 	DIR				*dir;
 	struct dirent	*file;
@@ -87,64 +87,12 @@ char	**create_pathname_tab(t_token *token)
 	return (words);
 }
 
-int	ft_strcmp_no_case(char *s1, char *s2)
-{
-	char	*str1;
-	char	*str2;
-	int		i;
-
-	str1 = ft_strdup(s1);
-	str2 = ft_strdup(s2);
-	i = 0;
-	while (str1[i])
-	{
-		str1[i] = ft_tolower(str1[i]);
-		i++;
-	}
-	i = 0;
-	while (str2[i])
-	{
-		str2[i] = ft_tolower(str2[i]);
-		i++;
-	}
-	i = ft_strcmp(str1, str2);
-	return (free(str1), free(str2), i);
-}
-
-//Ajouter *** et tolower()
-char	**sort_pathname_tab(char **tab)
-{
-	char *temp;
-	int	sorted;
-	int		i;
-
-
-	sorted = 0;
-	while(!sorted)
-	{
-		i = 0;
-		sorted = 1;
-		while (tab[i+1])
-		{
-			if( ft_strcmp_no_case(tab[i], tab[i+1]) > 0)
-			{
-				temp = tab[i];
-				tab[i] = tab[i + 1];
-				tab[i + 1] = temp;
-				sorted = 0;
-			}
-			i++;
-		}
-	}
-	return(tab);
-}
-
 int	expand_pathname_cmd(t_token *token)
 {
 	char	**words;
 	char	*tmp;
 	t_token	*ptr;
-	
+
 	token->path_expanded = 1;
 	if (ft_strchr(token->content, '*') && !pathname_in_quotes(token->content))
 	{
@@ -193,4 +141,5 @@ int	main(int argc, char **argv)
 	show_directory(argv[1]);
 	return (0);
 }*/
-// gcc -g3 srcs/expansion/pathname_expansion.c -I./include -I./libft -o pathname_expansion
+// gcc -g3 srcs/expansion/pathname_expansion.c -I./include -I./libft -o 
+// pathname_expansion

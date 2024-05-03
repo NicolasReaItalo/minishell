@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:10:58 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/02 23:04:58 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/05/03 14:33:03 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,4 +136,5 @@ int	main(int argc, char **argv, char **envp)
 	token = new_token(argv[1], ft_strlen(argv[1]));
 	expand_redir(token, &shell);
 }*/
-// gcc srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c -I./include/ -I./libft/ -L./libft/ -lft -o redir_expansion
+// gcc srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c 
+//-I./include/ -I./libft/ -L./libft/ -lft -o redir_expansion

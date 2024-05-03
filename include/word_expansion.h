@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/03 14:04:13 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/03 14:30:13 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	expanse_param_redir(t_expvar *vars, t_shell *shell, char **output, char **ne
 
 // Expansion of pathname
 int		expand_pathname_cmd(t_token *token);
+char	**sort_pathname_tab(char **tab);
 //int	expand_pathname_(t_token *token);
 
 // Redir expansion
@@ -57,7 +58,7 @@ int		field_splitting(t_token *token, char *start, char *end);
 int		contains_ifs(t_token *token, t_shell *shell, char *str);
 //int 	expand_pathname_redir(t_token *token);
 int		expand_redir(t_token *token, t_shell *shell);
-int		count_valid_pathname(char *content, t_token *token);
+//int		count_valid_pathname(char *content, t_token *token);
 //int		only_stars(char *pattern);
 //char	*find_next_param_expansion(char *str, char **next);
 //int		ambiguous_redirect(char *content);
