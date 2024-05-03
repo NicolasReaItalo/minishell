@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/03 16:08:19 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/03 17:24:04 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ int	expand_param(t_shell *shell, t_token *token)
 	}
 	if (ft_strchr(token->content, -1))
 		if (field_splitting(token, token->content, next))
-			return (1);
+			return (free(vars), 1);
+	free(vars);
 	return (0);
 }
 

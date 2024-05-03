@@ -1,0 +1,571 @@
+#!/bin/bash
+# Reset
+Color_Off='\033[0m'       # Text Reset
+
+# # Regular Colors
+Black='\033[0;30m'        # Black
+Red='\033[0;31m'          # Red
+Green='\033[0;32m'        # Green
+Yellow='\033[0;33m'       # Yellow
+Blue='\033[0;34m'         # Blue
+Purple='\033[0;35m'       # Purple
+Cyan='\033[0;36m'         # Cyan
+White='\033[0;37m'        # White
+
+# Bold
+BBlack='\033[1;30m'       # Black
+BRed='\033[1;31m'         # Red
+BGreen='\033[1;32m'       # Green
+BYellow='\033[1;33m'      # Yellow
+BBlue='\033[1;34m'        # Blue
+BPurple='\033[1;35m'      # Purple
+BCyan='\033[1;36m'        # Cyan
+BWhite='\033[1;37m'       # White
+
+
+PATH_TO_MS="../minishell"
+test_nb=0
+
+
+
+TEST()
+{
+test_nb=$((test_nb + 1))
+echo -e "($test_nb) ${BPurple}Testing [${Yellow}$CMD${BPurple}] : ${Color_Off}"
+touch output
+/usr/bin/echo -en  "$CMD" | ../minishell  &>tmp
+cat tmp| grep -av  minishell >output
+sed -i '$d' output
+
+/usr/bin/echo -en  "$CMD" |  ../minishell &>/dev/null
+OUTPUT_STATUS=$?
+echo -e $VALID_OUTPUT> valid_output
+
+echo -n "	compare outputs:	"
+diff -q output valid_output 1>/dev/null 2>/dev/null
+diff_r=$?
+if [ $diff_r -eq 0 ]
+then
+	echo -e "${BGreen}[PASSED]${Color_Off}"
+else
+	echo -e "${BRed}[FAILED]${Color_Off}"
+fi
+
+echo -n "	compare exit status:	"
+if [ $OUTPUT_STATUS -eq $VALID_STATUS ]
+	then
+		echo -e "${BGreen}[PASSED]${Color_Off}"
+	else
+		echo -e "${BRed}[FAILED]${Color_Off}"
+	fi
+
+echo -en ${Color_Off}
+rm tmp
+rm output
+rm valid_output
+}
+
+
+
+echo -e "\n ${BBlue}
+###################################################
+#                                                 #
+#                 TESTS MINISHELL                 #
+#                                                 #
+###################################################"
+echo -e ${Color_Off}
+
+
+
+CMD=">"
+VALID_OUTPUT="syntax error near unexpected token \`>'"
+VALID_STATUS=2
+TEST
+
+
+CMD=">>"
+VALID_OUTPUT="syntax error near unexpected token \`>>'"
+VALID_STATUS=2
+TEST
+
+
+CMD=">>>"
+VALID_OUTPUT="syntax error near unexpected token \`>'"
+VALID_STATUS=2
+TEST
+
+
+CMD=">> >"
+VALID_OUTPUT="syntax error near unexpected token \`>'"
+VALID_STATUS=2
+TEST
+
+CMD=">> >>"
+VALID_OUTPUT="syntax error near unexpected token \`>>'"
+VALID_STATUS=2
+TEST
+
+
+CMD="> >>"
+VALID_OUTPUT="syntax error near unexpected token \`>>'"
+VALID_STATUS=2
+TEST
+
+CMD=">>>>>>>>>>>>>>>>>>>>"
+VALID_OUTPUT="syntax error near unexpected token \`>>'"
+VALID_STATUS=2
+TEST
+
+CMD="<"
+VALID_OUTPUT="syntax error near unexpected token \`<'"
+VALID_STATUS=2
+TEST
+
+
+CMD="<<"
+VALID_OUTPUT="syntax error near unexpected token \`<<'"
+VALID_STATUS=2
+TEST
+
+
+CMD="<< <"
+VALID_OUTPUT="syntax error near unexpected token \`<'"
+VALID_STATUS=2
+TEST
+
+CMD="<< <<"
+VALID_OUTPUT="syntax error near unexpected token \`<<'"
+VALID_STATUS=2
+TEST
+
+CMD="<>"
+VALID_OUTPUT="syntax error near unexpected token \`>'"
+VALID_STATUS=2
+TEST
+
+CMD='<<<>>>'
+VALID_OUTPUT="syntax error near unexpected token \`<'"
+VALID_STATUS=2
+TEST
+
+CMD="<<<<<<<<<<<<<<<<<<<<<<<"
+VALID_OUTPUT="syntax error near unexpected token \`<<'"
+VALID_STATUS=2
+TEST
+
+CMD="|"
+VALID_OUTPUT="syntax error near unexpected token \`|'"
+VALID_STATUS=2
+TEST
+
+CMD="|  |"
+VALID_OUTPUT="syntax error near unexpected token \`|'"
+VALID_STATUS=2
+TEST
+
+CMD="|||"
+VALID_OUTPUT="syntax error near unexpected token \`||'"
+VALID_STATUS=2
+TEST
+
+CMD="&"
+VALID_OUTPUT="syntax error near unexpected token \`&'"
+VALID_STATUS=2
+TEST
+
+CMD="&&"
+VALID_OUTPUT="syntax error near unexpected token \`&&'"
+VALID_STATUS=2
+TEST
+
+CMD="&&&"
+VALID_OUTPUT="syntax error near unexpected token \`&&'"
+VALID_STATUS=2
+TEST
+
+CMD="||"
+VALID_OUTPUT="syntax error near unexpected token \`||'"
+VALID_STATUS=2
+TEST
+
+CMD="|||"
+VALID_OUTPUT="syntax error near unexpected token \`||'"
+VALID_STATUS=2
+TEST
+
+CMD="||||"
+VALID_OUTPUT="syntax error near unexpected token \`||'"
+VALID_STATUS=2
+TEST
+
+CMD=">|"
+VALID_OUTPUT="syntax error near unexpected token \`|'"
+VALID_STATUS=2
+TEST
+
+CMD=">||"
+VALID_OUTPUT="syntax error near unexpected token \`||'"
+VALID_STATUS=2
+TEST
+
+CMD=">&&"
+VALID_OUTPUT="syntax error near unexpected token \`&&'"
+VALID_STATUS=2
+TEST
+
+CMD="|>"
+VALID_OUTPUT="syntax error near unexpected token \`|'"
+VALID_STATUS=2
+TEST
+
+CMD="||>"
+VALID_OUTPUT="syntax error near unexpected token \`||'"
+VALID_STATUS=2
+TEST
+
+
+
+CMD="&&>"
+VALID_OUTPUT="syntax error near unexpected token \`&&'"
+VALID_STATUS=2
+TEST
+
+CMD="|<"
+VALID_OUTPUT="syntax error near unexpected token \`|'"
+VALID_STATUS=2
+TEST
+
+CMD="||<"
+VALID_OUTPUT="syntax error near unexpected token \`||'"
+VALID_STATUS=2
+TEST
+
+CMD="&&<"
+VALID_OUTPUT="syntax error near unexpected token \`&&'"
+VALID_STATUS=2
+TEST
+
+CMD="|>>"
+VALID_OUTPUT="syntax error near unexpected token \`|'"
+VALID_STATUS=2
+TEST
+
+CMD="||>>"
+VALID_OUTPUT="syntax error near unexpected token \`||'"
+VALID_STATUS=2
+TEST
+
+CMD=">>"
+VALID_OUTPUT="syntax error near unexpected token \`>>'"
+VALID_STATUS=2
+TEST
+
+CMD="     "
+VALID_OUTPUT="tokenisation error: Empty string"
+VALID_STATUS=2
+TEST
+
+CMD="("
+VALID_OUTPUT="syntax error : brackets unclosed"
+VALID_STATUS=2
+TEST
+
+CMD=")"
+VALID_OUTPUT="syntax error near unexpected token \`)'"
+VALID_STATUS=2
+TEST
+
+CMD="(("
+VALID_OUTPUT="syntax error near unexpected token \`('"
+VALID_STATUS=2
+TEST
+
+CMD="((("
+VALID_OUTPUT="syntax error near unexpected token \`('"
+VALID_STATUS=2
+TEST
+
+CMD="()"
+VALID_OUTPUT="syntax error near unexpected token \`)'"
+VALID_STATUS=2
+TEST
+
+CMD="(())"
+VALID_OUTPUT="syntax error near unexpected token \`)'"
+VALID_STATUS=2
+TEST
+
+CMD="(|)"
+VALID_OUTPUT="syntax error near unexpected token \`|'"
+VALID_STATUS=2
+TEST
+
+CMD="(||)"
+VALID_OUTPUT="syntax error near unexpected token \`||'"
+VALID_STATUS=2
+TEST
+
+CMD="(&&)"
+VALID_OUTPUT="syntax error near unexpected token \`&&'"
+VALID_STATUS=2
+TEST
+
+CMD="(echo hello)"
+VALID_OUTPUT="hello"
+VALID_STATUS=0
+TEST
+
+
+CMD="echo hello | (cat)"
+VALID_OUTPUT="syntax error near unexpected token \`('"
+VALID_STATUS=2
+TEST
+
+CMD='(((echo hello)))'
+VALID_OUTPUT='hello'
+VALID_STATUS=0
+TEST
+
+CMD=")("
+VALID_OUTPUT="syntax error near unexpected token \`)'"
+VALID_STATUS=2
+TEST
+
+CMD="/usr/bin/echo 1            2     3"
+VALID_OUTPUT="1 2 3"
+VALID_STATUS=0
+TEST
+
+CMD="cmd_bidon"
+VALID_OUTPUT="cmd_bidon: Command not found"
+VALID_STATUS=127
+TEST
+
+CMD="cmd_bidon arg_bidon"
+VALID_OUTPUT="cmd_bidon: Command not found"
+VALID_STATUS=127
+TEST
+
+CMD="ls -arg_bidon"
+VALID_OUTPUT="ls: invalid option -- '_'\nTry 'ls --help' for more information."
+VALID_STATUS=2
+TEST
+
+CMD="/usr/bin/cmd_bidon"
+VALID_OUTPUT="/usr/bin/cmd_bidon: Command not found"
+VALID_STATUS=127
+TEST
+
+CMD="/"
+VALID_OUTPUT="/: Is a directory"
+VALID_STATUS=126
+TEST
+
+CMD='./test_dir/hello_world'
+VALID_OUTPUT="Hello word!"
+VALID_STATUS=0
+TEST
+
+CMD="./test_dir/forbidden_cmd"
+VALID_OUTPUT="./test_dir/forbidden_cmd: Permission denied"
+VALID_STATUS=126
+TEST
+
+CMD="./test_dir/link_h_hello "
+VALID_OUTPUT="Hello word!"
+VALID_STATUS=0
+TEST
+
+CMD="./test_dir/link_s_hello "
+VALID_OUTPUT="Hello word!"
+VALID_STATUS=0
+TEST
+
+CMD="<./test_dir/file1 cat"
+VALID_OUTPUT="contenu file1"
+VALID_STATUS=0
+TEST
+
+CMD="<./test_dir/filed cat"
+VALID_OUTPUT="./test_dir/filed: No such file or directory"
+VALID_STATUS=1
+TEST
+
+CMD="<./test_dir/file1  <./test_dir/file2 cat"
+VALID_OUTPUT="contenu file2"
+VALID_STATUS=0
+TEST
+
+CMD="<./test_dir/file1  <./test_dir/file2 <./test_dir/file3 cat"
+VALID_OUTPUT="contenu file3"
+VALID_STATUS=0
+TEST
+
+CMD='echo hello > tmp1 >tmp2 >tmp3 && cat tmp3'
+VALID_OUTPUT="hello"
+VALID_STATUS=0
+TEST
+rm tmp1 tmp2 tmp3
+
+
+CMD='touch forbidden && chmod 000 forbidden && echo hello >  forbidden ||  rm -f forbidden'
+VALID_OUTPUT="forbidden: Permission denied"
+VALID_STATUS=0
+TEST
+
+CMD='echo hello >> tmp1 >>tmp2 >>tmp3 &&  echo world >>tmp3 && cat tmp3'
+VALID_OUTPUT="hello\nworld"
+VALID_STATUS=0
+TEST
+rm tmp1 tmp2 tmp3
+
+CMD="touch forbidden && chmod 000 forbidden && echo hello >>  forbidden ||  chmod  666 forbidden &&  rm forbidden"
+VALID_OUTPUT="forbidden: Permission denied"
+VALID_STATUS=0
+TEST
+
+CMD="mkdir dir && chmod 000 ./dir && echo hello > dir || chmod 666 dir && rm -rf dir"
+VALID_OUTPUT="dir: Is a directory"
+VALID_STATUS=0
+TEST
+
+CMD='echo hello | cat -e'
+VALID_OUTPUT='hello$'
+VALID_STATUS=0
+TEST
+
+CMD='echo hello | cat -e | cat -e'
+VALID_OUTPUT='hello$$
+VALID_STATUS=0
+TEST
+
+CMD='echo hello | cat -e | cat -e | cat  -e'
+VALID_OUTPUT='hello$$$'
+VALID_STATUS=0
+TEST
+
+
+CMD='echo hello | cat -e | cat -e | cat  -e | cat -e'
+VALID_OUTPUT='hello$$$$'
+VALID_STATUS=0
+TEST
+
+CMD="cmd_bidon | cat -e"
+VALID_OUTPUT="cmd_bidon: Command not found"
+VALID_STATUS=0
+TEST
+
+CMD="echo hello | cmd_bidon | cat -e"
+VALID_OUTPUT="cmd_bidon: Command not found"
+VALID_STATUS=0
+TEST
+
+CMD="echo hello | cmd_bidon"
+VALID_OUTPUT="cmd_bidon: Command not found"
+VALID_STATUS=127
+TEST
+
+CMD="echo hello | ../test_bin/forbidden_cmd"
+VALID_OUTPUT="../test_bin/forbidden_cmd: Permission denied"
+VALID_STATUS=126
+TEST
+
+
+CMD="echo hello > tmp | cat -e && rm tmp"
+VALID_OUTPUT=""
+VALID_STATUS=0
+TEST
+
+
+CMD="echo hello | <file1 cat -e"
+VALID_OUTPUT="contenu file1$"
+VALID_STATUS=0
+TEST
+
+CMD="echo hello && echo hola"
+VALID_OUTPUT="hello\nhola"
+VALID_STATUS=0
+TEST
+
+CMD="cmd_bidon && echo hello"
+VALID_OUTPUT="cmd_bidon: Command not found"
+VALID_STATUS=127
+TEST
+
+CMD="echo hello && cmd_bidon && echo world"
+VALID_OUTPUT="hello\ncmd_bidon: Command not found"
+VALID_STATUS=127
+TEST
+
+
+CMD="echo hello && cmd_bidon || echo world"
+VALID_OUTPUT="hello\ncmd_bidon: Command not found\nworld"
+VALID_STATUS=0
+TEST
+
+CMD="cmd_bidon || echo hello && echo world"
+VALID_OUTPUT="cmd_bidon: Command not found\nhello\nworld"
+VALID_STATUS=0
+TEST
+
+CMD="cmd_bidon &&  (echo hello || echo world)"
+VALID_OUTPUT="cmd_bidon: Command not found"
+VALID_STATUS=127
+TEST
+
+CMD="cmd_bidon &&  ((echo hello || echo world))"
+VALID_OUTPUT="cmd_bidon: Command not found"
+VALID_STATUS=127
+TEST
+
+CMD="cmd_bidon ||  (echo hello || echo world)"
+VALID_OUTPUT="cmd_bidon: Command not found\nhello"
+VALID_STATUS=0
+TEST
+
+
+CMD="(echo -n b && echo -n r || echo -n c && (echo -n a || ( echo -n e || (echo -n f && (echo -n g))) || echo -n h ) && echo -n v || (echo -n j && (echo -n k || echo -n l)) && echo o)"
+VALID_OUTPUT="bravo"
+VALID_STATUS=0
+TEST
+
+CMD="(lss||echo hello)&&(lss||echo world)"
+VALID_OUTPUT="lss: Command not found\nhello\nlss: Command not found\nworld"
+VALID_STATUS=0
+TEST
+
+CMD='echo $LANGUAGE'
+VALID_OUTPUT="en"
+VALID_STATUS=0
+TEST
+
+CMD='echo \"$LANGUAGE\"'
+VALID_OUTPUT="en"
+VALID_STATUS=0
+TEST
+
+CMD="echo '$LANGUAGE'"
+VALID_OUTPUT='$LANGUAGE'
+VALID_STATUS=0
+TEST
+
+
+CMD='echo $LANGUAGE$LANGUAGE'
+VALID_OUTPUT="enen"
+VALID_STATUS=
+TEST
+
+CMD='echo $LANGUAGE$LANGUAGE$LANGUAGE'
+VALID_OUTPUT="enenen"
+VALID_STATUS=0
+TEST
+
+CMD='echo $'
+VALID_OUTPUT='$'
+VALID_STATUS=0
+TEST
+
+CMD="export VAR=TOTO && echo $VAR"
+VALID_OUTPUT="TOTO"
+VALID_STATUS=0
+TEST
