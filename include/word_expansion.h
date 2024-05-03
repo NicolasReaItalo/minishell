@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_expansion.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/02 23:15:54 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/05/03 14:04:13 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	expanse_param(t_shell *shell, t_token *token, char *next, t_expvar *vars);
 int	expanse_param_redir(t_expvar *vars, t_shell *shell, char **output, char **next);
 
 // Expansion of pathname
+int		expand_pathname_cmd(t_token *token);
+//int	expand_pathname_(t_token *token);
 
 // Redir expansion
 
@@ -53,11 +55,10 @@ char	*expand_param_redir(char *str, t_shell *shell);
 //int		field_splitting(t_token *token, t_shell *shell, char *new);
 int		field_splitting(t_token *token, char *start, char *end);
 int		contains_ifs(t_token *token, t_shell *shell, char *str);
-int		expand_pathname_cmd(t_token *token);
 //int 	expand_pathname_redir(t_token *token);
 int		expand_redir(t_token *token, t_shell *shell);
 int		count_valid_pathname(char *content, t_token *token);
-int		only_stars(char *pattern);
+//int		only_stars(char *pattern);
 //char	*find_next_param_expansion(char *str, char **next);
 //int		ambiguous_redirect(char *content);
 int		contains_ifs_redir(char *str, char *ifs);

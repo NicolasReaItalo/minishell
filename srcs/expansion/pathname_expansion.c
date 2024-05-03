@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pathname_expansion.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/01 18:57:15 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/05/03 14:06:10 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,22 +144,30 @@ int	expand_pathname_cmd(t_token *token)
 	char	**words;
 	char	*tmp;
 	t_token	*ptr;
-
-	words = create_pathname_tab(token);
-	if (!words)
-		return (1);
-	if (!*words)
-		return (free(words), 0);
-	words = sort_pathname_tab(words);
-	tmp = token->content;
-	token->content = ft_strdup(*words);
-	free (tmp);
-	ptr = token;
-	if (words_to_token(ptr, words, 2))
-		return (1);
-	free_words_tab(&words);
+	
+	token->path_expanded = 1;
+	if (ft_strchr(token->content, '*') && !pathname_in_quotes(token->content))
+	{
+		words = create_pathname_tab(token);
+		if (!words)
+			return (1);
+		if (!*words)
+			return (free(words), 0);
+		words = sort_pathname_tab(words);
+		tmp = token->content;
+		token->content = ft_strdup(*words);
+		free (tmp);
+		ptr = token;
+		if (words_to_token(ptr, words, 2))
+			return (1);
+		free_words_tab(&words);
+		return (0);
+	}
+	else
+		unquote_content(token->content);
 	return (0);
 }
+
 /*
 //# include <stdio.h>
 int	main(int argc, char **argv)

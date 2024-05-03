@@ -6,23 +6,11 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/02 13:30:27 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/03 14:07:47 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "word_expansion.h"
-
-// Check if there is only '*' in a string
-int	only_stars(char *pattern)
-{
-	while (*pattern)
-	{
-		if (*pattern != '*')
-			return (0);
-		pattern++;
-	}
-	return (1);
-}
 
 /*
 int	contains_ifs(t_token *token, t_shell *shell, char *str)
@@ -86,29 +74,43 @@ int	is_only_whitespaces(char *str)
 
 static int	expand_param_cmd(t_token *token, t_shell *shell)
 {
-	expand_param(shell, token);
+	int	error;
+
+	error = expand_param(shell, token);
+	if (error)
+		return (error);
 	if (is_only_whitespaces(token->content))
 		return (2);
 	return (0);
 }
 
-static int	expand_pathname_(t_token *token)
+static int	error_gestion_param(t_token **token, t_node *node, t_shell *shell)
 {
-	token->path_expanded = 1;
-	if (ft_strchr(token->content, '*') && !pathname_in_quotes(token->content))
+	int		error;
+	t_token	*to_delete;
+
+	error = expand_param_cmd(*token, shell);
+	if (error == 2)
 	{
-		if (expand_pathname_cmd(token))
-			return (1);
+		if ((*token)->prev)
+		{
+			(*token)->prev->next = (*token)->next;
+		}
+		else
+			node->cmd = (*token)->next;
+		if ((*token)->next)
+			(*token)->next->prev = (*token)->prev;
+		to_delete = *token;
+		*token = (*token)->next;
+		ft_free_token(&to_delete);
 	}
+	else if (error == 1)
+		return (1);
 	else
-	{
-		unquote_content(token->content);
-	}
-//	token = advance_token(token, nb_token);
-
+		*token = advance_token(*token, 1);
 	return (0);
-
 }
+
 // Cycle d'expansions pour le node de type exec fournit en argument
 // pour chaques token :
 //   parameter_expansion -> IFS -> pathname_expansion -> quote removal
@@ -116,46 +118,25 @@ static int	expand_pathname_(t_token *token)
 int	word_expand(t_node *node, t_shell *shell)
 {
 	t_token	*token;
-	int		error;
-	t_token	*to_delete;
 
 	if (!node)
 		return (4);
 	token = node->cmd;
 	while (token)
-	{
-		error = expand_param_cmd(token, shell);
-		if (error == 2)
-		{
-			if (token->prev)
-			{
-				token->prev->next =token->next;
-			}
-			else
-				node->cmd = token->next;
-			if (token->next)
-				token->next->prev = token->prev;
-			to_delete = token;
-			token = token->next;
-			ft_free_token(&to_delete);
-		}
-		else if (error == 1)
+		if (error_gestion_param(&token, node, shell))
 			return (1);
-		else
-			token = advance_token(token, 1);
-	}
 	token = node->cmd;
 	while (token)
 	{
-		error = expand_pathname_(token);
-		if (error)
+		if (expand_pathname_cmd(token))
 			return (1);
 		token = advance_token(token, 2);
 	}
 	token = node->redir;
 	while (token)
 	{
-		if ((token->type == R_IN || token->type == R_OUT || token->type == R_APPEND)
+		if ((token->type == R_IN || token->type == R_OUT
+				|| token->type == R_APPEND)
 			&& expand_redir(token, shell))
 			return (1);
 		token = token->next;
@@ -281,12 +262,15 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 	return (0);
 }*/
-
-
-//gcc -g3 srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c test/utils/*.c -I./include/ -I./libft/ -I./test -L./libft/ -lft -lreadline -o param_expansion
+//  gcc -g3 srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c 
+// test/utils/*.c -I./include/ -I./libft/ -I./test -L./libft/ -lft 
+// -lreadline -o param_expansion
 
 //valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes
 //   --trace-children=yes --suppressions=valgrind.txt
 //   ./param_expansion '<$SHLVL <<eof echo$SHELL $?-l la$? >file'
 
-// gcc -g3 srcs/*.c srcs/execution/*.c srcs/builtins/*.c srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c test/utils/*.c -I./include/ -I./libft/ -I./test -L./libft/ -lft -lreadline -o param_expansion
+//  gcc -g3 srcs/*.c srcs/execution/*.c srcs/builtins/*.c
+// srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c test/utils/*.c
+// -I./include/ -I./libft/ -I./test -L./libft/ -lft -lreadline -o 
+// param_expansion

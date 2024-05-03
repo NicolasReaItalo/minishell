@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_common_functions.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 11:02:56 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/01 19:05:53 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/05/03 13:37:31 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,18 @@ void	free_words_tab(char ***words)
 	}
 	free(original_words);
 	original_words = NULL;
+}
+
+// Check if there is only '*' in a string
+static int	only_stars(char *pattern)
+{
+	while (*pattern)
+	{
+		if (*pattern != '*')
+			return (0);
+		pattern++;
+	}
+	return (1);
 }
 
 int	match_pattern(char *pattern, char *str)
