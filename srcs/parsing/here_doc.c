@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 11:58:13 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/30 10:34:01 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/04 18:19:15 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	treat_line(int fd[2], char *end, char *line)
 		close(fd[1]);
 		exit(0);
 	}
-	write(fd[1], line, strlen(line));
+	write(fd[1], line, ft_strlen(line));
 	write(fd[1], "\n", 1);
 	free(line);
 }
