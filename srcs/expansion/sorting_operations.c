@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 14:22:06 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/03 14:32:01 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/04 18:29:31 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ static int	ft_strcmp_no_case(char *s1, char *s2)
 	int		i;
 
 	str1 = ft_strdup(s1);
+	if (!str1)
+		return (0);
 	str2 = ft_strdup(s2);
+	if (!str2)
+		return (free(str1), 0);
 	i = 0;
 	while (str1[i])
 	{
