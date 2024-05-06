@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:50:23 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 10:44:30 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	ft_look_for_cmd(t_node *node, t_shell *s, char **full_cmd, t_exec exec)
 			ft_exec_exit_err(1, s, exec, *full_cmd);
 		if (access(*full_cmd, F_OK) != 0)
 		{
-			ft_display_error_msg(*full_cmd, ": Command not found\n");
+			ft_display_error_msg(*full_cmd, ": No such file or directory\n");
 			ft_exec_exit_err(127, s, exec, *full_cmd);
 		}
 	}
