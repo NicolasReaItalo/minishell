@@ -352,7 +352,7 @@ VALID_STATUS=2
 TEST
 
 CMD="/usr/bin/cmd_bidon"
-VALID_OUTPUT="/usr/bin/cmd_bidon: Command not found"
+VALID_OUTPUT="/usr/bin/cmd_bidon: No such file or directory"
 VALID_STATUS=127
 TEST
 
