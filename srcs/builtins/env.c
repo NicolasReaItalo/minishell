@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/06 13:40:47 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 14:36:00 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,9 @@
 static int	display_var(char *var)
 {
 	if (write(1, var, ft_strlen(var)) < 0)
-	{
-		write(2, "env: write error: No space left on device\n", 43);
 		return (0);
-	}
 	if (write(1, "\n", 1) < 0)
-	{
-		write(2, "env: write error: No space left on device\n", 43);
 		return (0);
-	}
 	return (1);
 }
 
@@ -48,7 +42,7 @@ int	env(t_token *cmd, t_node *node, t_shell *shell)
 	while (vars[i])
 	{
 		if (!display_var(vars[i]))
-			return (125);
+			return (write_error("env", 125));
 		i++;
 	}
 	ft_free_splitted(vars);

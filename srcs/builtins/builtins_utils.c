@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:24:39 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/06 14:08:27 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 14:38:02 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	write_error(char *cmd, int exit_status)
 	error = strerror(errno);
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": ", 2);
+	write(2, "write error: ", 14);
 	write(2, error, ft_strlen(error));
 	write(2, "\n", 1);
 	return (exit_status);
