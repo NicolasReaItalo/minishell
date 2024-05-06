@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:53:49 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/04 18:11:57 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/06 15:08:14 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,11 @@ char	*expand_param_redir(char *str, t_shell *shell)
 		return (free(vars), NULL);
 	vars->key = find_next_param_expansion(output, &next, &(vars->in_quotes));
 	if (!(vars->key))
-		return (output);
+		return (free(vars), output);
 	while (vars->key)
 	{
 		if (expanse_param_redir(vars, shell, &output, &next))
-			return (NULL);
+			return (free(vars), NULL);
 	}
 	return (free(vars), output);
 }
