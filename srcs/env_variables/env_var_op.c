@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_var_op.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:46:46 by nrea              #+#    #+#             */
-/*   Updated: 2024/03/20 11:29:25 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/06 16:46:57 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,24 @@ int	ft_append_var(char *key, char *value, t_evar **env_l, t_svars *svars)
 		(var)->value = new_val;
 	}
 	return (1);
+}
+
+int	isset(char *key, t_evar	*env_vars[58])
+{
+	int		index;
+	t_evar	*var;
+
+	if (!ft_is_valid_key(key) || !env_vars)
+		return (0);
+	index = key[0] - 65;
+	if (index < 0)
+		return (0);
+	var = env_vars[index];
+	while (var)
+	{
+		if (!ft_strcmp(key, var->key))
+			return (1);
+		var = var->next;
+	}
+	return (0);
 }

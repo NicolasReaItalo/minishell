@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:50:23 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/06 10:44:30 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 16:50:44 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	ft_look_for_cmd(t_node *node, t_shell *s, char **full_cmd, t_exec exec)
 {
 	int			ret;
 
-	if (ft_strchr(node->cmd->content, '/') != NULL)
+	if (ft_strchr(node->cmd->content, '/') || !isset("PATH", s->env_vars))
 	{
 		*full_cmd = ft_strdup(node->cmd->content);
 		if (!*full_cmd)

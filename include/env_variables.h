@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 16:40:05 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 13:19:09 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 16:49:12 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int		ft_get_index(char first_letter, int *index);
 void	ft_unset_var(char *key, t_evar **vars);
 char	*ft_get_var_value(char *key, t_evar	*env_vars[58], t_svars shell_vars);
 int		ft_append_var(char *key, char *value, t_evar **env_l, t_svars *svars);
+int		isset(char *key, t_evar	*env_vars[58]);
 
 int		ft_push_env_vars(t_evar **vars, char ***envp);
 int		ft_fetch_env_vars(t_evar *vars[58], char **envp);
