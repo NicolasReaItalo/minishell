@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/06 14:36:00 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 15:21:41 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	env(t_token *cmd, t_node *node, t_shell *shell)
 	while (vars[i])
 	{
 		if (!display_var(vars[i]))
-			return (write_error("env", 125));
+			return (ft_free_splitted(vars), write_error("env", 125));
 		i++;
 	}
 	ft_free_splitted(vars);
