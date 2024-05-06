@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 10:27:07 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/23 11:40:02 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 16:01:16 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	set_interactive_signals(void)
 void	sig_exec_handler(int signum)
 {
 	g_sig = signum;
-	printf("\n");
+	write(2, "Quit (core dumped)\n", 20);
 }
 
 /*Signals detection when a command process is running*/
