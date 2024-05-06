@@ -6,49 +6,39 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 12:15:43 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/15 15:41:34 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 15:17:00 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_execute.h"
-
-static int	print_cur_dir(char *buffer, int buffer_size)
-{
-	buffer = malloc(buffer_size * sizeof(char));
-	if (buffer == NULL)
-	{
-		write(2, "pwd: Internal Error\n", 21);
-		return (1);
-	}
-	ft_memset(buffer, 0, buffer_size * sizeof(char));
-	if (getcwd(buffer, buffer_size) == NULL)
-	{
-		free(buffer);
-		if (errno == ERANGE && buffer_size <= 900)
-			return (print_cur_dir(buffer, buffer_size * 2));
-		else
-		{
-			perror("pwd");
-			return (1);
-		}
-	}
-	ft_dprintf(1, "%s\n", buffer);
-	free(buffer);
-	return (0);
-}
+#include <linux/limits.h>
 
 /*Builtin: print name of current/working directory*/
 int	pwd(t_token *cmd, t_node *node, t_shell *shell)
 {
 	char		*buffer;
-	int			buffer_size;
 
 	(void) cmd;
 	(void) shell;
 	(void) node;
 	buffer = NULL;
-	buffer_size = 100;
-	if (print_cur_dir(buffer, buffer_size) == 1)
+	buffer = malloc(PATH_MAX * sizeof(char));
+	if (buffer == NULL)
+	{
+		write(2, "pwd: Internal Error\n", 21);
 		return (1);
+	}
+	ft_memset(buffer, 0, PATH_MAX * sizeof(char));
+	if (getcwd(buffer, PATH_MAX) == NULL)
+	{
+		free(buffer);
+		perror("pwd");
+		return (1);
+	}
+	if (write(1, buffer, ft_strlen(buffer)) < 0)
+		return (free(buffer), write_error("pwd", 1));
+	if (write(1, "\n", 1) < 0)
+		return (free(buffer), write_error("pwd", 1));
+	free(buffer);
 	return (0);
 }
