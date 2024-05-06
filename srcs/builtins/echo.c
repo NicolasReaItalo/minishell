@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/06 13:30:34 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 14:33:52 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,10 @@ static int	exit_echo(int trailing_nl)
 	if (trailing_nl == 1)
 	{
 		if (write(1, "\n", 1) < 0)
-		{
-			write(2, "echo: write error: No space left on device\n", 44);
-			return (1);
-		}
+			return (write_error("echo", 1));
 	}
 	else if (trailing_nl == -1)
-	{
-		write(2, "echo: write error: No space left on device\n", 44);
-		return (1);
-	}
+		return (write_error("echo", 1));
 	return (0);
 }
 
