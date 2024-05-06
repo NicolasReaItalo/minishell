@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:19:29 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/16 14:36:25 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 11:15:11 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	ft_exec_builtin(t_node *node, int pipe_lvl, t_shell *shell)
 	else
 		node->side = center;
 	if (ft_apply_redir(node) == -1)
-		return (1);
+		return (restore_fds(node, pipe_lvl), 1);
 	if (node->cmd == NULL)
 		return (0);
 	f = ft_getbuiltin(node->cmd->content);
