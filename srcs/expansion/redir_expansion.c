@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:10:58 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/06 14:50:56 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/06 15:37:53 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,6 @@ static int	find_valid_files(t_token *token, struct dirent *file
 	return (0);
 }
 
-static void	files_found(t_token *token, char **tmp_name)
-{
-	if (token->nb_files == 1)
-	{
-		free(token->content);
-		token->content = *tmp_name;
-	}
-	else
-		free(*tmp_name);
-}
-
 int	count_valid_redir(char *content, t_token *token)
 {
 	DIR				*dir;
@@ -76,21 +65,6 @@ int	count_valid_redir(char *content, t_token *token)
 	else
 		files_found(token, &tmp_name);
 	return (token->nb_files);
-}
-
-// expand the redir token
-//	- strip the string from ifs
-//	- si empty => error `$VAR: ambiguous redirect `
-//	- strchr ifs => error
-//	- si strchr *
-//    	- count valid_pathnames si > 1 =>error
-//    	- expand
-// return an error code
-static int	ambiguous_redirect(char *content)
-{
-	ft_putstr_fd(content, 2);
-	ft_putstr_fd(": ambiguous redirect\n ", 2);
-	return (5);
 }
 
 int	expand_redir(t_token *token, t_shell *shell)
@@ -122,9 +96,8 @@ int	expand_redir(t_token *token, t_shell *shell)
 	return (0);
 }
 
-int expand_here_doc(t_token *token, t_shell *shell)
+int	expand_here_doc(t_token *token, t_shell *shell)
 {
-//	char	*ifs;
 	char	*str;
 	int		error;
 
@@ -137,6 +110,17 @@ int expand_here_doc(t_token *token, t_shell *shell)
 	token->content = requote_param_expansion(token->content);
 	return (0);
 }
+
+int	redir_exp(t_token *token, t_shell *shell)
+{
+	if ((token->type == R_IN || token->type == R_OUT
+			|| token->type == R_APPEND) && expand_redir(token, shell))
+		return (1);
+	else if (token->type == R_HEREDOC && expand_here_doc(token, shell))
+		return (1);
+	return (0);
+}
+
 /*
 #include "minishell.h"
 //#include "tests.h"

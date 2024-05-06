@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/06 13:49:53 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/06 15:35:09 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,12 +135,7 @@ int	word_expand(t_node *node, t_shell *shell)
 	token = node->redir;
 	while (token)
 	{
-		if ((token->type == R_IN || token->type == R_OUT
-				|| token->type == R_APPEND)
-			&& expand_redir(token, shell))
-			return (1);
-		else if (token->type == R_HEREDOC
-			&& expand_here_doc(token, shell))
+		if (redir_exp(token, shell))
 			return (1);
 		token = token->next;
 	}

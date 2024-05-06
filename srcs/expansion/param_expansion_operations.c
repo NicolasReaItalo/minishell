@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 23:12:10 by joyeux            #+#    #+#             */
-/*   Updated: 2024/05/06 12:53:47 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/06 15:39:26 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ int	expanse_param(t_shell *shell, t_token *token, char *next, t_expvar *vars)
 int	expanse_param_redir(t_expvar *vars, t_shell *shell, char **output,
 		char **next)
 {
-	vars->new = ft_strdup(ft_get_var_value(vars->key, shell->env_vars, shell->shell_vars));
+	vars->new = ft_strdup(ft_get_var_value(vars->key, shell->env_vars,
+				shell->shell_vars));
 	if (!vars->new)
 		return (1);
 	vars->new = quotes_modification(vars->new);

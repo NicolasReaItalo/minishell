@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/03 16:31:39by tjoyeux          ###   ########.fr       */
+/*   Created: 2024/05/06 15:41:16 by tjoyeux           #+#    #+#             */
+/*   Updated: 2024/05/06 15:41:45 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,11 @@ char	**sort_pathname_tab(char **tab);
 int		pathname_in_quotes(char *content);
 
 // Redir expansion
+int		redir_exp(t_token *token, t_shell *shell);
 int		expand_redir(t_token *token, t_shell *shell);
 char	*expand_param_redir(char *str, t_shell *shell);
-int 	expand_here_doc(t_token *token, t_shell *shell);
+int		expand_here_doc(t_token *token, t_shell *shell);
+int		ambiguous_redirect(char *content);
+void	files_found(t_token *token, char **tmp_name);
 
 #endif
