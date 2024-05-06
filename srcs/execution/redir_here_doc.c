@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:21:42 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/10 18:16:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 15:51:26 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ xxx is the address of the content pointer*/
 static char	*ft_generate_u_filename(char *content)
 {
 	char	*file;
+	char	*tmp;
 
 	if (!content)
 		return (NULL);
@@ -51,6 +52,18 @@ static char	*ft_generate_u_filename(char *content)
 	ft_memset(file, 0, 30 * sizeof(char));
 	ft_strcpy(file, "/tmp/ms_");
 	ft_putnbr_base_l((unsigned long) content, "0123456789abcdef", file);
+	while (!access(file, F_OK) && ft_strlen(file) < 255)
+	{
+		tmp = NULL;
+		tmp = ft_strjoin(file, "x");
+		free(file);
+		file = tmp;
+	}
+	if (!access(file, F_OK))
+	{
+		free(file);
+		return (NULL);
+	}
 	return (file);
 }
 
