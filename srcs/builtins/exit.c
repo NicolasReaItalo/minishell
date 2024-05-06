@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:19:24 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/01 15:21:21 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 11:25:10 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	bt_exit(t_token *cmd, t_node *node, t_shell *shell)
 	int	status;
 
 	if (node->side == center)
-		write(1, "exit\n", 6);
+		write(2, "exit\n", 6);
 	if (exit_count_args(cmd) == -1)
 		return (1);
 	cmd = cmd->next;
