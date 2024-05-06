@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 11:02:56 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/03 16:14:45 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/06 14:49:18 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,23 @@ static char	*ft_concat_3str(char *first, char *second, char *third, int len)
 	return (first);
 }
 
-void	unquote_content(char *content)
+char	*requote_param_expansion(char *str)
+{
+	char	*tmp;
+
+	tmp = str;
+	while (*str)
+	{
+		if (*str == -3)
+			*str = '\"';
+		else if (*str == -2)
+			*str = '\'';
+		str++;
+	}
+	return (tmp);
+}
+
+char	*unquote_content(char *content)
 {
 	char	*ptr1;
 	char	*ptr2;
@@ -48,12 +64,11 @@ void	unquote_content(char *content)
 	{
 		if (*ptr1 == '\'' || *ptr1 == '\"')
 		{
-			ptr2 = ptr1 + 1;
-			while (*ptr2 != *ptr1)
+			ptr2 = ptr1;
+			while (*(++ptr2) != *ptr1)
 			{
 				if (!*ptr2)
-					return ;
-				ptr2++;
+					return (NULL);
 			}
 			*ptr1 = '\0';
 			*ptr2 = '\0';
@@ -63,6 +78,7 @@ void	unquote_content(char *content)
 		else
 			ptr1++;
 	}
+	return (requote_param_expansion(content));
 }
 
 // Create and add new tokens in a linked list

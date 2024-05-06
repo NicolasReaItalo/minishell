@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/03 16:31:30 by tjoyeux          ###   ########.fr       */
+/*   Created: 2024/05/06 15:41:16 by tjoyeux           #+#    #+#             */
+/*   Updated: 2024/05/06 15:41:45 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@ int		word_expand(t_node *node, t_shell *shell);
 char	*find_next_param_expansion(char *str, char **next, int *in_quotes);
 void	free_words_tab(char ***words);
 int		match_pattern(char *pattern, char *str);
-
-// char	*ft_concat_3str(char *first, char *second, char *third, int len);
-void	unquote_content(char *content);
+char	*requote_param_expansion(char *str);
+char	*unquote_content(char *content);
 int		words_to_token(t_token *ptr, char **words, int i);
 
 // Expansion of parameters
@@ -57,7 +56,11 @@ char	**sort_pathname_tab(char **tab);
 int		pathname_in_quotes(char *content);
 
 // Redir expansion
+int		redir_exp(t_token *token, t_shell *shell);
 int		expand_redir(t_token *token, t_shell *shell);
 char	*expand_param_redir(char *str, t_shell *shell);
+int		expand_here_doc(t_token *token, t_shell *shell);
+int		ambiguous_redirect(char *content);
+void	files_found(t_token *token, char **tmp_name);
 
 #endif
