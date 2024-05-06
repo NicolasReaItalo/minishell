@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 10:26:04 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/02 15:29:12 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 14:19:49 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,36 +35,6 @@ static int	msg_invalid_id(char *content)
 	free(msgf);
 	free(content);
 	return (1);
-}
-
-/*Displays the env var each var preceded by a prefix*/
-int	ft_display_vars(char *prefix, t_shell *shell)
-{
-	t_evar	*var;
-	int		i;
-
-	var = NULL;
-	i = 0;
-	while (i < 58)
-	{
-		var = shell->env_vars[i];
-		while (var)
-		{
-			write(1, prefix, ft_strlen(prefix));
-			write(1, " ", 1);
-			write(1, var->key, ft_strlen(var->key));
-			if (var->value)
-			{
-				write(1, "=\"", 2);
-				write(1, var->value, ft_strlen(var->value));
-				write(1, "\"", 1);
-			}
-			write(1, "\n", 1);
-			var = var->next;
-		}
-		i++;
-	}
-	return (0);
 }
 
 /*return  1 in case of succes, -1 otherwise*/

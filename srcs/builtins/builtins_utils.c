@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:24:39 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/16 10:58:54 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/06 14:08:27 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,17 @@ t_builtin	ft_getbuiltin(char *cmd)
 	else if (!ft_strcmp(cmd, "exit"))
 		return ((t_builtin) bt_exit);
 	return (NULL);
+}
+
+int	write_error(char *cmd, int exit_status)
+{
+	char	*error;
+
+	error = NULL;
+	error = strerror(errno);
+	write(2, cmd, ft_strlen(cmd));
+	write(2, ": ", 2);
+	write(2, error, ft_strlen(error));
+	write(2, "\n", 1);
+	return (exit_status);
 }

@@ -6,7 +6,7 @@
 #    By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/05/03 17:19:37 by nrea             ###   ########.fr        #
+#    Updated: 2024/05/06 14:24:56 by nrea             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ LIBFT = $(LIBFT_PATH)libft.a
 INCLUDE_PATH = ./include/
 
 CC			= gcc
-CFLAGS		= -Wall -Werror -Wextra -g3 -I$(INCLUDE_PATH) -I$(LIBFT_PATH) -I./test
+CFLAGS		= -Wall -Werror -Wextra -g3 -I$(INCLUDE_PATH) -I$(LIBFT_PATH)
 LDFLAGS		= -L$(LIBFT_PATH) -lft -lreadline
 RM			= rm -f
 
@@ -76,6 +76,7 @@ SRCS		=	$(SRC_PATH)minishell.c \
 				$(SRC_PATH)builtins/echo.c\
 				$(SRC_PATH)builtins/env.c\
 				$(SRC_PATH)builtins/export.c\
+				$(SRC_PATH)builtins/export_display.c\
 				$(SRC_PATH)builtins/unset.c\
 				$(SRC_PATH)builtins/cd.c\
 				$(SRC_PATH)builtins/exit.c
