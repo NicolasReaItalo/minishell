@@ -6,14 +6,14 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 23:12:10 by joyeux            #+#    #+#             */
-/*   Updated: 2024/05/03 16:06:28 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/06 12:53:47 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "word_expansion.h"
 
 //Concatene 3 chaines de caracteres
-// first alloue, second, third non alloue
+// first alloue, second alloue, third non alloue
 static char	*ft_concat_3str(char *first, char *second, char *third)
 {
 	char	*output;
@@ -43,6 +43,22 @@ static void	case_empty_tab(t_token *token, char *next)
 	token->content = p;
 }
 
+char	*quotes_modification(char *str)
+{
+	char	*tmp;
+
+	tmp = str;
+	while (*str)
+	{
+		if (*str == '\"')
+			*str = -3;
+		else if (*str == '\'')
+			*str = -2;
+		str++;
+	}
+	return (tmp);
+}
+
 int	expanse_param(t_shell *shell, t_token *token, char *next, t_expvar *vars)
 {
 	int		i;
@@ -52,6 +68,7 @@ int	expanse_param(t_shell *shell, t_token *token, char *next, t_expvar *vars)
 				shell->shell_vars));
 	if (!new)
 		return (1);
+	new = quotes_modification(new);
 	i = 0;
 	while (new[i] && !vars->in_quotes && ft_strcmp(vars->key, "IFS") != 0)
 	{
@@ -74,12 +91,15 @@ int	expanse_param(t_shell *shell, t_token *token, char *next, t_expvar *vars)
 int	expanse_param_redir(t_expvar *vars, t_shell *shell, char **output,
 		char **next)
 {
-	vars->new = ft_get_var_value(vars->key, shell->env_vars, shell->shell_vars);
+	vars->new = ft_strdup(ft_get_var_value(vars->key, shell->env_vars, shell->shell_vars));
+	if (!vars->new)
+		return (1);
+	vars->new = quotes_modification(vars->new);
 	free (vars->key);
 	*output = ft_concat_3str(*output, vars->new, *next);
 	if (!*output)
-		return (free(vars), 1);
+		return (free(vars->new), free(vars), 1);
 	vars->key = find_next_param_expansion(*output, next,
 			&(vars->in_quotes));
-	return (0);
+	return (free(vars ->new), 0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unquotting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joyeux <joyeux@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 14:08:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/01 19:05:20 by joyeux           ###   ########.fr       */
+/*   Updated: 2024/05/06 13:04:21 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	pathname_in_quotes(char *content)
 			{
 				if (*content == '*')
 				{
-					unquote_content(original_content);
+					original_content = unquote_content(original_content);
 					return (1);
 				}
 				content++;
@@ -38,6 +38,6 @@ int	pathname_in_quotes(char *content)
 		}
 		content++;
 	}
-	unquote_content(original_content);
+	original_content = unquote_content(original_content);
 	return (0);
 }

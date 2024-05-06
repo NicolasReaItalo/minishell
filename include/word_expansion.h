@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:28:30 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/03 16:31:30 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/03 16:31:39by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@ int		word_expand(t_node *node, t_shell *shell);
 char	*find_next_param_expansion(char *str, char **next, int *in_quotes);
 void	free_words_tab(char ***words);
 int		match_pattern(char *pattern, char *str);
-
-// char	*ft_concat_3str(char *first, char *second, char *third, int len);
-void	unquote_content(char *content);
+char	*requote_param_expansion(char *str);
+char	*unquote_content(char *content);
 int		words_to_token(t_token *ptr, char **words, int i);
 
 // Expansion of parameters
@@ -59,5 +58,6 @@ int		pathname_in_quotes(char *content);
 // Redir expansion
 int		expand_redir(t_token *token, t_shell *shell);
 char	*expand_param_redir(char *str, t_shell *shell);
+int 	expand_here_doc(t_token *token, t_shell *shell);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:29:47 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/03 14:22:53 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/06 13:02:45 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	expand_pathname_cmd(t_token *token)
 		return (0);
 	}
 	else
-		unquote_content(token->content);
+		token->content = unquote_content(token->content);
 	return (0);
 }
 
