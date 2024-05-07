@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/07 12:24:37 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 14:17:06 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,7 @@ static int	manage_heredoc(t_token	*tok, t_token **stack, t_shell *shell)
 
 	prev_tok = tok->prev;
 	if (contains_quotes(prev_tok->content) == 1)
-	//{
-	//	printf("Passing \"contains_cotes\" in %s token\n", tok->content);
 		tok->heredoc_quoted = 1;
-	//}
-	//if is in quote flag to expand = false 
 	unquote_content(prev_tok->content);
 	ret = get_hd(tok, prev_tok->content, shell, stack);
 	if (set_interactive_signals() == -1)
