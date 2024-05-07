@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:21:18 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/07 13:24:57 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 15:04:18 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,22 @@ static char	*check_start_and_end(t_token *ptr)
 	return (NULL);
 }
 
+static char	*check_syntax_node_first(t_token *ptr)
+{
+	if (ptr->type == -1)
+		return (ptr->content);
+	if (!ptr->next && ((ptr->type > 0 && ptr->type < 4) || ptr->type == 9))
+		return (ptr->content);
+	return (NULL);
+}
+
 static char	*check_syntax_node(t_token *ptr, t_token *stack, t_shell *shell)
 {
 	int	prev_type;
 
 	if (!ptr)
 		return (NULL);
-	if (ptr->type == -1)
-		return (ptr->content);
-	if (!ptr->next && ((ptr->type > 0 && ptr->type < 4) || ptr->type == 9))
+	if (check_syntax_node_first(ptr))
 		return (ptr->content);
 	if (!ptr->prev)
 		return (check_start_and_end(ptr));
@@ -60,7 +67,7 @@ static char	*check_syntax_node(t_token *ptr, t_token *stack, t_shell *shell)
 	else if ((ptr->type >= 4 && ptr->type <= 7) && prev_type)
 		return (ptr->prev->content);
 	else if (ptr->type == 7 && manage_heredoc(ptr, &stack, shell))
-			return ("");
+		return ("");
 	else if ((ptr->type == 0) && (prev_type == 8))
 		return (ptr->prev->content);
 	else if ((ptr->type == 9)

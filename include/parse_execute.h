@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:32:18 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/07 14:33:51 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 14:44:08 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,28 +104,28 @@ typedef struct s_shell
 	t_node	*tree;
 }	t_shell;
 ///TOKENISATION
-t_token	*ft_get_token(t_token *stack, int rank);
-int		ft_stack_size(t_token *stack);
-int		ft_free_token(t_token **token);
-void	ft_reverse_stack(t_token **stack);
-int		word_is_wspace(char *str);
-int		contains_quotes(char *str);
+t_token		*ft_get_token(t_token *stack, int rank);
+int			ft_stack_size(t_token *stack);
+int			ft_free_token(t_token **token);
+void		ft_reverse_stack(t_token **stack);
+int			word_is_wspace(char *str);
+int			contains_quotes(char *str);
 
-t_token	*ft_get_token(t_token *stack, int rank);
-int		ft_stack_size(t_token *stack);
-int		ft_free_token(t_token **token);
-void	ft_reverse_stack(t_token **stack);
-void	ft_token_add_front(t_token**lst, t_token *new);
+t_token		*ft_get_token(t_token *stack, int rank);
+int			ft_stack_size(t_token *stack);
+int			ft_free_token(t_token **token);
+void		ft_reverse_stack(t_token **stack);
+void		ft_token_add_front(t_token**lst, t_token *new);
 
-int		tokenise(char *str, t_token **stack);
-int		check_syntax(t_token *stack, t_shell *shell);
+int			tokenise(char *str, t_token **stack);
+int			check_syntax(t_token *stack, t_shell *shell);
 
-int		is_wspace(char c);
-int		is_operator(char c);
-void	kill_stack(t_token **stack);
-t_token	*new_token(char *str, int len);
-t_token	*add_token(t_token *stack, t_token *new);
-int		manage_heredoc(t_token	*tok, t_token **stack, t_shell *shell);
+int			is_wspace(char c);
+int			is_operator(char c);
+void		kill_stack(t_token **stack);
+t_token		*new_token(char *str, int len);
+t_token		*add_token(t_token *stack, t_token *new);
+int			manage_heredoc(t_token	*tok, t_token **stack, t_shell *shell);
 
 ///PARSING
 int			get_hd(t_token *tok, char *eof, t_shell *shell, t_token **stack);
