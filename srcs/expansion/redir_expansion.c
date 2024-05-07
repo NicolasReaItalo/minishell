@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:10:58 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/06 15:37:53 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 14:18:26 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +99,14 @@ int	expand_redir(t_token *token, t_shell *shell)
 int	expand_here_doc(t_token *token, t_shell *shell)
 {
 	char	*str;
-	int		error;
 
+	if (token->heredoc_quoted == 1)
+		return (0);
 	str = expand_param_redir(token->content, shell);
 	if (!str)
 		return (1);
-	error = count_valid_redir(str, token);
-	if (error)
-		return (1);
+	free (token->content);
+	token->content = str;
 	token->content = requote_param_expansion(token->content);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:32:18 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/07 13:28:06 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 14:29:51 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_token
 	int				hidden;
 	int				param_expanded;
 	int				path_expanded;
+	int				heredoc_quoted;
 	struct s_token	*next;
 	struct s_token	*prev;
 }				t_token;

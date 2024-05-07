@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/07 13:23:26 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 14:28:40 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	manage_heredoc(t_token	*tok, t_token **stack, t_shell *shell)
 	t_token	*prev_tok;
 
 	prev_tok = tok->prev;
+	if (contains_quotes(prev_tok->content) == 1)
+		tok->heredoc_quoted = 1;
 	unquote_content(prev_tok->content);
 	ret = get_hd(tok, prev_tok->content, shell, stack);
 	if (set_interactive_signals() == -1)
