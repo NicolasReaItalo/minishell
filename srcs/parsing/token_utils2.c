@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:41:29 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/03/16 18:02:40 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 12:24:23 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
+#include "parse_execute.h"
 
 // Check if it's a whitespace
 int	is_wspace(char c)

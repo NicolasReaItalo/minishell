@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:13:15 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/15 15:12:20 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 13:26:58 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,15 @@ static int	apply_check_syntax(t_token **stack, t_shell *shell)
 {
 	int	error_code;
 
-	error_code = check_syntax(*stack);
+	error_code = check_syntax(*stack, shell);
 	if (error_code)
 	{
 		kill_stack(stack);
 		*stack = NULL;
-		ft_set_exit_status(2, &shell->shell_vars);
+		if (error_code == 130)
+			ft_set_exit_status(130, &shell->shell_vars);
+		else
+			ft_set_exit_status(2, &shell->shell_vars);
 		return (-1);
 	}
 	return (0);
@@ -52,7 +55,7 @@ static int	apply_redirections(t_token **stack, t_shell *shell)
 {
 	int	ret;
 
-	ret = ft_redirections(stack, shell);
+	ret = ft_redirections(stack);
 	if (ret == 1)
 	{
 		write(2, "Internal error during redirection\n", 35);
@@ -60,13 +63,6 @@ static int	apply_redirections(t_token **stack, t_shell *shell)
 		*stack = NULL;
 		ft_set_exit_status(2, &shell->shell_vars);
 		exit_sadly(shell, 1);
-	}
-	else if (ret == 130)
-	{
-		kill_stack(stack);
-		*stack = NULL;
-		ft_set_exit_status(130, &shell->shell_vars);
-		return (-1);
 	}
 	return (0);
 }

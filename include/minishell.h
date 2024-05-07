@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:19:14 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/23 14:04:29 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 12:27:53 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,9 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "token.h"
-# include "token_utils.h"
 # include "libft.h"
 # include "minishell_signals.h"
 # include "env_variables.h"
-# include "parse_execute.h"
 # include "word_expansion.h"
 
 # define OK_PROMPT "\001\033[3;96m\002minishell> \001\033[0m\002"

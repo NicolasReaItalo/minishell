@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:32:18 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/07 11:00:59 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 13:28:06 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@
 # include <sys/types.h>
 # include <unistd.h>
 # include <signal.h>
-# include "token.h"
-# include "token_utils.h"
+# include "minishell_signals.h"
 # include "libft.h"
 # include "env_variables.h"
 
@@ -31,6 +30,30 @@
 # define N_PIPE 1
 # define N_OR 2
 # define N_AND 3
+
+# define PIPE 1 // "|"
+# define AND 2 // "&&"
+# define OR 3 // "||"
+# define R_IN 4 // "<"
+# define R_OUT 5 // ">"
+# define R_APPEND 6 // ">>"
+# define R_HEREDOC 7 // "<<"
+# define O_BRACKET 8 // "("
+# define C_BRACKET 9 // ")"
+# define WORD 0 // Tout le reste
+# define INVALID -1 // ";" "&" "\"
+
+typedef struct s_token
+{
+	int				type;
+	char			*content;
+	int				nb_files;
+	int				hidden;
+	int				param_expanded;
+	int				path_expanded;
+	struct s_token	*next;
+	struct s_token	*prev;
+}				t_token;
 
 typedef enum e_side
 {
@@ -79,10 +102,31 @@ typedef struct s_shell
 	t_pipes	p_ar;
 	t_node	*tree;
 }	t_shell;
+///TOKENISATION
+t_token	*ft_get_token(t_token *stack, int rank);
+int		ft_stack_size(t_token *stack);
+int		ft_free_token(t_token **token);
+void	ft_reverse_stack(t_token **stack);
+
+t_token	*ft_get_token(t_token *stack, int rank);
+int		ft_stack_size(t_token *stack);
+int		ft_free_token(t_token **token);
+void	ft_reverse_stack(t_token **stack);
+void	ft_token_add_front(t_token**lst, t_token *new);
+
+int		tokenise(char *str, t_token **stack);
+int		check_syntax(t_token *stack, t_shell *shell);
+
+int		is_wspace(char c);
+int		is_operator(char c);
+void	kill_stack(t_token **stack);
+t_token	*new_token(char *str, int len);
+t_token	*add_token(t_token *stack, t_token *new);
+int		manage_heredoc(t_token	*tok, t_token **stack, t_shell *shell);
 
 ///PARSING
 int			get_hd(t_token *tok, char *eof, t_shell *shell, t_token **stack);
-int			ft_redirections(t_token **stack, t_shell *shell);
+int			ft_redirections(t_token **stack);
 t_token		**ft_strip_bracket(t_token **stack);
 int			ft_check_outer_brackets(t_token *stack);
 int			split_token_lst(int rank, t_token **st, t_token **l, t_token **r);

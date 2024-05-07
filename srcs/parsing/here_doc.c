@@ -3,15 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 11:58:13 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/04 18:19:15 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 12:27:38 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
-#include "token_utils.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <sys/wait.h>

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:41:59 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/25 16:18:35 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 12:24:38 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
+#include "parse_execute.h"
 
 // char	*next_token_operators(char **str, t_token **new, int *error_code)
 // {
@@ -207,5 +207,5 @@ int	main(int argc,char **argv)
 	kill_stack(&stack_copy);
 	return (error);
 }*/
-// gcc -g srcs/parsing/token.c srcs/parsing/check_syntax.c 
+// gcc -g srcs/parsing/token.c srcs/parsing/check_syntax.c
 // srcs/parsing/token_utils.c -I./include/ -I./libft/ -L./libft/ -lft -o token

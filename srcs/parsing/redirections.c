@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/01 16:27:35 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 13:23:26 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	ft_clean_words(t_token **stack)
 	return (0);
 }
 
-static int	manage_heredoc(t_token	*tok, t_token **stack, t_shell *shell)
+int	manage_heredoc(t_token	*tok, t_token **stack, t_shell *shell)
 {
 	int		ret;
 	t_token	*prev_tok;
@@ -68,7 +68,7 @@ static int	manage_heredoc(t_token	*tok, t_token **stack, t_shell *shell)
 		return (1);
 	if (ret != 0)
 	{
-		ft_clean_words(stack);
+		ft_set_exit_status(ret, &shell->shell_vars);
 		return (ret);
 	}
 	return (0);
@@ -97,7 +97,7 @@ si >,stocke le content du token suivant comme fichier de redirection
 supprime le token word suivant
 si >>,stocke le content du token suivant comme fichier de redirection
 */
-int	ft_redirections(t_token **stack, t_shell *shell)
+int	ft_redirections(t_token **stack)
 {
 	t_token	*tok;
 	int		ret;
@@ -107,13 +107,7 @@ int	ft_redirections(t_token **stack, t_shell *shell)
 	tok = ft_get_token(*stack, -1);
 	while (tok)
 	{
-		if (tok->type == R_HEREDOC)
-		{
-			ret = manage_heredoc(tok, stack, shell);
-			if (ret)
-				return (ret);
-		}
-		else if (tok->type >= R_IN && tok->type <= R_APPEND)
+		if (tok->type >= R_IN && tok->type <= R_APPEND)
 		{
 			ret = manage_classic_redir(tok);
 			if (ret)
