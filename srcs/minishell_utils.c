@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 14:14:48 by nrea              #+#    #+#             */
-/*   Updated: 2024/04/08 14:39:52 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 11:12:27 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,27 @@ void	ft_free_shell(t_shell *shell)
 	if (shell->tree)
 		ft_free_tree(&shell->tree);
 	rl_clear_history();
+}
+
+static void	set_pwd(t_shell *shell)
+{
+	char	*cwd;
+
+	cwd = NULL;
+	cwd = get_cwd();
+	if (!cwd)
+	{
+		ft_free_shell(shell);
+		exit (1);
+	}
+	if (ft_set_var("PWD", cwd, shell->env_vars, &shell->shell_vars) == -1)
+	{
+		write(2, "Error during pwd initialisation\n", 33);
+		ft_free_shell(shell);
+		free(cwd);
+		exit (1);
+	}
+	free(cwd);
 }
 
 int	ft_init_shell(t_shell *shell, char **envp)
@@ -36,6 +57,8 @@ int	ft_init_shell(t_shell *shell, char **envp)
 		ft_free_shell(shell);
 		exit (1);
 	}
+	if (!isset("PWD", shell->env_vars))
+		set_pwd(shell);
 	return (1);
 }
 
