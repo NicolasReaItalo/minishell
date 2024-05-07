@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:10:58 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/07 14:32:58 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 16:39:38 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,21 +93,6 @@ int	expand_redir(t_token *token, t_shell *shell)
 	else if (error >= 2)
 		return (ambiguous_redirect(token->content));
 	token->content = unquote_content(token->content);
-	return (0);
-}
-
-int	expand_here_doc(t_token *token, t_shell *shell)
-{
-	char	*str;
-
-	if (token->heredoc_quoted == 1)
-		return (0);
-	str = expand_param_redir(token->content, shell);
-	if (!str)
-		return (1);
-	free (token->content);
-	token->content = str;
-	token->content = requote_param_expansion(token->content);
 	return (0);
 }
 

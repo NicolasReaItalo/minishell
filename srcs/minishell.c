@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:16:22 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/06 14:25:27 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 16:39:22 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	main(int argc, char **argv, char **envp)
 
 	(void) argc;
 	(void) argv;
-	// if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
-	// 	exit (1);
+	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
+		exit (1);
 	if (set_interactive_signals() == -1)
 		exit(1);
 	if (!ft_init_shell(&shell, envp))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_expansion.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 15:41:16 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/06 15:41:45 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 16:42:58 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,9 @@ char	*expand_param_redir(char *str, t_shell *shell);
 int		expand_here_doc(t_token *token, t_shell *shell);
 int		ambiguous_redirect(char *content);
 void	files_found(t_token *token, char **tmp_name);
-
+int		expand_here_doc(t_token *token, t_shell *shell);
+int		is_valid_param_char(char c);
+int		is_valid_first_param_char(char c);
+int		unimplemented_special_var(char c);
+char	*expand_param_redir_heredoc(char *str, t_shell *shell);
 #endif

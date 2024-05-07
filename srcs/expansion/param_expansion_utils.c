@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:33:31 by joyeux            #+#    #+#             */
-/*   Updated: 2024/05/03 16:08:06 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 16:15:02 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "word_expansion.h"
 
-static int	is_valid_param_char(char c)
+int	is_valid_param_char(char c)
 {
 	return (ft_isalpha(c) || ft_isdigit(c) || c == '_');
 }
 
-static int	is_valid_first_param_char(char c)
+int	is_valid_first_param_char(char c)
 {
 	return (ft_isalpha(c) || c == '_');
 }
 
-static int	unimplemented_special_var(char c)
+int	unimplemented_special_var(char c)
 {
 	if (ft_isdigit(c))
 		return (1);

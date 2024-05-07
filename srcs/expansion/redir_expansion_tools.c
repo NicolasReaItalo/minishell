@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_expansion_tools.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 17:28:15 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/06 15:34:32 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 16:42:27 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,18 @@ void	files_found(t_token *token, char **tmp_name)
 	}
 	else
 		free(*tmp_name);
+}
+
+int	expand_here_doc(t_token *token, t_shell *shell)
+{
+	char	*str;
+
+	if (token->heredoc_quoted == 1)
+		return (0);
+	str = expand_param_redir_heredoc(token->content, shell);
+	if (!str)
+		return (1);
+	free (token->content);
+	token->content = str;
+	return (0);
 }
