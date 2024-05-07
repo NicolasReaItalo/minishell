@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:08:35 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/07 10:19:57 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 11:23:29 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,12 @@ typedef struct s_token
 	int				hidden;
 	int				param_expanded;
 	int				path_expanded;
+	int				heredoc_quoted;
 	struct s_token	*next;
 	struct s_token	*prev;
 }				t_token;
-// TODO:Certaines fonctions font doublons...choisir!
 
 t_token	*ft_get_token(t_token *stack, int rank);
-//void	kill_stack(t_token **stack);
 int		ft_stack_size(t_token *stack);
 int		ft_free_token(t_token **token);
 void	ft_reverse_stack(t_token **stack);
@@ -56,6 +55,7 @@ int		is_operator(char c);
 void	kill_stack(t_token **stack);
 t_token	*new_token(char *str, int len);
 t_token	*add_token(t_token *stack, t_token *new);
-int	word_is_wspace(char *str);
+int		word_is_wspace(char *str);
+int		contains_quotes(char *str);
 
 #endif

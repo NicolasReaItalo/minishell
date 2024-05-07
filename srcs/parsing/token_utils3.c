@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 10:45:29 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/07 10:48:11 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 11:22:35 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,15 @@ int	word_is_wspace(char *str)
 		str++;
 	}
 	return (1);
+}
+
+int contains_quotes(char *str)
+{
+	while (*str)
+	{
+		if (*str == '\'' || *str == '\"')
+			return (1);
+		str++;
+	}
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:47:22 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/01 16:27:35 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 12:24:37 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,12 @@ static int	manage_heredoc(t_token	*tok, t_token **stack, t_shell *shell)
 	t_token	*prev_tok;
 
 	prev_tok = tok->prev;
+	if (contains_quotes(prev_tok->content) == 1)
+	//{
+	//	printf("Passing \"contains_cotes\" in %s token\n", tok->content);
+		tok->heredoc_quoted = 1;
+	//}
+	//if is in quote flag to expand = false 
 	unquote_content(prev_tok->content);
 	ret = get_hd(tok, prev_tok->content, shell, stack);
 	if (set_interactive_signals() == -1)
