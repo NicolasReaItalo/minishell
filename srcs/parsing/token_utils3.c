@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 10:45:29 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/07 14:16:17 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 14:32:58 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
+#include "parse_execute.h"
 
 int	word_is_wspace(char *str)
 {

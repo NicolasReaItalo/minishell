@@ -6,7 +6,7 @@
 /*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 14:32:18 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/07 14:29:51 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 14:33:51 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ t_token	*ft_get_token(t_token *stack, int rank);
 int		ft_stack_size(t_token *stack);
 int		ft_free_token(t_token **token);
 void	ft_reverse_stack(t_token **stack);
+int		word_is_wspace(char *str);
+int		contains_quotes(char *str);
 
 t_token	*ft_get_token(t_token *stack, int rank);
 int		ft_stack_size(t_token *stack);

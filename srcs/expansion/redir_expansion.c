@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:10:58 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/07 14:18:26 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 14:32:58 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	redir_exp(t_token *token, t_shell *shell)
 /*
 #include "minishell.h"
 //#include "tests.h"
-#include "token.h"
+#include "parse_execute.h"
 int	main(int argc, char **argv, char **envp)
 {
 	t_token *token;
@@ -136,5 +136,5 @@ int	main(int argc, char **argv, char **envp)
 	token = new_token(argv[1], ft_strlen(argv[1]));
 	expand_redir(token, &shell);
 }*/
-// gcc srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c 
+// gcc srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c
 //-I./include/ -I./libft/ -L./libft/ -lft -o redir_expansion

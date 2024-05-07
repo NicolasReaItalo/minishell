@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:44 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/05/06 15:35:09 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 14:32:58 by nrea             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ char	*ft_handle_token_errors(int error)
 }
 #include "minishell.h"
 #include "tests.h"
-#include "token.h"
+#include "parse_execute.h"
 int	main(int argc, char **argv, char **envp)
 {
 	t_token	*stack;
@@ -260,8 +260,8 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_env_vars(shell.env_vars, &shell.shell_vars);
 	return (0);
 }*/
-//  gcc -g3 srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c 
-// test/utils/*.c -I./include/ -I./libft/ -I./test -L./libft/ -lft 
+//  gcc -g3 srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c
+// test/utils/*.c -I./include/ -I./libft/ -I./test -L./libft/ -lft
 // -lreadline -o param_expansion
 
 //valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes
@@ -270,5 +270,5 @@ int	main(int argc, char **argv, char **envp)
 
 //  gcc -g3 srcs/*.c srcs/execution/*.c srcs/builtins/*.c
 // srcs/expansion/*.c srcs/env_variables/*.c srcs/parsing/*.c test/utils/*.c
-// -I./include/ -I./libft/ -I./test -L./libft/ -lft -lreadline -o 
+// -I./include/ -I./libft/ -I./test -L./libft/ -lft -lreadline -o
 // param_expansion
