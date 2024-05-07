@@ -6,7 +6,7 @@
 /*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:41:59 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/25 16:18:35 by tjoyeux          ###   ########.fr       */
+/*   Updated: 2024/05/07 10:46:00 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,8 @@ void	put_special_type_in_stack(t_token *stack)
 }
 
 // Affect a type to each node of the stack
-void	put_type_in_stack(t_token *stack, int *error_code)
+void	put_type_in_stack(t_token *stack)
 {
-	(void)error_code;
 	while (stack)
 	{
 		if (ft_strchr("|<>", stack->content[0]))
@@ -170,7 +169,7 @@ int	tokenise(char *str, t_token **stack)
 		if (new)
 			*stack = add_token(*stack, new);
 	}
-	put_type_in_stack(*stack, &error_code);
+	put_type_in_stack(*stack);
 	if (error_code)
 		kill_stack(stack);
 	return (error_code);

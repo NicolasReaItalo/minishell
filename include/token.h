@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:08:35 by tjoyeux           #+#    #+#             */
-/*   Updated: 2024/04/29 13:14:28 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 10:19:57 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,6 @@ int		is_operator(char c);
 void	kill_stack(t_token **stack);
 t_token	*new_token(char *str, int len);
 t_token	*add_token(t_token *stack, t_token *new);
+int	word_is_wspace(char *str);
 
 #endif

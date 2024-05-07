@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+         #
+#    By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 15:58:40 by tjoyeux           #+#    #+#              #
-#    Updated: 2024/05/06 14:24:56 by nrea             ###   ########.fr        #
+#    Updated: 2024/05/07 10:46:58 by tjoyeux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ SRCS		=	$(SRC_PATH)minishell.c \
 				$(SRC_PATH)parsing/token.c \
 				$(SRC_PATH)parsing/token_utils.c \
 				$(SRC_PATH)parsing/token_utils2.c \
+				$(SRC_PATH)parsing/token_utils3.c \
 				$(SRC_PATH)parsing/check_syntax.c \
 				$(SRC_PATH)parsing/redirections.c \
 				$(SRC_PATH)parsing/here_doc.c \

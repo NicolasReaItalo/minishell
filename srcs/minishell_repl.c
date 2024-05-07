@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_repl.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrea <nrea@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tjoyeux <tjoyeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 14:39:35 by nrea              #+#    #+#             */
-/*   Updated: 2024/05/01 15:13:55 by nrea             ###   ########.fr       */
+/*   Updated: 2024/05/07 10:21:08 by tjoyeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	repl(t_shell *shell)
 		sig_set_status(shell);
 		if (!line)
 			exit_gracefully(shell, ft_get_exit_status(&shell->shell_vars));
-		if (ft_strlen(line))
+		if (ft_strlen(line) && !word_is_wspace(line))
 		{
 			add_history(line);
 			if (evaluate(line, &stack, shell) == -1)
