@@ -1,7 +1,6 @@
 # Minishell  
 A [42 Paris](https://42.fr) Project  
 
-### *Building a simple yet fully functioning interactive shell.*  
 
 Welcome to **Minishell**, a minimalistic yet powerful shell written entirely in **C**. 
 
